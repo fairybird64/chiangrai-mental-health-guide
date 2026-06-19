@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@500;600;700&family=Sarabun:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Noto+Color+Emoji&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:#f4efe6;font-family:'Sarabun','Noto Color Emoji',sans-serif;color:#2c2823;-webkit-font-smoothing:antialiased}
+  ::selection{background:#cfe0d8}
+  a{color:inherit}
+  @media print{
+    .sidebar{display:none!important}
+    .menu-toggle,.nav-backdrop{display:none!important}
+    .mainwrap{margin-left:0!important}
+    .main{padding:0!important;max-width:none!important}
+    section{break-inside:avoid}
+    .tabrow{display:none!important}
+  }
+  .menu-toggle{display:none}
+  .nav-backdrop{display:none}
+  @media(max-width:900px){
+    .menu-toggle{display:flex}
+    .sidebar{position:fixed!important;left:0;top:0;height:100vh!important;transform:translateX(-100%);transition:transform .26s ease;z-index:70}
+    .sidebar.open{transform:none;box-shadow:8px 0 34px rgba(40,32,20,.24)}
+    .nav-backdrop.show{display:block;position:fixed;inset:0;background:rgba(30,24,16,.42);z-index:60}
+    .mainwrap{margin-left:0}
+    .main{padding:74px 18px 64px!important}
+    .rg{grid-template-columns:1fr!important}
+    .rg2{grid-template-columns:1fr 1fr!important}
+  }
+  @media(max-width:560px){
+    .rg2{grid-template-columns:1fr!important}
+    .main h1{font-size:30px!important}
+  }
+</style>
+</helmet>
+
+<div style="display:flex;align-items:flex-start;min-height:100vh">
+
+  <button class="menu-toggle" onClick="{{ toggleNav }}" aria-label="เปิดเมนู" style="position:fixed;left:14px;top:14px;z-index:80;width:46px;height:46px;border-radius:12px;border:1px solid #ddd3c1;background:#ece4d5;color:#3f8079;align-items:center;justify-content:center;cursor:pointer;font-size:21px;box-shadow:0 2px 12px rgba(40,32,20,.16)">☰</button>
+  <div class="nav-backdrop {{ backdropCls }}" onClick="{{ closeNav }}"></div>
+
+  <aside class="sidebar {{ sidebarCls }}" style="position:sticky;top:0;align-self:flex-start;width:268px;height:100vh;flex:none;background:#ece4d5;border-right:1px solid #ddd3c1;padding:28px 22px;overflow-y:auto">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+      <div style="width:30px;height:30px;border-radius:8px;background:#3f8079;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Noto Serif Thai',serif;font-weight:700;font-size:17px">ฮ</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;color:#8a7f6c;text-transform:uppercase">Student Mental Health</div>
+    </div>
+    <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:19px;line-height:1.35;margin-bottom:4px">คู่มือระบบดูแล<br>สุขภาพจิตนักเรียน</div>
+    <div style="font-size:12.5px;color:#7a7060;margin-bottom:24px">ครูที่ปรึกษา · ครูแนะแนว · นักจิตฯ สพม. · รพ. · เครือข่ายชุมชน</div>
+
+    <nav onClick="{{ closeNav }}" style="display:flex;flex-direction:column;gap:1px">
+      <a href="#overview" style="text-decoration:none;display:flex;gap:10px;padding:8px 11px;border-radius:8px;font-size:14px;color:#4a4337"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#a99c84;width:18px">00</span>ภาพรวมระบบ</a>
+      <a href="#roles" style="text-decoration:none;display:flex;gap:10px;padding:8px 11px;border-radius:8px;font-size:14px;color:#4a4337"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#a99c84;width:18px">01</span>บทบาทตามระดับ</a>
+      <a href="#flow" style="text-decoration:none;display:flex;gap:10px;padding:8px 11px;border-radius:8px;font-size:14px;color:#4a4337"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#a99c84;width:18px">02</span>เส้นทางการส่งต่อ</a>
+      <a href="#matrix" style="text-decoration:none;display:flex;gap:10px;padding:8px 11px;border-radius:8px;font-size:14px;color:#4a4337"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#a99c84;width:18px">03</span>ตารางสรุป บทบาท×โรค</a>
+      <a href="#diseases" style="text-decoration:none;display:flex;gap:10px;padding:8px 11px;border-radius:8px;font-size:14px;color:#4a4337"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#a99c84;width:18px">04</span>7 กลุ่มโรคหลัก</a>
+      <a href="#nssi" style="text-decoration:none;display:flex;gap:10px;padding:8px 11px;border-radius:8px;font-size:14px;color:#3a6675;font-weight:600"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8fb0bb;width:18px">★</span>NSSI เจาะลึก</a>
+      <a href="#techniques" style="text-decoration:none;display:flex;gap:10px;padding:8px 11px;border-radius:8px;font-size:14px;color:#4a4337"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#a99c84;width:18px">05</span>6 เทคนิคช่วยเหลือ</a>
+      <a href="#chiangsaen" style="text-decoration:none;display:flex;gap:10px;padding:8px 11px;border-radius:8px;font-size:14px;color:#2f6b62;font-weight:600"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8fb6ac;width:18px">CS</span>เชียงแสนโมเดล</a>
+      <a href="#community" style="text-decoration:none;display:flex;gap:10px;padding:8px 11px;border-radius:8px;font-size:14px;color:#4a4337"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#a99c84;width:18px">06</span>เครือข่ายชุมชน</a>
+      <a href="#tools" style="text-decoration:none;display:flex;gap:10px;padding:8px 11px;border-radius:8px;font-size:14px;color:#4a4337"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#a99c84;width:18px">07</span>เครื่องมือประเมิน</a>
+      <a href="#hotline" style="text-decoration:none;display:flex;gap:10px;padding:8px 11px;border-radius:8px;font-size:14px;color:#b04a3a;font-weight:600"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#cf9a8e;width:18px">SOS</span>สายด่วน & ส่งต่อด่วน</a>
+    </nav>
+
+    <div style="margin-top:22px;padding:14px;background:#f6f1e7;border:1px solid #e0d6c4;border-radius:10px;font-size:12px;color:#7a7060;line-height:1.5">
+      ร่วมเดินไปด้วยกัน เพื่อเด็กและเยาวชนของเรา
+      <div style="margin-top:8px;font-size:11px;color:#9b9079">ที่มา: คู่มือแนวทางช่วยเหลือนักเรียน · เชียงแสนวิทยาคมโมเดล · สื่อ NSSI สถาบันสุขภาพเด็กแห่งชาติมหาราชินี · รายงาน PHQ-A เชียงราย 2564–2568</div>
+    </div>
+  </aside>
+
+  <div class="mainwrap" style="flex:1;min-width:0">
+  <main class="main" style="max-width:980px;margin:0 auto;padding:54px 56px 96px">
+
+    <!-- ============ OVERVIEW ============ -->
+    <section id="overview" style="scroll-margin-top:24px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.16em;color:#b07a4f;text-transform:uppercase;margin-bottom:10px">00 — ภาพรวมระบบ</div>
+      <h1 style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:39px;line-height:1.25;margin:0 0 14px">คู่มือระบบดูแลสุขภาพจิตเด็กและวัยรุ่น จ.เชียงราย</h1>
+      <p style="font-size:16.5px;line-height:1.7;color:#544d40;max-width:760px;margin:0 0 22px">คู่มือนี้จัดเรียงบทบาทผู้ดูแล ตั้งแต่ — ครูที่ปรึกษา → ครูแนะแนว → นักจิตวิทยา สพม. → โรงพยาบาล — พร้อมบทบาทของ <b>เครือข่ายชุมชน</b> (อสม. · ผู้นำชุมชน · รพ.สต. · ทีมเพื่อนสนิท) เพื่อดูแลเด็กไว้ในระบบไม่ให้หลุดหาย ครอบคลุม 7 กลุ่มปัญหาจิตเวชหลักที่พบในวัยเรียน</p>
+      <p style="font-size:14.5px;line-height:1.65;color:#6f665a;max-width:760px;margin:0 0 22px">จากการดำเนินงานระบบดูแลสุขภาพจิตในโรงเรียนสังกัด สพม.ชร. ทั้ง 41 แห่งทั่วจังหวัด ตั้งแต่ปี 2564 พบข้อมูลสำคัญดังนี้</p>
+
+      <div class="rg2" style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px">
+        <div style="background:#fffdf9;border:1px solid #e6ddcc;border-radius:12px;padding:18px">
+          <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:28px;color:#3f8079">20–25%</div>
+          <div style="font-size:13px;color:#6f665a;line-height:1.45;margin-top:4px">ของนักเรียนที่ประเมิน มีภาวะซึมเศร้าระดับปานกลางขึ้นไป</div>
+        </div>
+        <div style="background:#fffdf9;border:1px solid #e6ddcc;border-radius:12px;padding:18px">
+          <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:28px;color:#43688f">~200–300</div>
+          <div style="font-size:13px;color:#6f665a;line-height:1.45;margin-top:4px">คน/ปี (เฉลี่ยประมาณ 4–5%) ที่เข้าสู่ระบบรักษาหลังช่วยเหลือเบื้องต้นแล้วไม่ดีขึ้น</div>
+        </div>
+        <div style="background:#fffdf9;border:1px solid #e6ddcc;border-radius:12px;padding:18px">
+          <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:28px;color:#45707e">17–25%</div>
+          <div style="font-size:13px;color:#6f665a;line-height:1.45;margin-top:4px">อุบัติการณ์ NSSI ในวัยรุ่น — ไทยพบมากและเพิ่มขึ้น</div>
+        </div>
+        <div style="background:#fffdf9;border:1px solid #e6ddcc;border-radius:12px;padding:18px">
+          <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:28px;color:#b07a4f">47% · 40%</div>
+          <div style="font-size:13px;color:#6f665a;line-height:1.45;margin-top:4px">หลังเข้าสู่ระบบการรักษา โรคหลักที่วินิจฉัย: ซึมเศร้า · สมาธิสั้น (อื่น ๆ 13%)</div>
+        </div>
+      </div>
+
+      <div style="background:#eef3ef;border:1px solid #d6e2da;border-radius:12px;padding:20px 22px;display:flex;gap:22px;align-items:center;flex-wrap:wrap">
+        <div style="font-family:'Noto Serif Thai',serif;font-weight:600;font-size:17px;color:#2f6b62;flex:none">USI Model</div>
+        <div style="display:flex;gap:14px;flex-wrap:wrap;flex:1;min-width:300px">
+          <div style="flex:1;min-width:150px"><b style="color:#708a6b">U · Universal</b><div style="font-size:13.5px;color:#5e564a">ครูที่ปรึกษา — ดูแลทุกคน สังเกตในชั้นเรียน</div></div>
+          <div style="flex:1;min-width:150px"><b style="color:#3f8079">S · Selective</b><div style="font-size:13.5px;color:#5e564a">ครูแนะแนว + นักจิตฯ สพม. — กลุ่มเสี่ยง</div></div>
+          <div style="flex:1;min-width:150px"><b style="color:#5b6aa0">I · Indicated</b><div style="font-size:13.5px;color:#5e564a">โรงพยาบาล — เข้าสู่ระบบรักษา</div></div>
+        </div>
+      </div>
+    </section>
+
+    <hr style="border:none;border-top:1px solid #e2d9c8;margin:54px 0">
+
+    <!-- ============ ROLES ============ -->
+    <section id="roles" style="scroll-margin-top:24px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.16em;color:#b07a4f;text-transform:uppercase;margin-bottom:10px">01 — บทบาทตามระดับ</div>
+      <h2 style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:30px;margin:0 0 8px">ใครทำอะไร</h2>
+      <p style="font-size:15.5px;color:#5e564a;max-width:720px;margin:0 0 22px">แต่ละระดับทำงานต่อเนื่องกัน เมื่อระดับหนึ่งช่วยแล้วยังไม่ดีขึ้น จึงส่งต่อระดับที่ลึกกว่า</p>
+
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:26px;font-size:12px;color:#8a7f6c;font-family:'IBM Plex Mono',monospace">
+        <span>ทักษะเบื้องต้น</span>
+        <div style="flex:1;height:6px;border-radius:3px;background:linear-gradient(90deg,#708a6b,#3f8079,#43688f,#5b6aa0,#b07a4f)"></div>
+        <span>เฉพาะทาง / รักษา</span>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div style="background:#fffdf9;border:1px solid #e6ddcc;border-left:5px solid #708a6b;border-radius:12px;padding:22px 24px">
+          <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#708a6b">01</span>
+            <h3 style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:21px;margin:0">ครูที่ปรึกษา</h3>
+            <span style="font-size:12px;background:#e9f0e6;color:#5a7553;padding:3px 10px;border-radius:999px;font-weight:600">U · Universal</span>
+            <span style="font-size:13.5px;color:#8a7f6c">ด่านแรกที่ใกล้ชิดเด็กที่สุด · ดูแลทุกคนในชั้นเรียน</span>
+          </div>
+          <div class="rg" style="display:grid;grid-template-columns:2fr 1.3fr;gap:22px;margin-top:12px">
+            <div>
+              <div style="font-size:12px;font-weight:600;color:#708a6b;margin-bottom:6px;font-family:'IBM Plex Mono',monospace">ทำหน้าที่</div>
+              <ul style="margin:0;padding-left:18px;font-size:14.5px;line-height:1.7;color:#4a4337">
+                <li>สังเกตพฤติกรรมประจำวัน — ขาด · ลา · มาสาย · ไม่ส่งงาน · ต่อต้าน</li>
+                <li>สร้างสัมพันธภาพ รับฟังโดยไม่ตัดสิน</li>
+              </ul>
+            </div>
+            <div style="background:#f6f4ec;border-radius:9px;padding:12px 14px">
+              <div style="font-size:12px;font-weight:600;color:#8a7f6c;margin-bottom:4px">ส่งต่อเมื่อ</div>
+              <div style="font-size:14px;color:#4a4337;line-height:1.55">พบสัญญาณผิดปกติ → แจ้ง <b>ครูแนะแนว</b> (ระดับ S)</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:#fffdf9;border:1px solid #e6ddcc;border-left:5px solid #3f8079;border-radius:12px;padding:22px 24px">
+          <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#3f8079">02</span>
+            <h3 style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:21px;margin:0">ครูแนะแนว <span style="font-size:15px;font-weight:500;color:#8a7f6c">(ครูนักจิต)</span></h3>
+            <span style="font-size:12px;background:#e3efed;color:#2f6b62;padding:3px 10px;border-radius:999px;font-weight:600">S · Selective</span>
+            <span style="font-size:13.5px;color:#8a7f6c">ช่วยเหลือเชิงลึกขึ้นในโรงเรียน</span>
+          </div>
+          <div class="rg" style="display:grid;grid-template-columns:2fr 1.3fr;gap:22px;margin-top:12px">
+            <div>
+              <div style="font-size:12px;font-weight:600;color:#3f8079;margin-bottom:6px;font-family:'IBM Plex Mono',monospace">ทำหน้าที่</div>
+              <ul style="margin:0 0 10px;padding-left:18px;font-size:14.5px;line-height:1.7;color:#4a4337">
+                <li>ประเมินเบื้องต้น (PHQ-A / SNAP-IV / 8Q) + สร้างสัมพันธภาพ รับฟังไม่ตัดสิน</li>
+                <li>ช่วยเหลือตาม flow ของปัญหา (ABA · Triple-P · MI · BA เบื้องต้น)</li>
+                <li>ประสานผู้ปกครอง + ติดตามต่อเนื่อง 2–4 สัปดาห์</li>
+              </ul>
+              <div style="font-size:13px;color:#5e564a"><b style="color:#3f8079">5 มาตรการ:</b> ให้คำปรึกษา · เยี่ยมบ้าน · Buddy · ปรับการเรียนการสอน · Case Conference</div>
+            </div>
+            <div style="background:#f6f4ec;border-radius:9px;padding:12px 14px">
+              <div style="font-size:12px;font-weight:600;color:#8a7f6c;margin-bottom:4px">ส่งต่อเมื่อ</div>
+              <div style="font-size:14px;color:#4a4337;line-height:1.55">ช่วยแล้วไม่ดีขึ้น / มีแนวโน้มเป็นโรค → <b>นักจิตฯ สพม.</b></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:#fffdf9;border:1px solid #e6ddcc;border-left:5px solid #43688f;border-radius:12px;padding:22px 24px">
+          <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#43688f">03</span>
+            <h3 style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:21px;margin:0">นักจิตวิทยา สพม.</h3>
+            <span style="font-size:12px;background:#e4ebf2;color:#3a567a;padding:3px 10px;border-radius:999px;font-weight:600">S · เชิงลึก</span>
+            <span style="font-size:13.5px;color:#8a7f6c">นักจิตวิทยาประจำเขตพื้นที่การศึกษา</span>
+          </div>
+          <div class="rg" style="display:grid;grid-template-columns:2fr 1.3fr;gap:22px;margin-top:12px">
+            <div>
+              <div style="font-size:12px;font-weight:600;color:#43688f;margin-bottom:6px;font-family:'IBM Plex Mono',monospace">ทำหน้าที่</div>
+              <ul style="margin:0;padding-left:18px;font-size:14.5px;line-height:1.7;color:#4a4337">
+                <li>ประเมินซ้ำ + ให้คำแนะนำเชิงลึก</li>
+                <li>วางแผนร่วมกับครูว่าจะดูแลต่อในโรงเรียนหรือส่งต่อ รพ.</li>
+                <li>ลงพื้นที่ให้องค์ความรู้แก่ทีมครู · เป็นพี่เลี้ยง (mentor) จัดการเคสยาก</li>
+              </ul>
+            </div>
+            <div style="background:#fbeee9;border-radius:9px;padding:12px 14px">
+              <div style="font-size:12px;font-weight:600;color:#b04a3a;margin-bottom:4px">ส่งต่อด่วน</div>
+              <div style="font-size:14px;color:#4a4337;line-height:1.55">ถ้า <b>ข้อ 9 pos / SI ชัดเจน</b> → ส่ง รพ. ทันที</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:#fffdf9;border:1px solid #e6ddcc;border-left:5px solid #5b6aa0;border-radius:12px;padding:22px 24px">
+          <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#5b6aa0">04</span>
+            <h3 style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:21px;margin:0">โรงพยาบาล</h3>
+            <span style="font-size:12px;background:#e8e8f1;color:#4a4a82;padding:3px 10px;border-radius:999px;font-weight:600">I · Indicated</span>
+            <span style="font-size:13.5px;color:#8a7f6c">นักจิตฯ · พยาบาลจิตเวช · จิตแพทย์ (รพช./รพท./รพศ.)</span>
+          </div>
+          <div class="rg" style="display:grid;grid-template-columns:2fr 1.3fr;gap:22px;margin-top:12px">
+            <div>
+              <div style="font-size:12px;font-weight:600;color:#5b6aa0;margin-bottom:6px;font-family:'IBM Plex Mono',monospace">ทำหน้าที่</div>
+              <ul style="margin:0;padding-left:18px;font-size:14.5px;line-height:1.7;color:#4a4337">
+                <li>ประเมินครบถ้วน (8Q / diagnostic interview / comorbidity)</li>
+                <li>วางแผนการรักษา: ยา + จิตบำบัด + ครอบครัว</li>
+                <li>ประสานกลับโรงเรียน — แจ้งแนวทางที่ครูควรทำต่อ</li>
+              </ul>
+            </div>
+            <div style="background:#f6f4ec;border-radius:9px;padding:12px 14px">
+              <div style="font-size:12px;font-weight:600;color:#8a7f6c;margin-bottom:4px">บริการ</div>
+              <div style="font-size:14px;color:#4a4337;line-height:1.55">OPD · IPD · ระบบติดตามเยี่ยมบ้าน · ส่งกลับดูแลต่อในโรงเรียน</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:#fffdf9;border:1px solid #e6ddcc;border-left:5px solid #b07a4f;border-radius:12px;padding:22px 24px">
+          <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#b07a4f">05</span>
+            <h3 style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:21px;margin:0">เครือข่ายชุมชน</h3>
+            <span style="font-size:12px;background:#f3e7da;color:#8a5a30;padding:3px 10px;border-radius:999px;font-weight:600">สนับสนุน · โอบอุ้ม</span>
+            <span style="font-size:13.5px;color:#8a7f6c">อสม. · ผู้นำชุมชน/ผู้ใหญ่บ้าน · รพ.สต. · ทีมเพื่อนสนิท</span>
+          </div>
+          <div class="rg" style="display:grid;grid-template-columns:2fr 1.3fr;gap:22px;margin-top:12px">
+            <div>
+              <div style="font-size:12px;font-weight:600;color:#b07a4f;margin-bottom:6px;font-family:'IBM Plex Mono',monospace">ทำหน้าที่</div>
+              <ul style="margin:0;padding-left:18px;font-size:14.5px;line-height:1.7;color:#4a4337">
+                <li>เฝ้าระวัง + เยี่ยมบ้านแบบแนบเนียน (กันการตีตรา)</li>
+                <li>เป็นสะพานเชื่อมบ้าน–โรงเรียน · สนับสนุนการรับ-ส่ง รพ.</li>
+                <li>ดูแลความปลอดภัยในพื้นที่/ช่วงพัก · รักษาความลับอย่างเคร่งครัด</li>
+              </ul>
+            </div>
+            <div style="background:#f6f4ec;border-radius:9px;padding:12px 14px">
+              <div style="font-size:12px;font-weight:600;color:#8a7f6c;margin-bottom:4px">รายละเอียด</div>
+              <div style="font-size:14px;color:#4a4337;line-height:1.55">ดูหัวข้อ <a href="#community" style="color:#b07a4f;font-weight:600">เครือข่ายชุมชน</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr style="border:none;border-top:1px solid #e2d9c8;margin:54px 0">
+
+    <!-- ============ FLOW ============ -->
+    <section id="flow" style="scroll-margin-top:24px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.16em;color:#b07a4f;text-transform:uppercase;margin-bottom:10px">02 — เส้นทางการส่งต่อ</div>
+      <h2 style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:30px;margin:0 0 22px">Flow การส่งต่อ — ใครทำอะไร เมื่อไหร่</h2>
+
+      <div class="rg" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:18px">
+        <div style="background:#fffdf9;border:1px solid #e6ddcc;border-radius:12px;padding:20px;border-top:4px solid #708a6b">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#708a6b;margin-bottom:4px">ระดับ 1 · โรงเรียน</div>
+          <div style="font-family:'Noto Serif Thai',serif;font-weight:600;font-size:17px;margin-bottom:10px">ครูที่ปรึกษา → ครูแนะแนว</div>
+          <ol style="margin:0;padding-left:18px;font-size:14px;line-height:1.65;color:#4a4337">
+            <li>พบเด็กมีปัญหา (สังเกต / PHQ-A / แจ้งเอง)</li>
+            <li>ประเมินเบื้องต้น + สร้างสัมพันธภาพ</li>
+            <li>ช่วยเหลือตาม flow (ABA / Triple-P / MI)</li>
+            <li>ประสานผู้ปกครอง + ติดตาม 2–4 สัปดาห์</li>
+          </ol>
+        </div>
+        <div style="background:#fffdf9;border:1px solid #e6ddcc;border-radius:12px;padding:20px;border-top:4px solid #43688f">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#43688f;margin-bottom:4px">ระดับ 2 · สพม.</div>
+          <div style="font-family:'Noto Serif Thai',serif;font-weight:600;font-size:17px;margin-bottom:10px">นักจิตฯ สพม.</div>
+          <ol style="margin:0;padding-left:18px;font-size:14px;line-height:1.65;color:#4a4337">
+            <li>ครูแจ้งพร้อมข้อมูลเบื้องต้น</li>
+            <li>ประเมินซ้ำ + คำแนะนำเชิงลึก</li>
+            <li>วางแผนร่วมกับครู: ดูแลต่อ / ส่งต่อ</li>
+            <li>ถ้าข้อ 9 pos / SI → ส่ง รพ. ทันที</li>
+          </ol>
+        </div>
+        <div style="background:#fffdf9;border:1px solid #e6ddcc;border-radius:12px;padding:20px;border-top:4px solid #5b6aa0">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#5b6aa0;margin-bottom:4px">ระดับ 3 · โรงพยาบาล</div>
+          <div style="font-family:'Noto Serif Thai',serif;font-weight:600;font-size:17px;margin-bottom:10px">นักจิตฯ / พยาบาล / แพทย์</div>
+          <ol style="margin:0;padding-left:18px;font-size:14px;line-height:1.65;color:#4a4337">
+            <li>รับเคสพร้อมข้อมูลประกอบ</li>
+            <li>ประเมินครบถ้วน (8Q / comorbidity)</li>
+            <li>วางแผนรักษา: ยา + จิตบำบัด + ครอบครัว</li>
+            <li>ประสานกลับโรงเรียน</li>
+          </ol>
+        </div>
+      </div>
+
+      <div style="background:#fbeee9;border:1px solid #ecc9bf;border-radius:12px;padding:18px 22px;display:flex;gap:16px;align-items:flex-start">
+        <div style="font-size:26px;line-height:1;flex:none">⚡</div>
+        <div>
+          <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:17px;color:#a8412f;margin-bottom:4px">ส่ง รพ. ทันที — ไม่ต้องรอครบขั้นตอน</div>
+          <div style="font-size:14.5px;color:#7a4035;line-height:1.6">ข้อ 9 pos (SI) · พยายามทำร้ายตัวเอง · NSSI บาดแผลลึก · ติดยารุนแรง · อาการทางจิต · ครอบครัวรุนแรง</div>
+        </div>
+      </div>
+    </section>
+
+    <hr style="border:none;border-top:1px solid #e2d9c8;margin:54px 0">
+
+    <!-- ============ MATRIX ============ -->
+    <section id="matrix" style="scroll-margin-top:24px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.16em;color:#b07a4f;text-transform:uppercase;margin-bottom:10px">03 — ตารางสรุป</div>
+      <h2 style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:30px;margin:0 0 18px">บทบาท × โรค</h2>
+
+      <div style="overflow-x:auto;border:1px solid #e6ddcc;border-radius:12px">
+        <table style="border-collapse:collapse;width:100%;min-width:860px;font-size:13.5px;background:#fffdf9">
+          <thead>
+            <tr style="background:#efe9dd">
+              <th style="text-align:left;padding:13px 14px;font-family:'Noto Serif Thai',serif;font-weight:600;color:#2c2823;border-bottom:1px solid #e0d6c4;width:130px">กลุ่มปัญหา</th>
+              <th style="text-align:left;padding:13px 14px;font-weight:600;color:#6f665a;border-bottom:1px solid #e0d6c4">สัญญาณเด่น (ครูที่ปรึกษาสังเกต)</th>
+              <th style="text-align:left;padding:13px 14px;font-weight:600;color:#3f8079;border-bottom:1px solid #e0d6c4">ครูแนะแนวทำได้</th>
+              <th style="text-align:left;padding:13px 14px;font-weight:600;color:#b04a3a;border-bottom:1px solid #e0d6c4">ส่งต่อ รพ. เมื่อ</th>
+              <th style="text-align:left;padding:13px 14px;font-weight:600;color:#5b6aa0;border-bottom:1px solid #e0d6c4">รพ. ทำเพิ่ม</th>
+            </tr>
+          </thead>
+          <tbody style="color:#4a4337;line-height:1.5">
+            <tr style="border-bottom:1px solid #efe9dd"><td style="padding:12px 14px;font-weight:600"><span style="color:#43688f">🧠 สมาธิสั้น</span></td><td style="padding:12px 14px">วอกแวก อยู่ไม่นิ่ง ลืมบ่อย งานไม่เสร็จ</td><td style="padding:12px 14px">SNAP-IV · ปรับที่นั่ง · แบ่งงาน+checklist · ชมทันที</td><td style="padding:12px 14px">SNAP-IV ชัดเจน · 4 สัปดาห์ไม่ดีขึ้น</td><td style="padding:12px 14px">วินิจฉัย+ยา (MPH) · PMT · IEP</td></tr>
+            <tr style="border-bottom:1px solid #efe9dd;background:#fbf8f1"><td style="padding:12px 14px;font-weight:600"><span style="color:#b07a4f">⚡ ดื้อต่อต้าน</span></td><td style="padding:12px 14px">โวยวาย ดื้อ ทำลายของ ยั่วยุครู</td><td style="padding:12px 14px">ABA (A-B-C) · กฎชัดเจน · เพิกเฉยเรื่องเล็ก · Triple-P</td><td style="padding:12px 14px">รุนแรง/ทำร้ายผู้อื่น · 4–6 สัปดาห์ไม่ดีขึ้น</td><td style="padding:12px 14px">PMT เชิงลึก · ยา · Family therapy+CBT</td></tr>
+            <tr style="border-bottom:1px solid #efe9dd"><td style="padding:12px 14px;font-weight:600"><span style="color:#3f8079">🎮 ติดเกม</span></td><td style="padding:12px 14px">เล่น &gt;6 ชม. โกรธเมื่อหยุด หนีเรียน</td><td style="padding:12px 14px">MI · ตั้งเป้าร่วมกัน · กิจกรรมทางเลือก · กติกาครอบครัว</td><td style="padding:12px 14px">คุมเวลาไม่ได้ · กระทบชัดเจน · สงสัยโรคร่วม</td><td style="padding:12px 14px">GAST · CBT+MI · digital detox</td></tr>
+            <tr style="border-bottom:1px solid #efe9dd;background:#fbf8f1"><td style="padding:12px 14px;font-weight:600"><span style="color:#b04a3a">🚨 ติดยาเสพติด</span></td><td style="padding:12px 14px">กลิ่นผิดปกติ ตาแดง ก้าวร้าว ของหาย</td><td style="padding:12px 14px">MI · 8Q/บคก. · Harm Reduction</td><td style="padding:12px 14px">ระดับผู้เสพ/ผู้ติด · ถอนยา · เสี่ยงต่อผู้อื่น</td><td style="padding:12px 14px">anti-craving · บสต. · ติดตามหลังบำบัด</td></tr>
+            <tr style="border-bottom:1px solid #efe9dd"><td style="padding:12px 14px;font-weight:600"><span style="color:#6d5a86">🛡 Bullying</span></td><td style="padding:12px 14px">กลัวมาโรงเรียน บาดเจ็บ เงียบ ถอนตัว</td><td style="padding:12px 14px">รับฟัง · สืบ 2 ฝ่าย · Assertiveness · Buddy</td><td style="padding:12px 14px">บาดเจ็บกาย · ข้อ 9 pos · cyber รุนแรง</td><td style="padding:12px 14px">ประเมิน PTSD · จิตบำบัดทั้ง 2 ฝ่าย</td></tr>
+            <tr style="border-bottom:1px solid #efe9dd;background:#fbf8f1"><td style="padding:12px 14px;font-weight:600"><span style="color:#5a8f6a">💚 ซึมเศร้า</span></td><td style="padding:12px 14px">เศร้า &gt;2 สัปดาห์ แยกตัว พูดถึงการตาย</td><td style="padding:12px 14px">PHQ-A · BA ชวนทำกิจกรรม · รับฟัง</td><td style="padding:12px 14px"><b>PHQ-A ≥10 · ข้อ 9 pos (ทันที)</b></td><td style="padding:12px 14px">8Q · CBT/BA · ยา · Safety Plan</td></tr>
+            <tr><td style="padding:12px 14px;font-weight:600"><span style="color:#45707e">🩹 NSSI</span></td><td style="padding:12px 14px">รอยซ่อนเร้น ใส่แขนยาว แยกตัว ลงโทษตัวเอง</td><td style="padding:12px 14px">รับฟังด้วยใจ · ประเมิน safety · บทสนทนา 5 ขั้น</td><td style="padding:12px 14px"><b>บาดแผลลึก · ข้อ 9 pos · ความถี่เพิ่ม</b></td><td style="padding:12px 14px">CBT/DBT · ฝึกทักษะทดแทน · 1323</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="font-size:12.5px;color:#9b9079;margin-top:10px">เครือข่ายชุมชน (อสม./ผู้นำชุมชน/รพ.สต./ทีมเพื่อนสนิท) ทำงานคู่ขนานทุกแถว — เฝ้าระวัง เยี่ยมบ้าน รับ-ส่ง รพ. และติดตามต่อเนื่อง</div>
+    </section>
+
+    <hr style="border:none;border-top:1px solid #e2d9c8;margin:54px 0">
+
+    <!-- ============ DISEASES (interactive) ============ -->
+    <section id="diseases" style="scroll-margin-top:24px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.16em;color:#b07a4f;text-transform:uppercase;margin-bottom:10px">04 — 7 กลุ่มโรคหลัก</div>
+      <h2 style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:30px;margin:0 0 6px">รายละเอียดรายโรค</h2>
+      <p style="font-size:15px;color:#5e564a;margin:0 0 20px">เลือกกลุ่มโรคเพื่อดูสัญญาณ สิ่งที่ครูทำได้ เกณฑ์ส่งต่อ และสิ่งที่โรงพยาบาลทำเพิ่ม</p>
+
+      <div class="tabrow" style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:24px">
+        <sc-for list="{{ tabs }}" as="tab" hint-placeholder-count="7">
+          <button onClick="{{ tab.onClick }}" style="display:flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;cursor:pointer;font-size:15px;font-family:'Sarabun',sans-serif;border:1.5px solid {{ tab.bd }};background:{{ tab.bg }};color:{{ tab.fg }};font-weight:{{ tab.fw }}">
+            <span>{{ tab.emoji }}</span>{{ tab.name }}
+          </button>
+        </sc-for>
+      </div>
+
+      <div style="background:#fffdf9;border:1px solid #e6ddcc;border-radius:14px;padding:26px 28px;border-top:5px solid {{ accent }}">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px">
+          <span style="font-size:30px">{{ emoji }}</span>
+          <div>
+            <h3 style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:23px;margin:0">{{ name }}</h3>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:#9b9079">{{ en }}</div>
+          </div>
+        </div>
+
+        <div class="rg" style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px">
+          <div style="background:#f7f4ec;border-radius:11px;padding:16px 18px">
+            <div style="font-size:13px;font-weight:700;color:#6f665a;margin-bottom:8px">🔍 สัญญาณที่ครูควรสังเกต</div>
+            <ul style="margin:0;padding-left:18px;font-size:14.5px;line-height:1.7;color:#4a4337">
+              <sc-for list="{{ signs }}" as="s" hint-placeholder-count="2"><li>{{ s }}</li></sc-for>
+            </ul>
+          </div>
+          <div style="background:#eef4ef;border-radius:11px;padding:16px 18px">
+            <div style="font-size:13px;font-weight:700;color:#3f8079;margin-bottom:8px">🟢 ครู (ที่ปรึกษา/แนะแนว) ทำได้เลย</div>
+            <ul style="margin:0;padding-left:18px;font-size:14.5px;line-height:1.7;color:#3f4d44">
+              <sc-for list="{{ teacher }}" as="t" hint-placeholder-count="6"><li>{{ t }}</li></sc-for>
+            </ul>
+          </div>
+          <div style="background:#fbeee9;border-radius:11px;padding:16px 18px">
+            <div style="font-size:13px;font-weight:700;color:#b04a3a;margin-bottom:8px">⚡ ส่งต่อ รพ. เมื่อ</div>
+            <ul style="margin:0;padding-left:18px;font-size:14.5px;line-height:1.7;color:#7a4035">
+              <sc-for list="{{ refer }}" as="r" hint-placeholder-count="5"><li>{{ r }}</li></sc-for>
+            </ul>
+          </div>
+          <div style="background:#ececf3;border-radius:11px;padding:16px 18px">
+            <div style="font-size:13px;font-weight:700;color:#5b6aa0;margin-bottom:8px">🏥 โรงพยาบาลทำเพิ่มเติม</div>
+            <ul style="margin:0;padding-left:18px;font-size:14.5px;line-height:1.7;color:#454368">
+              <sc-for list="{{ hospital }}" as="h" hint-placeholder-count="5"><li>{{ h }}</li></sc-for>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- NEET placeholder -->
+      <div style="margin-top:16px;border:1.5px dashed #cdbfa6;border-radius:12px;padding:18px 22px;background:#f7f3ea;display:flex;gap:14px;align-items:center">
+        <span style="font-size:24px;opacity:.5">🧭</span>
+        <div>
+          <div style="font-family:'Noto Serif Thai',serif;font-weight:600;font-size:16px;color:#7a7060">NEET — เยาวชนที่ไม่ได้เรียน ไม่ได้ทำงาน ไม่ได้ฝึกอบรม</div>
+          <div style="font-size:13.5px;color:#9b9079;margin-top:2px">กลุ่มที่กำลังมาในโลกจริง · <b>กำลังจัดทำข้อมูล</b> จะเพิ่มในเวอร์ชันถัดไป</div>
+        </div>
+      </div>
+    </section>
+
+    <hr style="border:none;border-top:1px solid #e2d9c8;margin:54px 0">
+
+    <!-- ============ NSSI DEEP DIVE ============ -->
+    <section id="nssi" style="scroll-margin-top:24px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.16em;color:#3a6675;text-transform:uppercase;margin-bottom:10px">★ เจาะลึก</div>
+      <h2 style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:30px;margin:0 0 6px">NSSI — การทำร้ายตัวเองโดยไม่มีเจตนาฆ่าตัวตาย</h2>
+      <p style="font-size:15px;color:#5e564a;margin:0 0 22px;max-width:780px">Non-Suicidal Self-Injury · เรียบเรียงจากสื่อสถาบันสุขภาพเด็กแห่งชาติมหาราชินี กรมการแพทย์</p>
+
+      <!-- definition -->
+      <div class="rg" style="display:grid;grid-template-columns:1.3fr 1fr;gap:16px;margin-bottom:18px">
+        <div style="background:#e7eff2;border:1px solid #cddee5;border-radius:13px;padding:22px 24px">
+          <div style="font-size:13px;font-weight:700;color:#3a6675;margin-bottom:8px;font-family:'IBM Plex Mono',monospace">NSSI คืออะไร</div>
+          <div style="font-family:'Noto Serif Thai',serif;font-size:19px;line-height:1.5;color:#2c3e44">การทำร้ายร่างกายตนเองโดยตั้งใจ <span style="color:#3a6675;font-weight:700">โดยไม่มีเจตนาฆ่าตัวตาย</span> มักเป็นการจัดการกับความเจ็บปวดทางอารมณ์ที่ทนไม่ได้</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="background:#fffdf9;border:1px solid #e6ddcc;border-radius:11px;padding:13px 16px"><b style="color:#45707e">รูปแบบ</b><span style="color:#4a4337;font-size:14px"> · กรีด เผา กัด ตี ดึงผม รอยช้ำ</span></div>
+          <div style="background:#fffdf9;border:1px solid #e6ddcc;border-radius:11px;padding:13px 16px"><b style="color:#45707e">พื้นที่ซ่อนเร้น</b><span style="color:#4a4337;font-size:14px"> · แขน ต้นขา หน้าท้อง</span></div>
+          <div style="background:#fffdf9;border:1px solid #e6ddcc;border-radius:11px;padding:13px 16px"><b style="color:#45707e">อุบัติการณ์</b><span style="color:#4a4337;font-size:14px"> · 17–25% ในวัยรุ่น · ไทยพบมากใน ม.ต้น–ม.ปลาย</span></div>
+        </div>
+      </div>
+
+      <!-- iceberg: why -->
+      <div style="background:#fffdf9;border:1px solid #e6ddcc;border-radius:13px;padding:24px 26px;margin-bottom:18px">
+        <h3 style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:20px;margin:0 0 4px">ทำไมเด็กถึงทำ NSSI — ฟังก์ชันทางจิตใจ</h3>
+        <p style="font-size:14px;color:#7a7060;margin:0 0 16px">สิ่งที่มองเห็น (แผล รอยช้ำ) เป็นเพียง 20% เหนือผิวน้ำ ใต้ภูเขาน้ำแข็งคือเหตุผลที่แท้จริง</p>
+        <div style="display:flex;flex-direction:column;gap:0;border-radius:10px;overflow:hidden">
+          <div style="background:#eef4f7;padding:11px 18px;font-size:13px;color:#5d7a86;display:flex;justify-content:space-between;border-bottom:2px dashed #b9d2dc"><span>🧊 การกระทำที่มองเห็น — แผล รอยช้ำ</span><span style="font-family:'IBM Plex Mono',monospace">20% ผิวน้ำ</span></div>
+          <div style="background:#cfe0ec;padding:15px 18px;color:#2c3e44"><b>Zone 1 · ระบาย/หยุดความเจ็บปวดทางอารมณ์</b><div style="font-size:13.5px;color:#41606c">“ต้องการให้ความเจ็บปวดข้างในออกมา”</div></div>
+          <div style="background:#a9c8db;padding:15px 18px;color:#21353d"><b>Zone 2 · ลงโทษตัวเอง</b><div style="font-size:13.5px;color:#33505b">“รู้สึกว่าตัวเองไม่ดีพอ สมควรเจ็บ”</div></div>
+          <div style="background:#7da7bf;padding:15px 18px;color:#fff"><b>Zone 3 · รู้สึกว่าตัวเองยังมีตัวตน (Anti-dissociation)</b><div style="font-size:13.5px;color:#e6f0f5">‘เจ็บจริง → ฉันยังมีอยู่จริง’</div></div>
+          <div style="background:#557d96;padding:15px 18px;color:#fff"><b>Zone 4 · ขอความช่วยเหลือโดยไม่ต้องพูด</b><div style="font-size:13.5px;color:#dce8ef">‘ไม่รู้จะบอกใครยังไง’</div></div>
+        </div>
+        <div style="margin-top:14px;background:#eef4ef;border-radius:9px;padding:12px 16px;font-size:14px;color:#3f6b5e">💡 NSSI คือกลยุทธ์รับมือที่ได้ผลในระยะสั้น — <b>งานของเราคือช่วยเด็กหา ‘กลยุทธ์ที่ดีกว่า’</b></div>
+      </div>
+
+      <!-- misconceptions -->
+      <div style="background:#fffdf9;border:1px solid #e6ddcc;border-radius:13px;padding:24px 26px;margin-bottom:18px">
+        <h3 style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:20px;margin:0 0 16px">ความเข้าใจผิด → มุมมองใหม่</h3>
+        <div style="display:flex;gap:20px;align-items:center;flex-wrap:wrap">
+          <div style="flex:1;min-width:200px;display:flex;flex-direction:column;gap:8px">
+            <div style="background:#fbeae6;color:#b04a3a;border-radius:8px;padding:9px 14px;font-size:14.5px;text-decoration:line-through">“มันแค่เรียกร้องความสนใจ”</div>
+            <div style="background:#fbeae6;color:#b04a3a;border-radius:8px;padding:9px 14px;font-size:14.5px;text-decoration:line-through">“มันแค่ต้องการควบคุมคนอื่น”</div>
+            <div style="background:#fbeae6;color:#b04a3a;border-radius:8px;padding:9px 14px;font-size:14.5px;text-decoration:line-through">“แค่หยุดทำก็จบ”</div>
+          </div>
+          <div style="font-size:26px;color:#b9a06a;flex:none">→</div>
+          <div style="flex:1.2;min-width:240px;background:#eef4ef;border:1px solid #cfe0d6;border-radius:11px;padding:18px 20px">
+            <div style="font-family:'Noto Serif Thai',serif;font-weight:600;font-size:18px;color:#2f6b5c;line-height:1.45">“เด็กขาดทักษะในการสื่อสารความทุกข์และความต้องการ”</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
+              <span style="background:#fff;border:1px solid #cfe0d6;color:#3f6b5e;border-radius:999px;padding:5px 13px;font-size:13.5px">การสื่อสาร</span>
+              <span style="background:#fff;border:1px solid #cfe0d6;color:#3f6b5e;border-radius:999px;padding:5px 13px;font-size:13.5px">ความต้องการที่ไม่ได้รับการตอบสนอง</span>
+              <span style="background:#fff;border:1px solid #cfe0d6;color:#3f6b5e;border-radius:999px;padding:5px 13px;font-size:13.5px">เปิดใช้ทรัพยากรช่วยเหลือ</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5-step conversation -->
+      <div style="background:#fffdf9;border:1px solid #e6ddcc;border-radius:13px;padding:24px 26px;margin-bottom:18px">
+        <h3 style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:20px;margin:0 0 4px">บทสนทนา 5 ขั้น — เมื่อครูพบเด็กทำ NSSI</h3>
+        <p style="font-size:14px;color:#7a7060;margin:0 0 16px">รับฟังด้วยใจก่อน อย่ารีบแก้ปัญหา · การถามตรงเรื่องความคิดทำร้ายตัวเอง <b>ไม่ได้</b>ทำให้เด็กเกิดความคิดฆ่าตัวตาย</p>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;gap:14px;align-items:flex-start"><div style="flex:none;width:118px;background:#34576b;color:#fff;border-radius:8px;padding:9px 12px;font-size:13.5px;font-weight:600">1 · เปิดบทสนทนา</div><div style="flex:1"><div style="background:#eef4ef;border-radius:8px;padding:9px 14px;font-size:14.5px;color:#2f4a44">“ครูสังเกตเห็นบางอย่าง และห่วงหนู อยากให้เราได้คุยกันได้ไหม?”</div><div style="font-size:12.5px;color:#9b9079;margin-top:3px">ไม่บังคับ ไม่ตัดสิน ให้เด็กได้เลือก (Choice)</div></div></div>
+          <div style="display:flex;gap:14px;align-items:flex-start"><div style="flex:none;width:118px;background:#34576b;color:#fff;border-radius:8px;padding:9px 12px;font-size:13.5px;font-weight:600">2 · ถามตรงแต่เบาๆ</div><div style="flex:1"><div style="background:#eef4ef;border-radius:8px;padding:9px 14px;font-size:14.5px;color:#2f4a44">“รอยที่แขนเป็นมาได้ยังไง? ครูอยากเข้าใจ”</div><div style="font-size:12.5px;color:#9b9079;margin-top:3px">รอคำตอบ ยอมรับความเงียบ (Silence) ได้</div></div></div>
+          <div style="display:flex;gap:14px;align-items:flex-start"><div style="flex:none;width:118px;background:#34576b;color:#fff;border-radius:8px;padding:9px 12px;font-size:13.5px;font-weight:600">3 · ฟังและ Validate</div><div style="flex:1"><div style="background:#eef4ef;border-radius:8px;padding:9px 14px;font-size:14.5px;color:#2f4a44">“ฟังดูเหมือนหนูแบกรับอะไรหนักมาก ขอบคุณที่เล่าให้ครูฟัง”</div><div style="font-size:12.5px;color:#9b9079;margin-top:3px">อย่าเพิ่งรีบแก้ปัญหา</div></div></div>
+          <div style="display:flex;gap:14px;align-items:flex-start"><div style="flex:none;width:118px;background:#b04a3a;color:#fff;border-radius:8px;padding:9px 12px;font-size:13.5px;font-weight:600">4 · ตรวจสอบ Safety</div><div style="flex:1"><div style="background:#fbeee9;border-radius:8px;padding:9px 14px;font-size:14.5px;color:#7a4035">“ครูต้องถามตรงๆ นะ — หนูมีความคิดอยากทำร้ายตัวเองให้รุนแรงขึ้น หรืออยากตายไหม?”</div><div style="font-size:12.5px;color:#b58a7f;margin-top:3px">การถามตรงไม่ได้ทำให้เกิดความคิดฆ่าตัวตาย</div></div></div>
+          <div style="display:flex;gap:14px;align-items:flex-start"><div style="flex:none;width:118px;background:#34576b;color:#fff;border-radius:8px;padding:9px 12px;font-size:13.5px;font-weight:600">5 · วางแผนร่วมกัน</div><div style="flex:1"><div style="background:#eef4ef;border-radius:8px;padding:9px 14px;font-size:14.5px;color:#2f4a44">“ครูอยากให้เราไปคุยกับ [ครูแนะแนว/คุณหมอ] ด้วยกัน หนูโอเคไหม?”</div><div style="font-size:12.5px;color:#9b9079;margin-top:3px">ให้เด็กรู้สึกว่าควบคุมสถานการณ์ได้</div></div></div>
+        </div>
+      </div>
+
+      <!-- patient worksheets -->
+      <h3 style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:20px;margin:0 0 4px">ใบงานสำหรับนักเรียน — เครื่องมือดูแลตัวเอง</h3>
+      <p style="font-size:14px;color:#7a7060;margin:0 0 16px">พิมพ์แจกเด็กได้ · ใช้ร่วมกับ Safety Planning ของครูและนักจิตวิทยา</p>
+      <div class="rg" style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <!-- safety plan -->
+        <div style="background:#fffdf9;border:1px solid #e6ddcc;border-radius:13px;padding:20px 22px">
+          <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:17px;margin-bottom:12px">📋 แผนความปลอดภัยส่วนตัว (My Safety Plan)</div>
+          <div style="display:flex;flex-direction:column;gap:9px">
+            <div style="background:#dde8f1;border-radius:8px;padding:11px 14px"><b style="font-size:14px">1. สัญญาณเตือนของฉัน</b><div style="font-size:12.5px;color:#5b6a78">สิ่งที่ทำให้รู้สึกเสี่ยง: ______________</div></div>
+            <div style="background:#f6e9c9;border-radius:8px;padding:11px 14px"><b style="font-size:14px">2. สิ่งที่ฉันทำได้ด้วยตัวเอง</b><div style="font-size:12.5px;color:#7a6a45">ฟังเพลง วิ่ง หายใจ เขียนบันทึก: ______</div></div>
+            <div style="background:#d8e8d4;border-radius:8px;padding:11px 14px"><b style="font-size:14px">3. คนที่ฉันขอความช่วยเหลือได้</b><div style="font-size:12.5px;color:#52684e">ชื่อ: __________ เบอร์: __________</div></div>
+            <div style="background:#e6dcec;border-radius:8px;padding:11px 14px"><b style="font-size:14px">4. สายด่วนฉุกเฉิน</b><div style="font-size:12.5px;color:#695a75">สุขภาพจิต 1323 · ฉุกเฉิน 1669</div></div>
+          </div>
+        </div>
+        <!-- support network + thermometer -->
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div style="background:#fffdf9;border:1px solid #e6ddcc;border-radius:13px;padding:20px 22px">
+            <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:17px;margin-bottom:10px">🧭 แผนที่ระบบสนับสนุนของฉัน</div>
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13.5px">
+              <span style="background:#bcd3e6;border-radius:999px;padding:5px 12px">ตัวฉัน</span><span style="color:#b9a06a">›</span>
+              <span style="background:#cfe0d6;border-radius:999px;padding:5px 12px">ครอบครัว · เพื่อนที่ไว้ใจ</span><span style="color:#b9a06a">›</span>
+              <span style="background:#f6e9c9;border-radius:999px;padding:5px 12px">ครู · หมอ/นักจิตวิทยา</span><span style="color:#b9a06a">›</span>
+              <span style="background:#e6dcec;border-radius:999px;padding:5px 12px">สายด่วน 1323</span>
+            </div>
+          </div>
+          <div style="background:#fffdf9;border:1px solid #e6ddcc;border-radius:13px;padding:20px 22px">
+            <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:17px;margin-bottom:10px">🌡 เครื่องวัดอารมณ์และแผนรับมือ</div>
+            <div style="display:flex;flex-direction:column;gap:6px;font-size:13px">
+              <div style="display:flex;gap:10px;align-items:center"><span style="flex:none;width:62px;text-align:center;background:#d98b80;color:#fff;border-radius:6px;padding:4px 0;font-weight:600">10 SOS</span><span style="color:#4a4337">โทรหาผู้ใหญ่ที่ไว้ใจ · สายด่วน 1323</span></div>
+              <div style="display:flex;gap:10px;align-items:center"><span style="flex:none;width:62px;text-align:center;background:#e0a87f;color:#fff;border-radius:6px;padding:4px 0;font-weight:600">8–9</span><span style="color:#4a4337">ออกจากสถานการณ์ · หายใจ 4-4-4 · โทรหาเพื่อน</span></div>
+              <div style="display:flex;gap:10px;align-items:center"><span style="flex:none;width:62px;text-align:center;background:#e6c987;color:#7a5e20;border-radius:6px;padding:4px 0;font-weight:600">6–7</span><span style="color:#4a4337">เดิน 10 นาที · ฟังเพลง · เขียนความรู้สึก</span></div>
+              <div style="display:flex;gap:10px;align-items:center"><span style="flex:none;width:62px;text-align:center;background:#bcd0a0;color:#46582f;border-radius:6px;padding:4px 0;font-weight:600">4–5</span><span style="color:#4a4337">หายใจลึก · ดื่มน้ำ · คุยกับเพื่อน</span></div>
+              <div style="display:flex;gap:10px;align-items:center"><span style="flex:none;width:62px;text-align:center;background:#a7c7a0;color:#3c5436;border-radius:6px;padding:4px 0;font-weight:600">1–3</span><span style="color:#4a4337">ทำกิจกรรมที่ชอบ · ดูแลตัวเองต่อไป</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- grounding techniques -->
+      <div class="rg" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px">
+        <div style="background:#e7eff2;border:1px solid #cddee5;border-radius:13px;padding:20px 22px">
+          <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:16px;color:#2f5662;margin-bottom:6px">หายใจแบบกล่อง (Box Breathing)</div>
+          <div style="font-size:13px;color:#5d7a86;margin-bottom:8px">เมื่อ: ตื่นตระหนก (Panic) · กังวลเฉียบพลัน · อาการทางกาย</div>
+          <div style="font-size:14.5px;color:#2c3e44;line-height:1.6">หายใจเข้า 4 วิ → กลั้น 4 วิ → ออก 4 วิ → กลั้น 4 วิ <b>(ทำซ้ำ 4 รอบ)</b></div>
+        </div>
+        <div style="background:#e7eff2;border:1px solid #cddee5;border-radius:13px;padding:20px 22px">
+          <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:16px;color:#2f5662;margin-bottom:6px">5-4-3-2-1 Grounding</div>
+          <div style="font-size:13px;color:#5d7a86;margin-bottom:8px">เมื่อ: ความคิดหลุดลอย · วิตกกังวลรุนแรง</div>
+          <div style="font-size:14.5px;color:#2c3e44;line-height:1.6">มองเห็น 5 · ได้ยิน 4 · สัมผัส 3 · ได้กลิ่น 2 · ลิ้มรส 1 <b>(ดึงสติกลับสู่ปัจจุบัน)</b></div>
+        </div>
+      </div>
+    </section>
+
+    <hr style="border:none;border-top:1px solid #e2d9c8;margin:54px 0">
+
+    <!-- ============ TECHNIQUES ============ -->
+    <section id="techniques" style="scroll-margin-top:24px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.16em;color:#b07a4f;text-transform:uppercase;margin-bottom:10px">05 — เทคนิคช่วยเหลือ</div>
+      <h2 style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:30px;margin:0 0 6px">6 เทคนิคหลัก — ครูทำได้ vs รพ.ทำเพิ่ม</h2>
+      <p style="font-size:15px;color:#5e564a;margin:0 0 22px">เทคนิคเดียวกันใช้ได้ทั้งครูและโรงพยาบาล ต่างกันที่ความลึก</p>
+
+      <div class="rg" style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div style="background:#fffdf9;border:1px solid #e6ddcc;border-radius:12px;padding:20px 22px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:18px">ABA <span style="font-size:14px;color:#8a7f6c;font-weight:500">(A-B-C)</span></div><span style="font-size:11.5px;background:#e9f0e6;color:#5a7553;padding:3px 9px;border-radius:999px;font-weight:600">ครูทำได้ + รพ.ทำเพิ่ม</span></div>
+          <div style="font-size:14px;color:#4a4337;line-height:1.65">ครู: สังเกต+บันทึกพฤติกรรมให้ชัด → วิเคราะห์ <b>A</b> สิ่งกระตุ้น · <b>B</b> พฤติกรรม · <b>C</b> ผลตามมา → ปรับ Antecedent (เตือน/วางข้อตกลงล่วงหน้า) · ปรับ Consequences (เพิกเฉยเรื่องเล็ก ชมทันทีเมื่อทำดี)</div>
+          <div style="font-size:13px;color:#7a7060;margin-top:8px;border-top:1px dashed #e6ddcc;padding-top:8px">รพ.: ออกแบบ BIP/FBA เชิงลึก + PMT กับผู้ปกครอง</div>
+        </div>
+
+        <div style="background:#fffdf9;border:1px solid #e6ddcc;border-radius:12px;padding:20px 22px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:18px">Triple-P</div><span style="font-size:11.5px;background:#e9f0e6;color:#5a7553;padding:3px 9px;border-radius:999px;font-weight:600">ครูทำได้ + รพ.ทำเพิ่ม</span></div>
+          <div style="font-size:14px;color:#4a4337;line-height:1.65">ครูสอนผู้ปกครอง 6 เทคนิค: สร้างสัมพันธ์ · ชมทันที · Ask-Say-Do · กฎชัดเจน+Quiet time · วางแผนล่วงหน้า · เพิ่มความมั่นใจเด็ก</div>
+          <div style="font-size:13px;color:#7a7060;margin-top:8px;border-top:1px dashed #e6ddcc;padding-top:8px">รพ.: PMT เชิงลึก 8–12 ครั้ง + Group Triple-P</div>
+        </div>
+
+        <div style="background:#fffdf9;border:1px solid #e6ddcc;border-radius:12px;padding:20px 22px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:18px">Motivational Interview <span style="font-size:14px;color:#8a7f6c;font-weight:500">(MI)</span></div><span style="font-size:11.5px;background:#e9f0e6;color:#5a7553;padding:3px 9px;border-radius:999px;font-weight:600">ครูทำได้ + รพ.ทำเพิ่ม</span></div>
+          <div style="font-size:14px;color:#4a4337;line-height:1.65">ครูใช้ <b>OARS</b>: คำถามปลายเปิด (Open) · รับรองจุดดี (Affirm) · สะท้อนความรู้สึก (Reflect) · สรุปความ (Summarize) — ฟังก่อน ไม่ตัดสิน</div>
+          <div style="font-size:13px;color:#7a7060;margin-top:8px;border-top:1px dashed #e6ddcc;padding-top:8px">รพ.: ประเมิน Stage of Change + MI เต็มรูปแบบ (ใช้กับติดเกม/ยาเสพติด)</div>
+        </div>
+
+        <div style="background:#fffdf9;border:1px solid #e6ddcc;border-radius:12px;padding:20px 22px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:18px">Behavioral Activation <span style="font-size:14px;color:#8a7f6c;font-weight:500">(BA)</span></div><span style="font-size:11.5px;background:#e9f0e6;color:#5a7553;padding:3px 9px;border-radius:999px;font-weight:600">ครูทำได้ + รพ.ทำเพิ่ม</span></div>
+          <div style="font-size:14px;color:#4a4337;line-height:1.65">ครู: อธิบายวงจรซึมเศร้า → ให้เด็กจดกิจกรรมประจำวัน → ให้คะแนน Pleasure/Mastery (0–10) → วางแผนเพิ่มกิจกรรมที่มีความหมาย เริ่มเล็ก ทำได้จริง</div>
+          <div style="font-size:13px;color:#7a7060;margin-top:8px;border-top:1px dashed #e6ddcc;padding-top:8px">รพ.: BA เป็นส่วนหนึ่งของ CBT + Activity Scheduling เชิงลึก</div>
+        </div>
+
+        <div style="background:#fffdf9;border:1px solid #e6ddcc;border-radius:12px;padding:20px 22px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:18px">CBT</div><span style="font-size:11.5px;background:#fbeee9;color:#b04a3a;padding:3px 9px;border-radius:999px;font-weight:600">รพ. เป็นหลัก</span></div>
+          <div style="font-size:14px;color:#4a4337;line-height:1.65">สามเหลี่ยม <b>ความคิด → อารมณ์ → พฤติกรรม</b> · Thought Record · Cognitive Restructuring · Behavioral Experiment</div>
+          <div style="font-size:13px;color:#7a7060;margin-top:8px;border-top:1px dashed #e6ddcc;padding-top:8px">ครูทำได้: อธิบายสามเหลี่ยม + ช่วยเด็กจดความคิดและอารมณ์</div>
+        </div>
+
+        <div style="background:#fffdf9;border:1px solid #e6ddcc;border-radius:12px;padding:20px 22px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:18px">Safety Planning</div><span style="font-size:11.5px;background:#fbeee9;color:#b04a3a;padding:3px 9px;border-radius:999px;font-weight:600">รพ. เป็นหลัก</span></div>
+          <div style="font-size:14px;color:#4a4337;line-height:1.65">ครูเมื่อพบ SI: <b>ไม่ทิ้งเด็กไว้คนเดียว</b> · รับฟังอย่างสงบ · ประเมินความเสี่ยงเบื้องต้น · แจ้ง รพ.ทันที · แจ้งผู้ปกครอง</div>
+          <div style="font-size:13px;color:#7a7060;margin-top:8px;border-top:1px dashed #e6ddcc;padding-top:8px">รพ.: Safety Plan 6 ขั้น (Stanley &amp; Brown)</div>
+        </div>
+      </div>
+    </section>
+
+    <hr style="border:none;border-top:1px solid #e2d9c8;margin:54px 0">
+
+    <!-- ============ CHIANG SAEN MODEL ============ -->
+    <section id="chiangsaen" style="scroll-margin-top:24px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.16em;color:#2f6b62;text-transform:uppercase;margin-bottom:10px">CS — เชียงแสนโมเดล</div>
+      <h2 style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:30px;margin:0 0 6px">Systematic Empathy — ทำให้ “ความห่วงใย” กลายเป็นกระบวนการที่ตรวจสอบได้</h2>
+      <p style="font-size:15.5px;color:#5e564a;max-width:840px;margin:0 0 22px">โมเดลโรงเรียนเชียงแสนวิทยาคม ไม่ใช่กิจกรรมเสริม แต่เป็น <b>ระบบปฏิบัติการของโรงเรียน</b> ในการดูแลเด็กกลุ่มเปราะบางอย่างต่อเนื่อง หัวใจคือ ไม่ปล่อยให้เด็กต้อง “พิสูจน์ว่าหนักพอ” ก่อนจึงได้รับความช่วยเหลือ — แต่สร้างระบบให้ผู้ใหญ่เห็นและพยุงได้ตั้งแต่ต้น</p>
+
+      <!-- 3 principles -->
+      <div class="rg" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:16px">
+        <div style="background:#fffdf9;border:1px solid #e6ddcc;border-top:4px solid #708a6b;border-radius:12px;padding:20px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#708a6b;margin-bottom:6px">หลักการ 01</div>
+          <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:18px;margin-bottom:6px">นโยบายคู่ขนาน</div>
+          <div style="font-size:14px;color:#4a4337;line-height:1.6">งานสอนเดินคู่กับงานระบบดูแล ไม่ให้เด็กหลุดจากเรดาร์</div>
+        </div>
+        <div style="background:#fffdf9;border:1px solid #e6ddcc;border-top:4px solid #3f8079;border-radius:12px;padding:20px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#3f8079;margin-bottom:6px">หลักการ 02</div>
+          <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:18px;margin-bottom:6px">เข้าถึงแบบไม่ตีตรา</div>
+          <div style="font-size:14px;color:#4a4337;line-height:1.6">ใช้เพื่อนสนิท ความลับ และพื้นที่ปลอดภัยเป็นฐาน</div>
+        </div>
+        <div style="background:#fffdf9;border:1px solid #e6ddcc;border-top:4px solid #43688f;border-radius:12px;padding:20px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#43688f;margin-bottom:6px">หลักการ 03</div>
+          <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:18px;margin-bottom:6px">เชื่อมต่อหลายระดับ</div>
+          <div style="font-size:14px;color:#4a4337;line-height:1.6">โรงเรียน–บ้าน–สาธารณสุข–สพม./จังหวัด ทำงานเป็นระบบเดียว</div>
+        </div>
+      </div>
+
+      <!-- student at center -->
+      <div style="background:#eef3ef;border:1px solid #d6e2da;border-radius:12px;padding:18px 22px;margin-bottom:28px;display:flex;gap:18px;align-items:center;flex-wrap:wrap">
+        <div style="flex:none;text-align:center;background:#2f6b62;color:#fff;border-radius:12px;padding:13px 22px">
+          <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:18px">นักเรียน</div>
+          <div style="font-size:11.5px;opacity:.85;letter-spacing:.03em">เป็นศูนย์กลาง</div>
+        </div>
+        <div style="font-size:22px;color:#9fb8ae;flex:none">←</div>
+        <div style="display:flex;gap:9px;flex-wrap:wrap;flex:1;min-width:260px">
+          <span style="background:#fff;border:1px solid #cfe0d6;color:#3f6b5e;border-radius:999px;padding:7px 15px;font-size:14px;font-weight:600">ครู</span>
+          <span style="background:#fff;border:1px solid #cfe0d6;color:#3f6b5e;border-radius:999px;padding:7px 15px;font-size:14px;font-weight:600">เพื่อน</span>
+          <span style="background:#fff;border:1px solid #cfe0d6;color:#3f6b5e;border-radius:999px;padding:7px 15px;font-size:14px;font-weight:600">ครอบครัว</span>
+          <span style="background:#fff;border:1px solid #cfe0d6;color:#3f6b5e;border-radius:999px;padding:7px 15px;font-size:14px;font-weight:600">รพ. / สธ.</span>
+          <span style="background:#fff;border:1px solid #cfe0d6;color:#3f6b5e;border-radius:999px;padding:7px 15px;font-size:14px;font-weight:600">สพม. / จังหวัด</span>
+        </div>
+      </div>
+
+      <!-- 6-step process -->
+      <h3 style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:21px;margin:0 0 4px">กระบวนการ 6 ขั้น — จาก “สัญญาณเสี่ยง” สู่ “การช่วยเหลือที่ไม่หลุดรอด”</h3>
+      <p style="font-size:14px;color:#7a7060;margin:0 0 16px">ใช้ข้อมูล + ความสัมพันธ์ + เครือข่าย → ลดการหลุดรอด · ลดการตีตรา · เพิ่มการเข้าถึง</p>
+      <div class="rg2" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:28px">
+        <div style="background:#fffdf9;border:1px solid #e6ddcc;border-radius:12px;padding:17px 19px">
+          <div style="display:flex;align-items:baseline;gap:9px;margin-bottom:7px"><span style="font-family:'IBM Plex Mono',monospace;font-size:19px;color:#708a6b">01</span><span style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:16.5px">สังเกต / รับสัญญาณ</span></div>
+          <div style="font-size:13px;color:#2f6b62;font-weight:600;margin-bottom:3px">ครู / เพื่อน / ข้อมูล</div>
+          <div style="font-size:13.5px;color:#5e564a;line-height:1.55">เห็นเด็กเปลี่ยนไป</div>
+        </div>
+        <div style="background:#fffdf9;border:1px solid #e6ddcc;border-radius:12px;padding:17px 19px">
+          <div style="display:flex;align-items:baseline;gap:9px;margin-bottom:7px"><span style="font-family:'IBM Plex Mono',monospace;font-size:19px;color:#3f8079">02</span><span style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:16.5px">คัดเลือกกลุ่มเป้าหมาย</span></div>
+          <div style="font-size:13px;color:#2f6b62;font-weight:600;margin-bottom:3px">เจาะกลุ่มเสี่ยง</div>
+          <div style="font-size:13.5px;color:#5e564a;line-height:1.55">ไม่รอให้รุนแรง</div>
+        </div>
+        <div style="background:#fffdf9;border:1px solid #e6ddcc;border-radius:12px;padding:17px 19px">
+          <div style="display:flex;align-items:baseline;gap:9px;margin-bottom:7px"><span style="font-family:'IBM Plex Mono',monospace;font-size:19px;color:#45707e">03</span><span style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:16.5px">เพื่อนสนิทเป็นเกราะ</span></div>
+          <div style="font-size:13px;color:#2f6b62;font-weight:600;margin-bottom:3px">Close Friends Shield</div>
+          <div style="font-size:13.5px;color:#5e564a;line-height:1.55">ช่วยสื่อสาร–เฝ้าระวัง</div>
+        </div>
+        <div style="background:#fffdf9;border:1px solid #e6ddcc;border-radius:12px;padding:17px 19px">
+          <div style="display:flex;align-items:baseline;gap:9px;margin-bottom:7px"><span style="font-family:'IBM Plex Mono',monospace;font-size:19px;color:#43688f">04</span><span style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:16.5px">ความลับ Need-to-Know</span></div>
+          <div style="font-size:13px;color:#2f6b62;font-weight:600;margin-bottom:3px">ลดการตีตรา</div>
+          <div style="font-size:13.5px;color:#5e564a;line-height:1.55">คุ้มครองศักดิ์ศรีเด็ก</div>
+        </div>
+        <div style="background:#fffdf9;border:1px solid #e6ddcc;border-radius:12px;padding:17px 19px">
+          <div style="display:flex;align-items:baseline;gap:9px;margin-bottom:7px"><span style="font-family:'IBM Plex Mono',monospace;font-size:19px;color:#5b6aa0">05</span><span style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:16.5px">อุดรอยรั่ว · ครอบครัว</span></div>
+          <div style="font-size:13px;color:#2f6b62;font-weight:600;margin-bottom:3px">เชื่อมบ้าน–โรงเรียน–รพ.</div>
+          <div style="font-size:13.5px;color:#5e564a;line-height:1.55">เมื่อครอบครัวยังไม่พร้อม</div>
+        </div>
+        <div style="background:#fffdf9;border:1px solid #e6ddcc;border-radius:12px;padding:17px 19px">
+          <div style="display:flex;align-items:baseline;gap:9px;margin-bottom:7px"><span style="font-family:'IBM Plex Mono',monospace;font-size:19px;color:#b07a4f">06</span><span style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:16.5px">ส่งต่อและติดตาม</span></div>
+          <div style="font-size:13px;color:#2f6b62;font-weight:600;margin-bottom:3px">ประสาน สพม. / สธ.</div>
+          <div style="font-size:13.5px;color:#5e564a;line-height:1.55">ทบทวนต่อเนื่อง</div>
+        </div>
+      </div>
+
+      <!-- core teacher team -->
+      <h3 style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:21px;margin:0 0 4px">โครงสร้างทีมครู — ไม่ฝากภาระไว้กับ “คนดีคนเดียว”</h3>
+      <p style="font-size:14px;color:#7a7060;margin:0 0 16px">คัดเลือกครูแกนนำจาก “ความไว้วางใจของเด็ก” และ “ความพร้อมของระบบ” มากกว่าตำแหน่ง</p>
+      <div class="rg" style="display:grid;grid-template-columns:1.5fr 1fr;gap:16px;margin-bottom:28px">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="background:#f3f6f2;border:1px solid #dde7dc;border-radius:11px;padding:14px 18px">
+            <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:16px;color:#5e6e54">ทุกครู</div>
+            <div style="font-size:13.5px;color:#5e564a">เห็นสัญญาณและแจ้งระบบ</div>
+          </div>
+          <div style="background:#e3efed;border:1px solid #c8ded9;border-radius:11px;padding:14px 18px;margin:0 22px">
+            <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:16px;color:#2f6b62">ครูแกนนำ 3–5 คน</div>
+            <div style="font-size:13.5px;color:#456b63">คัดกรอง · ประคอง · ติดตามเบื้องต้น</div>
+          </div>
+          <div style="background:#34576b;color:#fff;border-radius:11px;padding:14px 18px;margin:0 44px">
+            <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:16px">ครูประสาน 1–2 คน</div>
+            <div style="font-size:13.5px;color:#dbe7ec">ส่งต่อ รพ./สธ./สพม. และปิดช่องว่าง</div>
+          </div>
+        </div>
+        <div style="background:#f6efe6;border:1px solid #e3d8c4;border-radius:12px;padding:18px 20px">
+          <div style="font-size:12px;font-weight:700;color:#b07a4f;font-family:'IBM Plex Mono',monospace;margin-bottom:8px">เกณฑ์ตัดสิน</div>
+          <div style="font-family:'Noto Serif Thai',serif;font-weight:600;font-size:16px;color:#2c2823;margin-bottom:12px">เด็กไว้ใจ + ครูพร้อม + ระบบรองรับ</div>
+          <div style="font-size:12.5px;color:#7a7060;margin-bottom:5px">เริ่มจากครูที่ “เห็นเด็ก” และเด็กกล้าเข้าหา</div>
+          <ul style="margin:0;padding-left:17px;font-size:13.5px;line-height:1.65;color:#4a4337">
+            <li>ครูแนะแนว / ครูที่ปรึกษา</li>
+            <li>ครูฝ่ายปกครองที่เด็กเข้าถึงได้</li>
+            <li>ครูประจำชั้น / ครูประจำกิจกรรม</li>
+            <li>ครูที่เด็กหรือเพื่อนกล้าเล่าให้ฟัง</li>
+          </ul>
+          <div style="margin-top:10px;font-size:12.5px;color:#8a5a30;border-top:1px dashed #e3d8c4;padding-top:8px">แยกบทบาท “ช่วยเหลือ” ออกจากบทบาท “ลงโทษ”</div>
+        </div>
+      </div>
+
+      <!-- outcomes -->
+      <h3 style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:21px;margin:0 0 16px">สิ่งที่ได้จากโมเดล</h3>
+      <div style="background:#fffdf9;border:1px solid #e6ddcc;border-radius:12px;padding:22px 24px">
+          <div style="font-size:12px;font-weight:700;color:#2f6b62;font-family:'IBM Plex Mono',monospace;margin-bottom:12px">ผลลัพธ์ที่เกิดขึ้นจริง</div>
+          <div class="rg2" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px">
+            <div style="background:#eef4ef;border-radius:10px;padding:13px 15px"><div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:15.5px;color:#3f8079;margin-bottom:3px">เห็นเร็ว</div><div style="font-size:13px;color:#4a4337;line-height:1.5">เด็กกลุ่มเปราะบางไม่ถูกมองข้าม</div></div>
+            <div style="background:#eef4ef;border-radius:10px;padding:13px 15px"><div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:15.5px;color:#3f8079;margin-bottom:3px">เข้าถึงจริง</div><div style="font-size:13px;color:#4a4337;line-height:1.5">มีผู้ใหญ่และเพื่อนช่วยพยุง</div></div>
+            <div style="background:#eef4ef;border-radius:10px;padding:13px 15px"><div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:15.5px;color:#3f8079;margin-bottom:3px">ส่งต่อได้</div><div style="font-size:13px;color:#4a4337;line-height:1.5">ไม่หลุดช่วงบ้าน–รพ.–โรงเรียน</div></div>
+            <div style="background:#eef4ef;border-radius:10px;padding:13px 15px"><div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:15.5px;color:#3f8079;margin-bottom:3px">เรียนรู้ซ้ำ</div><div style="font-size:13px;color:#4a4337;line-height:1.5">มีวงจรปรับระบบต่อเนื่อง</div></div>
+          </div>
+          <div style="font-size:12px;font-weight:700;color:#8a7f6c;margin-bottom:7px">องค์ประกอบที่ทำให้เป็นต้นแบบ</div>
+          <div style="display:flex;gap:7px;flex-wrap:wrap">
+            <span style="background:#eef4ef;color:#3f6b5e;border-radius:999px;padding:5px 12px;font-size:12.5px">Mindset · ลดการตีตรา</span>
+            <span style="background:#eef4ef;color:#3f6b5e;border-radius:999px;padding:5px 12px;font-size:12.5px">Operation · งานระบบชัด</span>
+            <span style="background:#eef4ef;color:#3f6b5e;border-radius:999px;padding:5px 12px;font-size:12.5px">Network · ร.ร.–สพม.–สธ.–ชุมชน</span>
+            <span style="background:#eef4ef;color:#3f6b5e;border-radius:999px;padding:5px 12px;font-size:12.5px">Continuity · พี่เลี้ยงรุ่นใหม่</span>
+          </div>
+        </div>
+    </section>
+
+    <hr style="border:none;border-top:1px solid #e2d9c8;margin:54px 0">
+
+    <!-- ============ COMMUNITY ============ -->
+    <section id="community" style="scroll-margin-top:24px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.16em;color:#b07a4f;text-transform:uppercase;margin-bottom:10px">06 — เครือข่ายชุมชน</div>
+      <h2 style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:30px;margin:0 0 6px">โอบอุ้มเด็กไว้ในระบบ — เชียงแสนวิทยาคมโมเดล</h2>
+      <p style="font-size:15px;color:#5e564a;max-width:780px;margin:0 0 22px">เมื่อก้าวพ้นรั้วโรงเรียน เครือข่ายชุมชนคือกลไกที่ทำให้เด็กไม่หลุดจากระบบ หัวใจคือ <b>เข้าถึงแบบแนบเนียน</b> เพื่อกันการตีตรา และ <b>รักษาความลับ</b> อย่างเคร่งครัด</p>
+
+      <div class="rg" style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:18px">
+        <div style="background:#fffdf9;border:1px solid #e6ddcc;border-left:4px solid #b07a4f;border-radius:12px;padding:20px 22px">
+          <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:18px;margin-bottom:8px">🧑‍⚕️ อสม. — อาสาสมัครสาธารณสุข</div>
+          <ul style="margin:0;padding-left:18px;font-size:14px;line-height:1.7;color:#4a4337">
+            <li>ร่วมทีมกับผู้นำชุมชนดูแลเด็กและครอบครัวถึงบ้าน</li>
+            <li>เยี่ยมแบบแนบเนียน — แบ่งปันเสื้อผ้า/อาหาร ทักทายตามปกติ</li>
+            <li>ทำความเข้าใจเรื่องความลับ <b>ก่อน</b> ลงพื้นที่</li>
+            <li>ประธาน อสม. กำหนดวิธีการ + ระบุข้อควรระวัง</li>
+          </ul>
+        </div>
+        <div style="background:#fffdf9;border:1px solid #e6ddcc;border-left:4px solid #b07a4f;border-radius:12px;padding:20px 22px">
+          <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:18px;margin-bottom:8px">🧑‍🤝‍🧑 ผู้นำชุมชน / ผู้ใหญ่บ้าน</div>
+          <ul style="margin:0;padding-left:18px;font-size:14px;line-height:1.7;color:#4a4337">
+            <li>เป็น “สะพานเชื่อม” ระหว่างโรงเรียนและบ้าน</li>
+            <li>ปรึกษาหารือ + บูรณาการการดูแลกับโรงเรียน</li>
+            <li>วิเคราะห์ “ทำไมต้องทำ (Why)” และ “ทำอย่างไร (How)”</li>
+            <li>จัดการอุปสรรคในพื้นที่ร่วมกับทีม</li>
+          </ul>
+        </div>
+        <div style="background:#fffdf9;border:1px solid #e6ddcc;border-left:4px solid #b07a4f;border-radius:12px;padding:20px 22px">
+          <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:18px;margin-bottom:8px">🏥 รพ.สต. — บริการปฐมภูมิในพื้นที่</div>
+          <ul style="margin:0;padding-left:18px;font-size:14px;line-height:1.7;color:#4a4337">
+            <li>ดูแล/ติดตามต่อเนื่องใกล้บ้านเด็ก</li>
+            <li>ประสานส่งต่อกับ รพ.แม่ข่ายและทีมจิตเวช</li>
+            <li>สนับสนุนการเยี่ยมบ้านร่วมกับ อสม.</li>
+            <li>เชื่อมข้อมูลกลับโรงเรียนภายใต้หลักความลับ</li>
+          </ul>
+        </div>
+        <div style="background:#fffdf9;border:1px solid #e6ddcc;border-left:4px solid #b07a4f;border-radius:12px;padding:20px 22px">
+          <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:18px;margin-bottom:8px">🫂 ทีมเพื่อนสนิท (Peer / Hug Ambassador)</div>
+          <ul style="margin:0;padding-left:18px;font-size:14px;line-height:1.7;color:#4a4337">
+            <li>ได้รับความรู้เรื่องโรคก่อนทำหน้าที่</li>
+            <li>ดูแล 3 มิติ: ประคองการเรียน · ความปลอดภัยช่วงพัก · สังเกตอาการรายวัน</li>
+            <li>Active Listening เบื้องต้น — รู้ว่าเมื่อไรต้องส่งต่อครู</li>
+            <li>ร่วมติดตามและประเมินผล (Improvement Cycle)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="rg" style="display:grid;grid-template-columns:1.1fr 1fr;gap:16px">
+        <div style="background:#f6efe6;border:1px solid #e3d8c4;border-radius:12px;padding:20px 22px">
+          <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:17px;margin-bottom:10px">🔒 มาตรการรักษาความลับ (Need-to-Know)</div>
+          <div class="rg" style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+            <div>
+              <div style="font-size:12px;font-weight:700;color:#3f8079;margin-bottom:4px">✓ ควรทำ</div>
+              <ul style="margin:0;padding-left:16px;font-size:13.5px;line-height:1.6;color:#4a4337"><li>สื่อสารเฉพาะส่วนที่จำเป็น</li><li>ทำความเข้าใจเรื่องความลับกับ อสม./ผู้นำชุมชนก่อนลงพื้นที่</li><li>มีจุดประสานงานรายงานเหตุวิกฤตตรงต่อหัวหน้าทีม</li></ul>
+            </div>
+            <div>
+              <div style="font-size:12px;font-weight:700;color:#b04a3a;margin-bottom:4px">✗ ห้ามทำ</div>
+              <ul style="margin:0;padding-left:16px;font-size:13.5px;line-height:1.6;color:#4a4337"><li>เปิดเผยข้อมูลในที่สาธารณะ/ครูที่ไม่เกี่ยวข้อง</li><li>นำข้อมูลไปหารือภาคีภายนอกโดยไม่มีข้อตกลงรักษาความลับ</li></ul>
+            </div>
+          </div>
+        </div>
+        <div style="background:#eef3ef;border:1px solid #d6e2da;border-radius:12px;padding:20px 22px">
+          <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:17px;margin-bottom:10px">🚐 ระบบรับ-ส่ง รพ. เมื่อผู้ปกครองไม่พร้อม</div>
+          <ul style="margin:0;padding-left:18px;font-size:14px;line-height:1.65;color:#4a4337">
+            <li>โรงเรียนรับ-ส่งเด็กไปพบแพทย์เองเพื่อให้การรักษาไม่ขาดตอน</li>
+            <li>บันทึกอาการรายวันส่งต่อให้โรงพยาบาล</li>
+            <li>เยี่ยมไข้ + ติดตามผลร่วมกับทีมสุขภาพ</li>
+          </ul>
+          <div style="margin-top:10px;font-size:13px;color:#3f6b5e;font-style:italic">“การดูแลนักเรียนต้องอยู่กับเด็กทั้งวัน ทุกวัน — ถ้าครูทิ้งเด็กไป เราจะเสียเขาไปจากระบบ”</div>
+        </div>
+      </div>
+    </section>
+
+    <hr style="border:none;border-top:1px solid #e2d9c8;margin:54px 0">
+
+    <!-- ============ TOOLS ============ -->
+    <section id="tools" style="scroll-margin-top:24px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.16em;color:#b07a4f;text-transform:uppercase;margin-bottom:10px">07 — เครื่องมือประเมิน</div>
+      <h2 style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:30px;margin:0 0 18px">แบบประเมินและคัดกรองที่เกี่ยวข้อง</h2>
+
+      <div class="rg2" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+        <a href="assessments/screening-suite.html#phqa" target="_blank" rel="noopener" style="text-decoration:none;display:block;background:#fffdf9;border:1px solid #e6ddcc;border-radius:11px;padding:16px 18px" style-hover="border-color:#5a8f6a;box-shadow:0 2px 12px rgba(90,143,106,.16)"><div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:16px;color:#5a8f6a">PHQ-A</div><div style="font-size:13.5px;color:#4a4337;line-height:1.55;margin-top:4px">คัดกรองภาวะซึมเศร้าวัยรุ่น (9 ข้อ) · <b>≥10 ส่งต่อ</b> · ข้อ 9 = ความคิดทำร้ายตัวเอง</div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px"><span style="font-size:12px;color:#9b9079">ครูแนะแนว · ทุกเทอม</span><span style="font-size:12.5px;color:#5a8f6a;font-weight:600">ทำแบบประเมิน ↗</span></div></a>
+        <a href="assessments/screening-suite.html#q8" target="_blank" rel="noopener" style="text-decoration:none;display:block;background:#fffdf9;border:1px solid #e6ddcc;border-radius:11px;padding:16px 18px" style-hover="border-color:#b04a3a;box-shadow:0 2px 12px rgba(176,74,58,.16)"><div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:16px;color:#b04a3a">8Q</div><div style="font-size:13.5px;color:#4a4337;line-height:1.55;margin-top:4px">ประเมินแนวโน้มการฆ่าตัวตาย · <b>1 คะแนนขึ้นไป ปรึกษา รพ.</b></div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px"><span style="font-size:12px;color:#9b9079">ครูแนะแนว / รพ.</span><span style="font-size:12.5px;color:#b04a3a;font-weight:600">ทำแบบประเมิน ↗</span></div></a>
+        <a href="assessments/screening-suite.html#snap" target="_blank" rel="noopener" style="text-decoration:none;display:block;background:#fffdf9;border:1px solid #e6ddcc;border-radius:11px;padding:16px 18px" style-hover="border-color:#43688f;box-shadow:0 2px 12px rgba(67,104,143,.16)"><div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:16px;color:#43688f">SNAP-IV</div><div style="font-size:13.5px;color:#4a4337;line-height:1.55;margin-top:4px">คัดกรองสมาธิสั้น (ADHD) — Inattention / Hyperactivity</div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px"><span style="font-size:12px;color:#9b9079">ครูแนะแนว</span><span style="font-size:12.5px;color:#43688f;font-weight:600">ทำแบบประเมิน ↗</span></div></a>
+        <a href="assessments/screening-suite.html#gast" target="_blank" rel="noopener" style="text-decoration:none;display:block;background:#fffdf9;border:1px solid #e6ddcc;border-radius:11px;padding:16px 18px" style-hover="border-color:#3f8079;box-shadow:0 2px 12px rgba(63,128,121,.16)"><div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:16px;color:#3f8079">GAST</div><div style="font-size:13.5px;color:#4a4337;line-height:1.55;margin-top:4px">แบบคัดกรองการติดเกม (Game Addiction Screening Test)</div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px"><span style="font-size:12px;color:#9b9079">ครูแนะแนว / รพ.</span><span style="font-size:12.5px;color:#3f8079;font-weight:600">ทำแบบประเมิน ↗</span></div></a>
+        <a href="assessments/screening-suite.html#drug" target="_blank" rel="noopener" style="text-decoration:none;display:block;background:#fffdf9;border:1px solid #e6ddcc;border-radius:11px;padding:16px 18px" style-hover="border-color:#b04a3a;box-shadow:0 2px 12px rgba(176,74,58,.16)"><div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:16px;color:#b04a3a">บคก.กสธ. V.2</div><div style="font-size:13.5px;color:#4a4337;line-height:1.55;margin-top:4px">คัดกรองยาเสพติด — แยกระดับ ผู้ใช้ / ผู้เสพ / ผู้ติด</div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px"><span style="font-size:12px;color:#9b9079">ครูแนะแนว / ฝ่ายปกครอง</span><span style="font-size:12.5px;color:#b04a3a;font-weight:600">ทำแบบประเมิน ↗</span></div></a>
+        <a href="assessments/screening-suite.html#nicotine" target="_blank" rel="noopener" style="text-decoration:none;display:block;background:#fffdf9;border:1px solid #e6ddcc;border-radius:11px;padding:16px 18px" style-hover="border-color:#8a5a30;box-shadow:0 2px 12px rgba(138,90,48,.16)"><div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:16px;color:#8a5a30">แบบประเมินการติดนิโคติน</div><div style="font-size:13.5px;color:#4a4337;line-height:1.55;margin-top:4px">ประเมินการติดบุหรี่/บุหรี่ไฟฟ้า (เช่น Fagerström)</div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px"><span style="font-size:12px;color:#9b9079">ครูแนะแนว / รพ.</span><span style="font-size:12.5px;color:#8a5a30;font-weight:600">ทำแบบประเมิน ↗</span></div></a>
+        <a href="assessments/screening-suite.html#st5" target="_blank" rel="noopener" style="text-decoration:none;display:block;background:#fffdf9;border:1px solid #e6ddcc;border-radius:11px;padding:16px 18px" style-hover="border-color:#6d5a86;box-shadow:0 2px 12px rgba(109,90,134,.16)"><div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:16px;color:#6d5a86">ST-5 ความเครียด</div><div style="font-size:13.5px;color:#4a4337;line-height:1.55;margin-top:4px">แบบประเมินความเครียด 5 ข้อ (กรมสุขภาพจิต)</div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px"><span style="font-size:12px;color:#9b9079">ครูที่ปรึกษา / ครูแนะแนว</span><span style="font-size:12.5px;color:#6d5a86;font-weight:600">ทำแบบประเมิน ↗</span></div></a>
+        <a href="assessments/screening-suite.html#psqi" target="_blank" rel="noopener" style="text-decoration:none;display:block;background:#fffdf9;border:1px solid #e6ddcc;border-radius:11px;padding:16px 18px" style-hover="border-color:#45707e;box-shadow:0 2px 12px rgba(69,112,126,.16)"><div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:16px;color:#45707e">คุณภาพการนอน (PSQI)</div><div style="font-size:13.5px;color:#4a4337;line-height:1.55;margin-top:4px">คัดกรองปัญหาการนอน — สัญญาณร่วมของซึมเศร้า/วิตกกังวล</div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px"><span style="font-size:12px;color:#9b9079">ครูแนะแนว</span><span style="font-size:12.5px;color:#45707e;font-weight:600">ทำแบบประเมิน ↗</span></div></a>
+        <a href="#nssi" style="text-decoration:none;display:block;background:#fffdf9;border:1px solid #e6ddcc;border-radius:11px;padding:16px 18px" style-hover="border-color:#34576b;box-shadow:0 2px 12px rgba(52,87,107,.16)"><div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:16px;color:#34576b">บทสนทนา 5 ขั้น (NSSI)</div><div style="font-size:13.5px;color:#4a4337;line-height:1.55;margin-top:4px">เครื่องมือเปิดใจ + ตรวจสอบ Safety เบื้องต้น</div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px"><span style="font-size:12px;color:#9b9079">ครูที่ปรึกษา / ครูแนะแนว</span><span style="font-size:12.5px;color:#34576b;font-weight:600">ดูในคู่มือ ↓</span></div></a>
+      </div>
+    </section>
+
+    <hr style="border:none;border-top:1px solid #e2d9c8;margin:54px 0">
+
+    <!-- ============ HOTLINE ============ -->
+    <section id="hotline" style="scroll-margin-top:24px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.16em;color:#b04a3a;text-transform:uppercase;margin-bottom:10px">SOS — สายด่วน & ส่งต่อด่วน</div>
+      <h2 style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:30px;margin:0 0 18px">เมื่อเป็นเหตุฉุกเฉิน</h2>
+
+      <div style="background:#fbeae6;border:1px solid #ecc4ba;border-radius:13px;padding:22px 24px;margin-bottom:18px">
+        <div style="display:flex;gap:14px;align-items:flex-start;margin-bottom:14px">
+          <div style="font-size:24px;flex:none">⚡</div>
+          <div>
+            <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:18px;color:#a8412f">ส่ง รพ. ทันที — ไม่ต้องรอครบขั้นตอน</div>
+            <div style="font-size:14.5px;color:#7a4035;line-height:1.6;margin-top:3px">ข้อ 9 pos (SI) · พยายามทำร้ายตัวเอง · NSSI บาดแผลลึก · ติดยารุนแรง · อาการทางจิต · ครอบครัวรุนแรง</div>
+          </div>
+        </div>
+        <div style="background:#fff5f1;border-radius:9px;padding:12px 16px;font-size:14px;color:#7a4035;line-height:1.6">เมื่อพบเด็กมี SI: <b>ไม่ทิ้งเด็กไว้คนเดียว</b> · รับฟังอย่างสงบ (“ครูดีใจที่หนูบอก”) · ถามตรงเรื่องแผน/วิธีการ · แจ้ง รพ.ทันที · แจ้งผู้ปกครอง (ความปลอดภัยสำคัญกว่าความลับ)</div>
+      </div>
+
+      <div class="rg2" style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px">
+        <div style="background:#fffdf9;border:1px solid #e6ddcc;border-radius:12px;padding:18px 14px;text-align:center"><div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:26px;color:#b04a3a">1323</div><div style="font-size:13px;color:#4a4337;line-height:1.45;margin-top:4px">สายด่วนสุขภาพจิต<br>(24 ชม.)</div></div>
+        <div style="background:#fffdf9;border:1px solid #e6ddcc;border-radius:12px;padding:18px 14px;text-align:center"><div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:26px;color:#b04a3a">1669</div><div style="font-size:13px;color:#4a4337;line-height:1.45;margin-top:4px">การแพทย์ฉุกเฉิน<br>(ภาวะวิกฤต)</div></div>
+        <div style="background:#fffdf9;border:1px solid #e6ddcc;border-radius:12px;padding:18px 14px;text-align:center"><div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:26px;color:#b04a3a">191</div><div style="font-size:13px;color:#4a4337;line-height:1.45;margin-top:4px">เหตุด่วนเหตุร้าย<br>(ความปลอดภัย)</div></div>
+        <div style="background:#fffdf9;border:1px solid #e6ddcc;border-radius:12px;padding:18px 14px;text-align:center"><div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:26px;color:#b04a3a">1300</div><div style="font-size:13px;color:#4a4337;line-height:1.45;margin-top:4px">ศูนย์ช่วยเหลือสังคม<br>(พมจ.)</div></div>
+        <div style="background:#fffdf9;border:1px solid #e6ddcc;border-radius:12px;padding:18px 14px;text-align:center"><div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:26px;color:#b04a3a">1165</div><div style="font-size:13px;color:#4a4337;line-height:1.45;margin-top:4px">สายด่วนยาเสพติด<br>(เลิกยา)</div></div>
+      </div>
+
+      <div style="margin-top:44px;padding-top:22px;border-top:1px solid #e2d9c8;font-size:12.5px;color:#9b9079;line-height:1.6">
+        คู่มือระบบดูแลสุขภาพจิตนักเรียน · เรียบเรียงจาก: คู่มือแนวทางช่วยเหลือนักเรียน (วิมลรัตน์ ชัยปราการ, รพ.เชียงรายประชานุเคราะห์) · เชียงแสนวิทยาคมโมเดล · สื่อ NSSI สถาบันสุขภาพเด็กแห่งชาติมหาราชินี กรมการแพทย์ · รายงานผลการประเมิน PHQ-A เชียงราย 2564–2568 · USI Model สพม.เชียงราย
+      </div>
+    </section>
+
+  </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { active: 0, navOpen: false };
+  toggleNav = () => this.setState(s => ({ navOpen: !s.navOpen }));
+  closeNav = () => { if (this.state.navOpen) this.setState({ navOpen: false }); };
+
+  get data() {
+    return [
+      {
+        emoji: "🧠", name: "สมาธิสั้น", en: "ADHD — Inattention / Hyperactivity / Impulsivity", accent: "#43688f",
+        signs: ["วอกแวก ไม่มีสมาธิ อยู่ไม่นิ่ง ทำงานไม่เสร็จ หลงลืมบ่อย", "ทำการบ้านไม่เสร็จ ลืมของบ่อย ผลการเรียนตกต่ำ"],
+        teacher: ["สังเกตพฤติกรรมในห้อง + จดบันทึก", "ใช้แบบคัดกรอง SNAP-IV", "ปรับที่นั่ง ลดสิ่งรบกวน", "แบ่งงานเป็นชิ้นเล็ก + ใช้ checklist", "ชมเชยทันทีเมื่อทำได้", "แจ้งผู้ปกครอง + ให้ความรู้เบื้องต้น"],
+        refer: ["ผล SNAP-IV ชัดเจน", "กระทบการเรียนรุนแรง", "ช่วยเหลือในโรงเรียน 4 สัปดาห์แล้วไม่ดีขึ้น", "ผู้ปกครองต้องการรับการวินิจฉัย", "ครูไม่มั่นใจในการจัดการ"],
+        hospital: ["วินิจฉัย + ประเมินโรคร่วม (ODD/SLD)", "พิจารณายา (Methylphenidate)", "Parent Management Training (PMT)", "ติดตามผลยาและผลข้างเคียง", "ประสานโรงเรียนเรื่องแผน IEP"]
+      },
+      {
+        emoji: "⚡", name: "ดื้อต่อต้าน", en: "ODD / Conduct Disorder", accent: "#b07a4f",
+        signs: ["โวยวาย ดื้อ ทะเลาะบ่อย ไม่ทำตามกฎ ทำลายข้าวของ", "ไม่ยอมรับผิด โทษคนอื่น ยั่วยุครู"],
+        teacher: ["ใช้ ABA วิเคราะห์ A-B-C", "วางกฎชัดเจน + ผลตามมาที่คงเส้นคงวา", "เพิกเฉยพฤติกรรมเล็กน้อย (ignore)", "Triple-P: กำหนดกฎร่วมกับเด็ก", "พูดสั้น ชัด สงบ มองหน้าระดับเท่ากัน", "ให้เด็กมีส่วนร่วมในการแก้ปัญหา"],
+        refer: ["พฤติกรรมรุนแรง / ทำร้ายผู้อื่น", "ผู้ปกครองรับมือไม่ได้", "สงสัย Conduct Disorder", "พฤติกรรมไม่ดีขึ้นใน 4–6 สัปดาห์", "ครูและโรงเรียนถึงขีดจำกัดแล้ว"],
+        hospital: ["ประเมินโรคร่วม (ADHD/Depression)", "Parent Management Training เชิงลึก", "พิจารณายา (Risperidone ถ้าก้าวร้าว)", "Family therapy + CBT", "วางแผน reintegration หากถูกพักการเรียน"]
+      },
+      {
+        emoji: "🎮", name: "ติดเกม", en: "Internet Gaming Disorder", accent: "#3f8079",
+        signs: ["เล่นเกม มากกว่า 6 ชม./วัน โกรธเมื่อถูกหยุด ผลการเรียนตก นอนไม่หลับ", "โกหกเรื่องเวลาเล่น ไม่ทำการบ้าน หนีเรียน"],
+        teacher: ["คุยเปิดใจ ไม่ตัดสิน (MI)", "ให้ความรู้: AAP แนะนำไม่เกิน 2 ชม./วัน", "ตั้งเป้าหมายร่วมกับเด็ก", "ส่งเสริมกิจกรรมทางเลือก (กีฬา/ดนตรี)", "ติดตามด้วยตารางรายสัปดาห์", "ประสานผู้ปกครองวางกติการ่วมกัน"],
+        refer: ["ควบคุมเวลาไม่ได้แม้พยายาม", "กระทบการเรียน/สุขภาพชัดเจน", "สงสัยโรคร่วม (สมาธิสั้น/ซึมเศร้า)", "ครอบครัวขัดแย้งรุนแรงเรื่องเกม", "เด็กปฏิเสธทุกการช่วยเหลือ"],
+        hospital: ["ประเมิน GAST + โรคร่วม", "CBT + Motivational Interview เชิงลึก", "รักษาโรคร่วมที่พบ", "ให้คำปรึกษาครอบครัว", "วางแผน digital detox ร่วมกับครอบครัว"]
+      },
+      {
+        emoji: "🚨", name: "ติดยาเสพติด", en: "บุหรี่ไฟฟ้า / กัญชา / ยาบ้า / กระท่อม", accent: "#b04a3a",
+        signs: ["กลิ่นผิดปกติ ตาแดง พฤติกรรมเปลี่ยนกะทันหัน หนีเรียนบ่อย", "เงินหาย ของหาย คบเพื่อนกลุ่มเสี่ยง ก้าวร้าวขึ้น"],
+        teacher: ["คุยส่วนตัว ไม่ตัดสิน (MI)", "ใช้แบบประเมิน 8Q / บคก.กสธ. V.2", "Harm Reduction: แนะนำลดความเสี่ยง", "ให้เด็กรู้สึกมีคุณค่า มีคนห่วงใย", "ส่งเสริมกิจกรรมทางเลือก", "แจ้งผู้ปกครองและฝ่ายปกครอง"],
+        refer: ["ผล บคก. ระดับผู้เสพ / ผู้ติด", "อาการถอนยาชัดเจน", "ใช้ยาประเภท 1 (ยาบ้า/ไอซ์)", "เสี่ยงต่อตนเองหรือผู้อื่น", "เด็กปฏิเสธ / ครอบครัวไม่ร่วมมือ"],
+        hospital: ["ประเมิน severity + โรคร่วม", "ยา anti-craving + รักษาอาการ", "MI เชิงลึก + ครอบครัว", "ประสานบำบัดยาเสพติด (บสต.)", "วางแผนระยะยาว + ติดตามหลังบำบัด"]
+      },
+      {
+        emoji: "🛡", name: "Bullying", en: "Physical / Verbal / Relational / Cyber", accent: "#6d5a86",
+        signs: ["กลัวมาโรงเรียน บาดเจ็บไม่ทราบสาเหตุ ของหาย เงียบผิดปกติ", "ถอนตัวจากเพื่อน ผลการเรียนตก กินไม่ได้นอนไม่หลับ"],
+        teacher: ["รับฟังอย่างตั้งใจ ไม่ตัดสิน", "สืบข้อเท็จจริงทั้งสองฝ่าย", "ฝึกทักษะ Assertiveness ให้เด็ก", "สร้างระบบ Buddy / เพื่อนช่วยเพื่อน", "แจ้งผู้ปกครองทั้งสองฝ่าย + ประชุมร่วม", "ติดตามสถานการณ์อย่างใกล้ชิด"],
+        refer: ["เด็กบาดเจ็บทางร่างกาย", "มีความคิดทำร้ายตัวเอง (ข้อ 9 pos)", "Cyber bullying ขั้นรุนแรง", "ไม่ดีขึ้นแม้โรงเรียนจัดการแล้ว", "ผู้ปกครองต้องการดำเนินคดี"],
+        hospital: ["ประเมินผลกระทบทางจิตใจ (PTSD/Depression)", "จิตบำบัดเด็กที่ถูกแกล้ง", "ประเมินและดูแลเด็กที่แกล้งด้วย", "ให้คำปรึกษาเชิงลึกทั้งสองฝ่าย", "ประสานหน่วยงานภายนอกถ้าจำเป็น"]
+      },
+      {
+        emoji: "💚", name: "ซึมเศร้า", en: "Depression — PHQ-A ≥10 หรือข้อ 9 pos", accent: "#5a8f6a",
+        signs: ["เศร้า/เบื่อ มากกว่า 2 สัปดาห์ นอนไม่หลับ เบื่ออาหาร ขาดเรียนบ่อย", "แยกตัว ไม่สนใจสิ่งที่เคยชอบ พูดถึงการตาย"],
+        teacher: ["ทำ PHQ-A ครบทุกเทอม", "ถ้า PHQ-A 5–9: รับฟัง ให้กำลังใจ ติดตาม", "Behavioral Activation: ชวนทำกิจกรรม", "บันทึกกิจกรรมที่ทำให้รู้สึกดี (P/M)", "รับฟังโดยไม่ให้คำแนะนำมากเกินไป", "แจ้งผู้ปกครอง + ประสานครูประจำชั้น"],
+        refer: ["PHQ-A ตั้งแต่ 10 ขึ้นไป", "ข้อ 9 pos — ส่งทันที ไม่รอ", "อาการกระทบชีวิตชัดเจน", "ไม่ตอบสนองต่อการช่วยเหลือใน 2 สัปดาห์", "ผู้ปกครองกังวลเรื่องความปลอดภัย"],
+        hospital: ["ประเมิน 8Q + diagnostic interview", "CBT / Behavioral Activation", "พิจารณายา (Fluoxetine)", "Safety Plan ถ้ามีความคิดทำร้ายตัวเอง", "refer จิตแพทย์เด็กถ้าอาการรุนแรง"]
+      },
+      {
+        emoji: "🩹", name: "NSSI", en: "Non-Suicidal Self-Injury — ทำร้ายตัวเองโดยไม่มีเจตนาฆ่าตัวตาย", accent: "#45707e",
+        signs: ["รอยแผล รอยช้ำ รอยถลอก (แขน ต้นขา ลำตัว) · ใส่เสื้อแขนยาวในอากาศร้อน", "ถอนตัวจากเพื่อน · ปฏิเสธวิชาพละ · ไปห้องน้ำบ่อยช่วงเครียด · พูดถึงการลงโทษตัวเอง"],
+        teacher: ["รับฟังด้วยใจ ไม่ตัดสิน ไม่ตกใจ", "ประเมิน Safety เบื้องต้น (ดูแผล + ถามตรงเรื่องความคิดทำร้ายตัวเอง)", "บันทึกสิ่งที่เห็น/ได้ยิน", "ใช้บทสนทนา 5 ขั้น เปิดใจเด็ก", "ติดต่อผู้ปกครองอย่างระมัดระวัง — ไม่ดุ ไม่ลงโทษ", "ให้ความรัก + พื้นที่ปลอดภัย"],
+        refer: ["บาดแผลลึก / ต้องการการรักษาทางกาย", "มีความคิดฆ่าตัวตายร่วม (ข้อ 9 pos) — ส่งทันที", "ความถี่ / ความรุนแรงเพิ่มขึ้น", "ช่วยเหลือในโรงเรียนแล้วไม่ดีขึ้น", "มีโรคจิตเวชร่วม (ซึมเศร้า/วิตกกังวล)"],
+        hospital: ["ประเมินสาเหตุและโรคร่วม", "จิตบำบัด (CBT / DBT-informed)", "ฝึกทักษะจัดการอารมณ์ทดแทน NSSI", "Safety Planning + ลดการเข้าถึงอุปกรณ์", "พิจารณายารักษาโรคร่วม · สายด่วน 1323"]
+      }
+    ];
+  }
+
+  renderVals() {
+    const D = this.data;
+    const active = this.state.active;
+    const tabs = D.map((d, i) => {
+      const on = i === active;
+      return {
+        emoji: d.emoji, name: d.name,
+        onClick: () => this.setState({ active: i }),
+        bd: on ? d.accent : "#e0d8c8",
+        bg: on ? d.accent : "#fffdf9",
+        fg: on ? "#ffffff" : "#5a5247",
+        fw: on ? "600" : "500"
+      };
+    });
+    const d = D[active];
+    return {
+      tabs, accent: d.accent, name: d.name, en: d.en, emoji: d.emoji,
+      signs: d.signs, teacher: d.teacher, refer: d.refer, hospital: d.hospital,
+      toggleNav: this.toggleNav, closeNav: this.closeNav,
+      sidebarCls: this.state.navOpen ? 'open' : '',
+      backdropCls: this.state.navOpen ? 'show' : ''
+    };
+  }
+}
+</script>
+</body>
+</html>

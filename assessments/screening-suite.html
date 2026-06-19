@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ชุดแบบประเมินน้องฮัก | คัดกรองสุขภาพจิตนักเรียน</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Noto+Serif+Thai:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --blue:#185FA5; --blue-dark:#0C447C; --blue-light:#E6F1FB;
+    --green:#3B6D11; --green-light:#EAF3DE; --green-bd:#639922;
+    --amber:#854F0B; --amber-light:#FAEEDA; --amber-bd:#BA7517;
+    --red:#A32D2D; --red-light:#FCEBEB; --red-bd:#E24B4A;
+    --bg:#F5F5F3; --card:#FFFFFF; --bd:#E0DED8; --bd-soft:#EBEBEB;
+    --ink:#1A1A18; --muted:#6B6B66; --hint:#9E9E98;
+    --r-sm:8px; --r:12px; --r-lg:18px;
+  }
+  html{-webkit-text-size-adjust:100%}
+  body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;padding:0 16px 60px}
+  .wrap{max-width:720px;margin:0 auto}
+  .serif{font-family:'Noto Serif Thai',serif}
+
+  header{text-align:center;padding:34px 0 14px}
+  .logo{width:46px;height:46px;border-radius:12px;background:var(--blue);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-family:'Noto Serif Thai',serif;font-weight:700;font-size:26px;margin-bottom:12px}
+  header h1{font-family:'Noto Serif Thai',serif;font-weight:700;font-size:26px;color:var(--blue-dark)}
+  header p{color:var(--muted);font-size:14.5px;margin-top:4px}
+
+  .disclaimer{background:var(--amber-light);border:1px solid #ecd9b3;border-radius:var(--r);padding:12px 16px;font-size:13px;color:var(--amber);margin:14px 0 26px;line-height:1.5}
+
+  .menu{display:grid;gap:12px}
+  .mcard{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:16px 18px;cursor:pointer;transition:.15s;text-decoration:none;color:inherit}
+  .mcard:hover{border-color:var(--blue);box-shadow:0 3px 14px rgba(24,95,165,.1);transform:translateY(-1px)}
+  .mtag{flex:none;width:54px;height:54px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;font-family:'Noto Serif Thai',serif;color:#fff;text-align:center;line-height:1.1}
+  .mcard h3{font-size:17px;font-weight:700;color:var(--ink)}
+  .mcard p{font-size:13.5px;color:var(--muted)}
+  .marrow{margin-left:auto;color:var(--hint);font-size:20px;flex:none}
+  .ext{font-size:11.5px;color:var(--hint);border:1px solid var(--bd);border-radius:99px;padding:2px 8px;margin-left:auto;flex:none}
+
+  .test{display:none}
+  .test.active{display:block;animation:fade .25s}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .back{display:inline-flex;align-items:center;gap:6px;background:none;border:none;color:var(--blue);font-family:inherit;font-size:14.5px;font-weight:600;cursor:pointer;padding:18px 0 8px}
+  .thead{background:var(--card);border:1px solid var(--bd);border-radius:var(--r-lg);padding:20px 22px;margin-bottom:18px}
+  .thead h2{font-family:'Noto Serif Thai',serif;font-weight:700;font-size:21px;color:var(--blue-dark)}
+  .thead .sub{color:var(--muted);font-size:14px;margin-top:3px}
+  .thead .inst{background:var(--blue-light);border-radius:var(--r-sm);padding:10px 14px;font-size:13.5px;color:var(--blue-dark);margin-top:12px}
+
+  .q{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:15px 17px;margin-bottom:11px}
+  .q.unanswered-flag{border-color:var(--red-bd);background:var(--red-light)}
+  .qnum{font-size:12px;color:var(--hint);font-family:'Noto Serif Thai',serif;font-weight:600}
+  .qtext{font-size:15.5px;font-weight:500;margin:2px 0 12px}
+  .opts{display:flex;flex-direction:column;gap:7px}
+  .opt{display:flex;align-items:center;gap:11px;border:1.5px solid var(--bd-soft);border-radius:var(--r-sm);padding:10px 13px;cursor:pointer;font-size:14.5px;transition:.12s}
+  .opt:hover{border-color:var(--blue);background:var(--blue-light)}
+  .opt input{accent-color:var(--blue);width:17px;height:17px;flex:none}
+  .opt.sel{border-color:var(--blue);background:var(--blue-light);font-weight:500}
+
+  .submit{width:100%;background:var(--blue);color:#fff;border:none;border-radius:var(--r);padding:15px;font-family:inherit;font-size:16px;font-weight:600;cursor:pointer;margin-top:8px;transition:.15s}
+  .submit:hover{background:var(--blue-dark)}
+  .warn{display:none;background:var(--red-light);border:1px solid var(--red-bd);color:var(--red);border-radius:var(--r-sm);padding:11px 14px;font-size:13.5px;margin-top:12px}
+  .warn.show{display:block}
+
+  .result{display:none;margin-top:18px}
+  .result.show{display:block;animation:fade .3s}
+  .rband{border-radius:var(--r-lg);padding:22px 24px;text-align:center;border:1.5px solid}
+  .rscore{font-family:'Noto Serif Thai',serif;font-weight:700;font-size:40px;line-height:1}
+  .rlabel{font-weight:700;font-size:19px;margin-top:6px}
+  .radvice{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:16px 18px;margin-top:14px;font-size:14.5px;line-height:1.65}
+  .radvice b{color:var(--blue-dark)}
+  .subscores{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+  .subscores .sc{background:var(--card);border:1px solid var(--bd);border-radius:var(--r-sm);padding:12px;text-align:center}
+  .subscores .sc .v{font-family:'Noto Serif Thai',serif;font-weight:700;font-size:22px;color:var(--blue)}
+  .subscores .sc .l{font-size:12px;color:var(--muted);margin-top:2px}
+  .ractions{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+  .ractions button{flex:1;min-width:130px;border-radius:var(--r);padding:12px;font-family:inherit;font-size:14.5px;font-weight:600;cursor:pointer;border:1.5px solid var(--bd);background:var(--card);color:var(--ink)}
+  .ractions .primary{background:var(--blue);color:#fff;border-color:var(--blue)}
+  .crisis{background:var(--red-light);border:1.5px solid var(--red-bd);border-radius:var(--r);padding:14px 16px;margin-top:14px;font-size:14px;color:var(--red);line-height:1.6}
+  .crisis b{color:var(--red)}
+
+  footer{text-align:center;color:var(--hint);font-size:12px;margin-top:34px;line-height:1.6}
+  @media print{.back,.ractions,.submit,.menu,.disclaimer{display:none!important}body{background:#fff}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">ฮ</div>
+    <h1>ชุดแบบประเมินน้องฮัก</h1>
+    <p>เครื่องมือคัดกรองสุขภาพจิตนักเรียน · ทำงานออฟไลน์ ไม่ต้องเชื่อมต่ออินเทอร์เน็ต</p>
+  </header>
+
+  <!-- MENU -->
+  <div id="menu">
+    <div class="disclaimer">⚠️ แบบประเมินเหล่านี้เป็น<b>เครื่องมือคัดกรองเบื้องต้น ไม่ใช่การวินิจฉัย</b> ผลที่ได้ใช้เพื่อเฝ้าระวังและพิจารณาส่งต่อ — โปรดตรวจสอบข้อความและเกณฑ์คะแนนกับฉบับทางการของกรมสุขภาพจิต/หน่วยงานต้นสังกัดก่อนนำไปใช้จริง</div>
+    <div class="menu" id="menuList"></div>
+  </div>
+
+  <!-- TEST CONTAINER -->
+  <div id="testHost"></div>
+
+  <footer>
+    ชุดแบบประเมินน้องฮัก · สำหรับใช้ในระบบดูแลช่วยเหลือนักเรียน<br>
+    หากมีความเสี่ยงต่อชีวิต โทร <b>1323</b> (สุขภาพจิต) หรือ <b>1669</b> (ฉุกเฉิน)
+  </footer>
+</div>
+
+<script>
+/* ============ DATA ============ */
+const LIK_PHQA = ["ไม่มีเลย","มีบางวัน (1–7 วัน)","มีค่อนข้างบ่อย (มากกว่า 7 วัน)","มีเกือบทุกวัน"];
+const LIK_ST5  = ["แทบไม่มี","เป็นบางครั้ง","บ่อยครั้ง","เป็นประจำ"];
+const LIK_SNAP = ["ไม่เลย","เล็กน้อย","ค่อนข้างมาก","มากที่สุด"];
+
+const TESTS = {
+  phqa: {
+    name:"PHQ-A", color:"#3B6D11",
+    title:"แบบประเมินภาวะซึมเศร้าในวัยรุ่น (PHQ-A)",
+    sub:"คัดกรองภาวะซึมเศร้า · 9 ข้อ",
+    inst:"ในช่วง 2 สัปดาห์ที่ผ่านมา หนูมีอาการเหล่านี้บ่อยแค่ไหน",
+    type:"likert", scale:LIK_PHQA,
+    items:[
+      "รู้สึกเบื่อ ทำอะไรก็ไม่เพลิดเพลิน",
+      "รู้สึกเศร้า หดหู่ ท้อแท้ หรือสิ้นหวัง",
+      "หลับยาก หลับๆ ตื่นๆ หรือหลับมากเกินไป",
+      "รู้สึกเหนื่อย ไม่ค่อยมีแรง",
+      "เบื่ออาหาร หรือกินมากเกินไป",
+      "รู้สึกไม่ดีกับตัวเอง รู้สึกว่าตัวเองล้มเหลว หรือทำให้ตนเอง/ครอบครัวผิดหวัง",
+      "ไม่มีสมาธิ เช่น เวลาเรียน อ่านหนังสือ หรือดูทีวี",
+      "พูดหรือเคลื่อนไหวช้าจนคนอื่นสังเกตเห็น หรือกระสับกระส่ายอยู่ไม่นิ่งมากกว่าปกติ",
+      "คิดทำร้ายตนเอง หรือคิดว่าถ้าตายไปคงจะดีกว่า"
+    ],
+    score(a){
+      const total=a.reduce((s,x)=>s+x,0); const item9=a[8];
+      let band;
+      if(total<=4) band={label:"ไม่มี/น้อยมาก",key:"green"};
+      else if(total<=9) band={label:"ซึมเศร้าระดับน้อย",key:"green"};
+      else if(total<=14) band={label:"ซึมเศร้าระดับปานกลาง",key:"amber"};
+      else if(total<=19) band={label:"ซึมเศร้าค่อนข้างรุนแรง",key:"red"};
+      else band={label:"ซึมเศร้าระดับรุนแรง",key:"red"};
+      let advice = total>=10
+        ? "คะแนน <b>ตั้งแต่ 10 ขึ้นไป</b> — ควรปรึกษาครูแนะแนว/นักจิตวิทยา และพิจารณาส่งต่อโรงพยาบาลเพื่อประเมินเพิ่มเติม"
+        : "คะแนนอยู่ในเกณฑ์น้อย — ครูรับฟัง ให้กำลังใจ และติดตามอาการต่อเนื่อง ทำซ้ำทุกเทอม";
+      return {display:total, max:27, band, advice, crisis:item9>0
+        ? "พบ <b>ความคิดทำร้ายตนเอง (ข้อ 9)</b> — ประเมิน 8Q และปรึกษา/ส่งต่อโรงพยาบาลทันที ห้ามทิ้งเด็กไว้คนเดียว" : null};
+    }
+  },
+
+  q8: {
+    name:"8Q", color:"#A32D2D",
+    title:"แบบประเมินความเสี่ยงต่อการฆ่าตัวตาย (8Q)",
+    sub:"ประเมินแนวโน้มการฆ่าตัวตาย · 8 ข้อ",
+    inst:"ข้อ 1–7 ถามถึงช่วง 1 เดือนที่ผ่านมา · ข้อ 8 ถามถึงช่วงตลอดชีวิต",
+    type:"binary",
+    items:[
+      {t:"คิดอยากตาย หรือคิดว่าอยู่ไปก็ไม่มีประโยชน์", w:1},
+      {t:"อยากทำร้ายตัวเอง หรือทำให้ตัวเองบาดเจ็บ", w:2},
+      {t:"คิดเกี่ยวกับการฆ่าตัวตาย", w:6},
+      {t:"รู้สึกว่าควบคุมความคิดอยากฆ่าตัวตายไม่ได้", w:8},
+      {t:"มีแผนการที่จะฆ่าตัวตาย", w:8},
+      {t:"เตรียมการที่จะฆ่าตัวตาย (เช่น เตรียมอุปกรณ์ สะสมยา)", w:9},
+      {t:"ทำให้ตัวเองบาดเจ็บโดยตั้งใจ แต่ไม่ได้ตั้งใจให้ถึงตาย", w:4},
+      {t:"ตลอดชีวิตที่ผ่านมา เคยพยายามฆ่าตัวตาย", w:4}
+    ],
+    score(a){
+      const total=a.reduce((s,x)=>s+x,0);
+      let band;
+      if(total===0) band={label:"ไม่มีความเสี่ยง",key:"green"};
+      else if(total<=8) band={label:"เสี่ยงระดับน้อย",key:"amber"};
+      else if(total<=16) band={label:"เสี่ยงระดับปานกลาง",key:"red"};
+      else band={label:"เสี่ยงระดับสูง",key:"red"};
+      const advice = total>=1
+        ? "มีคะแนน <b>ตั้งแต่ 1 ขึ้นไป</b> — ควรปรึกษา/ส่งต่อโรงพยาบาล และวางแผนความปลอดภัย (Safety Plan) ร่วมกับเด็กและครอบครัว"
+        : "ไม่พบความเสี่ยงในขณะนี้ — ยังควรรับฟังและเฝ้าระวังต่อเนื่อง";
+      return {display:total, max:46, band, advice, crisis: total>0
+        ? "พบความเสี่ยงต่อการฆ่าตัวตาย — <b>ไม่ทิ้งเด็กไว้คนเดียว</b> ประสานโรงพยาบาลทันที โทร 1323 / 1669" : null};
+    }
+  },
+
+  st5: {
+    name:"ST-5", color:"#854F0B",
+    title:"แบบประเมินความเครียด (ST-5)",
+    sub:"ประเมินความเครียด · 5 ข้อ",
+    inst:"ในช่วง 2–4 สัปดาห์ที่ผ่านมา หนูมีอาการเหล่านี้บ่อยแค่ไหน",
+    type:"likert", scale:LIK_ST5,
+    items:[
+      "มีปัญหาการนอน นอนไม่หลับ หรือนอนมาก",
+      "มีสมาธิน้อยลง",
+      "หงุดหงิด กระวนกระวาย ว้าวุ่นใจ",
+      "รู้สึกเบื่อ เซ็ง",
+      "ไม่อยากพบปะผู้คน"
+    ],
+    score(a){
+      const total=a.reduce((s,x)=>s+x,0);
+      let band;
+      if(total<=4) band={label:"เครียดน้อย",key:"green"};
+      else if(total<=7) band={label:"เครียดปานกลาง",key:"amber"};
+      else if(total<=9) band={label:"เครียดมาก",key:"red"};
+      else band={label:"เครียดมากที่สุด",key:"red"};
+      const advice = total>=8
+        ? "ความเครียดอยู่ในระดับสูง — ควรปรึกษาครูแนะแนว/นักจิตวิทยา ฝึกเทคนิคผ่อนคลาย และติดตามใกล้ชิด"
+        : (total>=5 ? "ความเครียดปานกลาง — ชวนพูดคุย ผ่อนคลาย และติดตามอาการ"
+                    : "ความเครียดอยู่ในเกณฑ์ปกติ — ดูแลสุขภาพใจต่อเนื่อง");
+      return {display:total, max:15, band, advice, crisis:null};
+    }
+  },
+
+  snap: {
+    name:"SNAP-IV", color:"#185FA5",
+    title:"แบบคัดกรองสมาธิสั้น (SNAP-IV ฉบับสั้น)",
+    sub:"ADHD / พฤติกรรมต่อต้าน · 26 ข้อ",
+    inst:"ประเมินพฤติกรรมเด็กในช่วง 6 เดือนที่ผ่านมา (ครู/ผู้ปกครองเป็นผู้ประเมิน)",
+    type:"likert", scale:LIK_SNAP,
+    items:[
+      "ไม่ใส่ใจรายละเอียด หรือทำผิดด้วยความเลินเล่อ",
+      "มีความยากลำบากในการตั้งสมาธิกับงานหรือการเล่น",
+      "ดูเหมือนไม่ฟังเวลาพูดด้วยโดยตรง",
+      "ทำตามคำสั่งไม่สำเร็จ ทำงาน/การบ้านไม่เสร็จ",
+      "มีความยากลำบากในการจัดระเบียบงานหรือกิจกรรม",
+      "หลีกเลี่ยงงานที่ต้องใช้ความพยายามทางความคิดต่อเนื่อง",
+      "ทำของใช้ที่จำเป็นหายบ่อย",
+      "วอกแวกตามสิ่งเร้าภายนอกได้ง่าย",
+      "ลืมกิจวัตรประจำวันบ่อย",
+      "อยู่ไม่สุข ขยับมือเท้า หรือบิดตัวไปมาบนเก้าอี้",
+      "ลุกจากที่นั่งในสถานการณ์ที่ควรนั่งอยู่กับที่",
+      "วิ่งหรือปีนป่ายในสถานการณ์ที่ไม่เหมาะสม",
+      "เล่นหรือทำกิจกรรมเงียบๆ ได้ยาก",
+      "เคลื่อนไหวตลอดเวลา เหมือนมีเครื่องยนต์ติดตัว",
+      "พูดมากเกินไป",
+      "โพล่งคำตอบก่อนถามจบ",
+      "รอคอยตามลำดับได้ยาก",
+      "ขัดจังหวะหรือสอดแทรกผู้อื่น",
+      "อารมณ์เสียหรือฉุนเฉียวง่าย",
+      "เถียงกับผู้ใหญ่",
+      "ท้าทายหรือไม่ทำตามกฎ/คำสั่งของผู้ใหญ่",
+      "จงใจทำให้ผู้อื่นรำคาญ",
+      "โทษผู้อื่นในความผิดพลาดของตน",
+      "ขี้น้อยใจ หรือถูกทำให้รำคาญได้ง่าย",
+      "โกรธและไม่พอใจบ่อย",
+      "อาฆาตหรือมีเจตนาร้าย"
+    ],
+    score(a){
+      const inatt=a.slice(0,9), hyper=a.slice(9,18), opp=a.slice(18,26);
+      const avg=arr=>arr.reduce((s,x)=>s+x,0)/arr.length;
+      const ai=avg(inatt), ah=avg(hyper), ao=avg(opp);
+      const flag=(v,c)=> v>=c;
+      const any = flag(ai,1.78)||flag(ah,1.44)||flag(ao,1.88);
+      const band = any ? {label:"พบพฤติกรรมเข้าเกณฑ์เฝ้าระวัง",key:"amber"} : {label:"ไม่เข้าเกณฑ์ที่ต้องเฝ้าระวัง",key:"green"};
+      return {display:(ai+ah+ao>0? "ดูค่าเฉลี่ยรายด้าน":"-"), hideScore:true, band,
+        subs:[{l:"ขาดสมาธิ",v:ai.toFixed(2),f:flag(ai,1.78)},{l:"ซน/หุนหัน",v:ah.toFixed(2),f:flag(ah,1.44)},{l:"ต่อต้าน",v:ao.toFixed(2),f:flag(ao,1.88)}],
+        advice: any
+          ? "มีด้านที่ค่าเฉลี่ย<b>สูงกว่าเกณฑ์อ้างอิง</b> — ควรส่งต่อประเมินวินิจฉัยและพิจารณาช่วยเหลือในชั้นเรียน (ปรับที่นั่ง แบ่งงาน checklist)"
+          : "ค่าเฉลี่ยทุกด้านอยู่ในเกณฑ์ — สังเกตและติดตามต่อเนื่อง",
+        note:"เกณฑ์อ้างอิง (ค่าเฉลี่ย): ขาดสมาธิ ≥1.78 · ซน/หุนหัน ≥1.44 · ต่อต้าน ≥1.88 — โปรดเทียบกับเกณฑ์ของฉบับ/ผู้ประเมินที่ใช้จริง", crisis:null};
+    }
+  },
+
+  nicotine: {
+    name:"นิโคติน", color:"#854F0B",
+    title:"แบบประเมินการติดนิโคติน (Fagerström)",
+    sub:"ระดับการเสพติดนิโคติน · 6 ข้อ",
+    inst:"ตอบตามพฤติกรรมการสูบบุหรี่/บุหรี่ไฟฟ้าในปัจจุบัน",
+    type:"custom",
+    items:[
+      {t:"หลังตื่นนอน คุณสูบบุหรี่มวนแรกเมื่อใด", o:[["ภายใน 5 นาที",3],["6–30 นาที",2],["31–60 นาที",1],["หลัง 60 นาที",0]]},
+      {t:"คุณรู้สึกลำบากที่จะไม่สูบบุหรี่ในเขตห้ามสูบหรือไม่", o:[["ใช่",1],["ไม่",0]]},
+      {t:"บุหรี่มวนใดที่คุณคิดว่าเลิกได้ยากที่สุด", o:[["มวนแรกตอนเช้า",1],["มวนอื่น",0]]},
+      {t:"คุณสูบบุหรี่วันละกี่มวน", o:[["10 มวนหรือน้อยกว่า",0],["11–20 มวน",1],["21–30 มวน",2],["31 มวนขึ้นไป",3]]},
+      {t:"คุณสูบบุหรี่ถี่ในช่วงเช้ามากกว่าช่วงอื่นของวันหรือไม่", o:[["ใช่",1],["ไม่",0]]},
+      {t:"คุณยังสูบบุหรี่แม้ป่วยจนต้องนอนพักทั้งวันหรือไม่", o:[["ใช่",1],["ไม่",0]]}
+    ],
+    score(a){
+      const total=a.reduce((s,x)=>s+x,0);
+      let band;
+      if(total<=2) band={label:"ติดนิโคตินต่ำมาก",key:"green"};
+      else if(total<=4) band={label:"ติดนิโคตินต่ำ",key:"green"};
+      else if(total===5) band={label:"ติดนิโคตินปานกลาง",key:"amber"};
+      else if(total<=7) band={label:"ติดนิโคตินสูง",key:"red"};
+      else band={label:"ติดนิโคตินสูงมาก",key:"red"};
+      const advice = total>=5
+        ? "ระดับการติดสูง — ควรให้คำปรึกษาเลิกบุหรี่ และพิจารณาส่งต่อคลินิกเลิกบุหรี่ / สายด่วน 1600"
+        : "ระดับการติดต่ำ — ให้ความรู้ ส่งเสริมการเลิก และติดตาม";
+      return {display:total, max:10, band, advice, note:"สำหรับบุหรี่ไฟฟ้า ใช้ประเมินพฤติกรรมการเสพเทียบเคียง", crisis:null};
+    }
+  },
+
+  gast: {
+    name:"GAST", color:"#185FA5",
+    title:"แบบทดสอบการติดเกม (GAST)",
+    sub:"Game Addiction Screening Test · 16 ข้อ",
+    inst:"ในช่วง 3 เดือนที่ผ่านมา ข้อความต่อไปนี้ตรงกับตัวหนูมากน้อยเพียงใด",
+    type:"likert", scale:["ไม่ใช่เลย","ไม่น่าใช่","น่าจะใช่","ใช่เลย"],
+    pre:{q:"เพศของผู้ทำแบบประเมิน (เกณฑ์จุดตัดต่างกัน)", options:[["เพศชาย","male"],["เพศหญิง","female"]]},
+    items:[
+      "ฉันสนใจหรือทำกิจกรรมอย่างอื่นน้อยลงมาก",
+      "ฉันมักเล่นเกมจนลืมเวลา",
+      "ความสัมพันธ์ระหว่างฉันกับคนในครอบครัวแย่ลง",
+      "ฉันเคยเล่นเกมดึกมาก จนทำให้ตื่นไปเรียนไม่ไหว",
+      "ฉันมักเล่นเกมเกินเวลาที่ฉันได้รับอนุญาตให้เล่น",
+      "ฉันมักอารมณ์เสียเวลามีใครมาบอกให้เลิกเล่นเกม",
+      "ฉันเคยโดดเรียนเพื่อไปเล่นเกม",
+      "เรื่องที่ฉันคุยกับเพื่อนๆ มักเป็นเรื่องเกี่ยวกับเกม",
+      "ฉันใช้เวลาว่างส่วนใหญ่ไปกับการเล่นเกม",
+      "การเรียนของฉันแย่ลงกว่าเดิมมาก",
+      "กลุ่มเพื่อนที่ฉันคบด้วย ชอบเล่นเกมเหมือนกับฉัน",
+      "เวลาที่ฉันพยายามหักห้ามใจตัวเองไม่ให้เล่นเกมมาก ฉันมักทำไม่สำเร็จ",
+      "เงินของฉันส่วนใหญ่หมดไปกับเกม (ซื้อบัตรชั่วโมง ไอเท็มในเกม ฯลฯ)",
+      "หลายคนบอกว่า อารมณ์ของฉันเปลี่ยนไป (เบื่อง่าย หงุดหงิดง่าย ขี้รำคาญ)",
+      "หลายคนบอกว่า พฤติกรรมของฉันเปลี่ยนไป (เถียงเก่ง ไม่เชื่อฟัง ไม่รับผิดชอบ)",
+      "หลายคนบอกว่าฉันติดเกม"
+    ],
+    score(a,gender){
+      const total=a.reduce((s,x)=>s+x,0);
+      const D={ "การหมกมุ่นกับเกม":[1,8,9,11,13,16], "ควบคุมตัวเองไม่ได้":[2,4,5,6,12], "สูญเสียหน้าที่รับผิดชอบ":[3,7,10,14,15] };
+      const subs=Object.entries(D).map(([l,idx])=>({l, v:idx.reduce((s,i)=>s+a[i-1],0)+"/"+(idx.length*3), f:false}));
+      const g = gender==="female" ? {warn:16,addict:23} : {warn:24,addict:33};
+      let band;
+      if(total>=g.addict) band={label:"น่าจะติดเกม",key:"red"};
+      else if(total>=g.warn) band={label:"คลั่งไคล้ (เริ่มมีปัญหา)",key:"amber"};
+      else band={label:"ปกติ",key:"green"};
+      const advice = total>=g.addict
+        ? "พฤติกรรมการเล่นเกมอาจกระทบชีวิตหลายด้าน — ควรปรึกษาครูแนะแนว/นักจิตวิทยา และพิจารณาส่งต่อจิตแพทย์เด็กและวัยรุ่น"
+        : (total>=g.warn ? "เริ่มมีสัญญาณเล่นเกมเกินขอบเขต — คุยกับคนที่ไว้ใจ ตั้งกติกาเวลาเล่นให้ชัด และติดตาม"
+                         : "อยู่ในเกณฑ์ปกติ — สังเกตให้การเล่นเกมสมดุลกับชีวิตด้านอื่นต่อไป");
+      return {display:total, max:48, band, subs, advice, note:"จุดตัดตามเพศ — ชาย: คลั่งไคล้ 24 / ติด 33 · หญิง: คลั่งไคล้ 16 / ติด 23", crisis:null};
+    }
+  },
+
+  drug: {
+    name:"บคก.", color:"#A32D2D",
+    title:"แบบคัดกรองยาเสพติด (บคก.กสธ. V.2)",
+    sub:"แยกระดับ ผู้ใช้ / ผู้เสพ / ผู้ติด · 6 ข้อ",
+    inst:"เลือกสารหลักที่ใช้บ่อยที่สุดก่อน แล้วตอบตามการใช้ในช่วง 3 เดือนที่ผ่านมา",
+    type:"custom",
+    pre:{q:"สารเสพติดหลักที่ใช้บ่อยที่สุด", options:[["ยาบ้า / ไอซ์","ยาบ้า/ไอซ์"],["กัญชา","กัญชา"],["กระท่อม","กระท่อม"],["บุหรี่ไฟฟ้า / บุหรี่","บุหรี่ไฟฟ้า/บุหรี่"],["สารระเหย","สารระเหย"],["อื่นๆ","สารเสพติด"]]},
+    items:[
+      {t:"ในช่วง 3 เดือนที่ผ่านมา ใช้สารนี้บ่อยเพียงใด (สูบ ดม กิน หรือฉีด)", o:[["ไม่เคย",0],["เพียง 1–2 ครั้ง",2],["เดือนละ 1–3 ครั้ง",3],["สัปดาห์ละ 1–4 ครั้ง",4],["เกือบทุกวัน",6]]},
+      {t:"รู้สึกอยากหรือต้องการใช้สารนี้อย่างรุนแรงบ่อยเพียงใด", o:[["ไม่เคย",0],["เพียง 1–2 ครั้ง",3],["เดือนละ 1–3 ครั้ง",4],["สัปดาห์ละ 1–4 ครั้ง",5],["เกือบทุกวัน",6]]},
+      {t:"การใช้สารทำให้เกิดปัญหาสุขภาพ ครอบครัว การเงิน กฎหมาย หรือสังคมบ่อยเพียงใด", o:[["ไม่เคย",0],["เพียง 1–2 ครั้ง",4],["เดือนละ 1–3 ครั้ง",5],["สัปดาห์ละ 1–4 ครั้ง",6],["เกือบทุกวัน",7]]},
+      {t:"การใช้สารทำให้ไม่สามารถทำสิ่งที่เคยทำได้ตามปกติบ่อยเพียงใด (เรียน/งาน/ครอบครัว)", o:[["ไม่เคย",0],["เพียง 1–2 ครั้ง",5],["เดือนละ 1–3 ครั้ง",6],["สัปดาห์ละ 1–4 ครั้ง",7],["เกือบทุกวัน",8]]},
+      {t:"มีคนกังวลเรื่องการใช้สารของคุณ และแนะนำให้หยุดหรือไม่", o:[["ไม่เคย",0],["เคยแต่ก่อน 3 เดือนที่ผ่านมา",3],["เคยในช่วง 3 เดือนที่ผ่านมา",6]]},
+      {t:"เคยพยายามลดหรือหยุดใช้สาร แต่ไม่สำเร็จหรือไม่", o:[["ไม่เคย",0],["เคยแต่ก่อน 3 เดือนที่ผ่านมา",3],["เคยในช่วง 3 เดือนที่ผ่านมา",6]]}
+    ],
+    score(a,sub){
+      const total=a.reduce((s,x)=>s+x,0);
+      let tier,band;
+      if(total<=1){tier=0;band={label:"ไม่พบการใช้ / เสี่ยงต่ำมาก",key:"green"};}
+      else if(total<=3){tier=1;band={label:"ผู้ใช้ · ผลกระทบต่ำ",key:"green"};}
+      else if(total<=26){tier=2;band={label:"ผู้เสพ · ผลกระทบปานกลาง",key:"amber"};}
+      else {tier=3;band={label:"ผู้ติด · ผลกระทบสูง",key:"red"};}
+      const adv=["ยังไม่พบการใช้ — ให้ความรู้ รู้เท่าทัน ทำซ้ำได้เมื่อต้องการ",
+        "ผู้ใช้ผลกระทบต่ำ — ให้คำแนะนำสั้น (Brief Advice) โดยครูแนะแนว ตั้งเป้าลด/งด ไม่ต้องบันทึกในระบบ บสต.",
+        "ผู้เสพผลกระทบปานกลาง — ทำ Brief Intervention 1–2 ครั้งกับนักจิตวิทยา/นักสังคมสงเคราะห์ และประสานส่งต่อ",
+        "ผู้ติดผลกระทบสูง — ส่งต่อสถานพยาบาลเพื่อบำบัดเข้มข้น (ยาลดความอยากยา / บสต.) และติดตามต่อเนื่อง"][tier];
+      return {display:total, max:39, band, advice:"<b>สารหลัก:</b> "+(sub||"-")+" · "+adv, note:"ระดับ (บคก.กสธ. V.2): ≤1 ไม่พบ · 2–3 ผู้ใช้ · 4–26 ผู้เสพ · ≥27 ผู้ติด", crisis: tier>=3?"ผลอยู่ในระดับ <b>ผู้ติด</b> — ควรส่งต่อผู้เชี่ยวชาญโดยเร็ว และดูแลความปลอดภัยของเด็ก":null};
+    }
+  },
+
+  psqi: {
+    name:"PSQI", color:"#0E7490",
+    title:"แบบประเมินคุณภาพการนอน (PSQI · ฉบับคัดกรอง)",
+    sub:"Pittsburgh Sleep Quality Index · 7 องค์ประกอบ",
+    inst:"ประเมินการนอนในช่วง 1 เดือนที่ผ่านมา — แต่ละข้อแทน 1 องค์ประกอบของคุณภาพการนอน",
+    type:"custom",
+    items:[
+      {t:"โดยรวม คุณคิดว่าคุณภาพการนอนของคุณเป็นอย่างไร", o:[["ดีมาก",0],["ค่อนข้างดี",1],["ค่อนข้างแย่",2],["แย่มาก",3]]},
+      {t:"ปกติใช้เวลานานเท่าใดกว่าจะหลับ หลังเข้านอน", o:[["≤ 15 นาที",0],["16–30 นาที",1],["31–60 นาที",2],["มากกว่า 60 นาที",3]]},
+      {t:"ปกติคุณนอนหลับจริงคืนละกี่ชั่วโมง", o:[["มากกว่า 7 ชม.",0],["6–7 ชม.",1],["5–6 ชม.",2],["น้อยกว่า 5 ชม.",3]]},
+      {t:"ประสิทธิภาพการนอน (เวลาที่หลับจริงเทียบกับเวลาที่อยู่บนเตียง)", o:[["มากกว่า 85% (ดีมาก)",0],["75–84%",1],["65–74%",2],["น้อยกว่า 65%",3]]},
+      {t:"ถูกรบกวนการนอนบ่อยแค่ไหน (ตื่นกลางดึก/เข้าห้องน้ำ/หายใจไม่สะดวก/ไอ-กรน/ร้อน-หนาว/ฝันร้าย/ปวด)", o:[["ไม่มีเลย",0],["น้อยกว่า 1 ครั้ง/สัปดาห์",1],["1–2 ครั้ง/สัปดาห์",2],["3 ครั้งขึ้นไป/สัปดาห์",3]]},
+      {t:"ต้องใช้ยาช่วยให้นอนหลับบ่อยแค่ไหน", o:[["ไม่เลย",0],["น้อยกว่า 1 ครั้ง/สัปดาห์",1],["1–2 ครั้ง/สัปดาห์",2],["3 ครั้งขึ้นไป/สัปดาห์",3]]},
+      {t:"มีปัญหาง่วง / ไม่มีแรงทำกิจกรรมในเวลากลางวันบ่อยแค่ไหน", o:[["ไม่มีปัญหาเลย",0],["เล็กน้อย",1],["ปานกลาง",2],["มาก",3]]}
+    ],
+    score(a){
+      const total=a.reduce((s,x)=>s+x,0);
+      const band = total>5 ? {label:"คุณภาพการนอนไม่ดี",key: total>10?"red":"amber"} : {label:"คุณภาพการนอนดี",key:"green"};
+      const advice = total>5
+        ? "คะแนนรวม <b>มากกว่า 5</b> บ่งชี้คุณภาพการนอนไม่ดี — ปัญหาการนอนเป็นสัญญาณร่วมของซึมเศร้า/วิตกกังวล ควรดูแลสุขอนามัยการนอน และพิจารณาประเมิน PHQ-A / ST-5 ร่วมด้วย"
+        : "คุณภาพการนอนอยู่ในเกณฑ์ดี — รักษาสุขอนามัยการนอนที่ดีต่อไป";
+      return {display:total, max:21, band, advice, note:"จุดตัด > 5 = คุณภาพการนอนไม่ดี (ฉบับย่อ 7 องค์ประกอบเพื่อการคัดกรอง — โปรดเทียบกับ PSQI ฉบับเต็มเมื่อต้องการความแม่นยำ)", crisis:null};
+    }
+  }
+};
+
+const LINKS = [];
+
+/* ============ ENGINE ============ */
+const BAND_STYLE={green:["var(--green-light)","var(--green-bd)","var(--green)"],amber:["var(--amber-light)","var(--amber-bd)","var(--amber)"],red:["var(--red-light)","var(--red-bd)","var(--red)"]};
+const menuList=document.getElementById('menuList');
+const testHost=document.getElementById('testHost');
+const menu=document.getElementById('menu');
+
+function buildMenu(){
+  Object.entries(TESTS).forEach(([id,t])=>{
+    const c=t.items.length;
+    const el=document.createElement('button');
+    el.className='mcard';
+    el.innerHTML=`<div class="mtag" style="background:${t.color}">${t.name}</div><div><h3>${t.title.replace(/\s*\(.*\)/,'')}</h3><p>${t.sub}</p></div><span class="marrow">›</span>`;
+    el.onclick=()=>openTest(id);
+    menuList.appendChild(el);
+  });
+  LINKS.forEach(l=>{
+    const a=document.createElement('a');
+    a.className='mcard'; a.href=l.href; if(l.ext){a.target="_blank";a.rel="noopener";}
+    a.innerHTML=`<div class="mtag" style="background:${l.color}">${l.tag}</div><div><h3>${l.h3}</h3><p>${l.p}</p></div><span class="ext">${l.ext?'เปิดเว็บ ↗':'เปิดไฟล์ ›'}</span>`;
+    menuList.appendChild(a);
+  });
+}
+
+function openTest(id){
+  const t=TESTS[id];
+  menu.style.display='none';
+  testHost.innerHTML=renderTest(id,t);
+  window.scrollTo(0,0);
+  wireTest(id,t);
+  history.replaceState(null,'',{}.toString?('#'+id):('#'+id));
+  location.hash=id;
+}
+
+function renderTest(id,t){
+  let qs='';
+  t.items.forEach((it,i)=>{
+    const text = t.type==='custom'? it.t : it;
+    let opts='';
+    if(t.type==='likert'){
+      opts=t.scale.map((lab,v)=>`<label class="opt"><input type="radio" name="${id}_${i}" value="${v}"><span>${lab}</span></label>`).join('');
+    } else if(t.type==='binary'){
+      opts=[["มี / ใช่",it.w],["ไม่มี / ไม่ใช่",0]].map(([lab,v])=>`<label class="opt"><input type="radio" name="${id}_${i}" value="${v}"><span>${lab}</span></label>`).join('');
+    } else { // custom
+      opts=it.o.map(([lab,v])=>`<label class="opt"><input type="radio" name="${id}_${i}" value="${v}"><span>${lab}</span></label>`).join('');
+    }
+    qs+=`<div class="q" data-qi="${i}"><div class="qnum">ข้อ ${i+1}</div><div class="qtext">${text}</div><div class="opts">${opts}</div></div>`;
+  });
+  return `<div class="test active">
+    <button class="back" onclick="closeTest()">‹ กลับเมนู</button>
+    <div class="thead"><h2>${t.title}</h2><div class="sub">${t.sub}</div><div class="inst">${t.inst}</div></div>
+    ${t.pre?`<div class="q" id="preq" style="border-color:${t.color}"><div class="qnum">เลือกก่อนเริ่ม</div><div class="qtext">${t.pre.q}</div><div class="opts">${t.pre.options.map(([lab,v])=>`<label class="opt"><input type="radio" name="${id}_pre" value="${v}"><span>${lab}</span></label>`).join('')}</div></div>`:''}
+    <div id="qlist">${qs}</div>
+    <div class="warn" id="warn">กรุณาตอบให้ครบทุกข้อ (ข้อที่ขึ้นกรอบแดงยังไม่ได้ตอบ)</div>
+    <button class="submit" id="submitBtn">ดูผลการประเมิน</button>
+    <div class="result" id="result"></div>
+  </div>`;
+}
+
+function wireTest(id,t){
+  testHost.querySelectorAll('.opt input').forEach(inp=>{
+    inp.addEventListener('change',e=>{
+      const q=e.target.closest('.q'); q.classList.remove('unanswered-flag');
+      q.querySelectorAll('.opt').forEach(o=>o.classList.remove('sel'));
+      e.target.closest('.opt').classList.add('sel');
+    });
+  });
+  document.getElementById('submitBtn').onclick=()=>submitTest(id,t);
+}
+
+function submitTest(id,t){
+  const a=[]; let missing=false;
+  let preVal=null;
+  if(t.pre){
+    const ps=testHost.querySelector(`input[name="${id}_pre"]:checked`);
+    const pq=document.getElementById('preq');
+    if(!ps){missing=true; if(pq)pq.classList.add('unanswered-flag');}
+    else preVal=ps.value;
+  }
+  t.items.forEach((it,i)=>{
+    const sel=testHost.querySelector(`input[name="${id}_${i}"]:checked`);
+    const q=testHost.querySelector(`.q[data-qi="${i}"]`);
+    if(!sel){missing=true;q.classList.add('unanswered-flag');}
+    else a.push(Number(sel.value));
+  });
+  const warn=document.getElementById('warn');
+  if(missing){warn.classList.add('show'); const f=testHost.querySelector('.unanswered-flag'); if(f)window.scrollTo(0,f.offsetTop-20); return;}
+  warn.classList.remove('show');
+  const r=t.score(a,preVal);
+  const [bg,bd,fg]=BAND_STYLE[r.band.key];
+  let html=`<div class="rband" style="background:${bg};border-color:${bd};color:${fg}">`;
+  if(!r.hideScore) html+=`<div class="rscore">${r.display}<span style="font-size:18px;font-weight:500"> / ${r.max}</span></div>`;
+  html+=`<div class="rlabel">${r.band.label}</div></div>`;
+  if(r.subs){
+    html+=`<div class="subscores">`+r.subs.map(s=>`<div class="sc"><div class="v" style="color:${s.f?'var(--red)':'var(--blue)'}">${s.v}</div><div class="l">${s.l}${s.f?' ⚠':''}</div></div>`).join('')+`</div>`;
+  }
+  if(r.crisis) html+=`<div class="crisis">🚨 ${r.crisis}</div>`;
+  html+=`<div class="radvice">${r.advice}${r.note?`<div style="font-size:12.5px;color:var(--hint);margin-top:8px">หมายเหตุ: ${r.note}</div>`:''}</div>`;
+  html+=`<div class="ractions"><button onclick="resetTest('${id}')">ทำใหม่</button><button class="primary" onclick="closeTest()">เสร็จสิ้น · กลับเมนู</button><button onclick="window.print()">พิมพ์ผล</button></div>`;
+  const res=document.getElementById('result'); res.innerHTML=html; res.classList.add('show');
+  document.getElementById('submitBtn').style.display='none';
+  window.scrollTo(0,res.offsetTop-30);
+}
+
+function resetTest(id){ const t=TESTS[id]; testHost.innerHTML=renderTest(id,t); wireTest(id,t); window.scrollTo(0,0); }
+function closeTest(){ testHost.innerHTML=''; menu.style.display='block'; location.hash=''; window.scrollTo(0,0); }
+
+buildMenu();
+// deep link
+if(location.hash){ const id=location.hash.slice(1); if(TESTS[id]) openTest(id); }
+</script>
+</body>
+</html>
