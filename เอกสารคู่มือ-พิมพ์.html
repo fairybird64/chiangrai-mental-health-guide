@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@600;700&family=Sarabun:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@500&family=Noto+Color+Emoji&display=swap" rel="stylesheet">
+<style>
+  @page{size:A4;margin:15mm 14mm}
+  *{box-sizing:border-box}
+  body{margin:0;background:#e7e5df;font-family:'Sarabun','Noto Color Emoji',sans-serif;color:#2c2823}
+  .sheet{background:#fff;max-width:820px;margin:24px auto;padding:46px 52px;box-shadow:0 2px 18px rgba(0,0,0,.12)}
+  .brk{break-before:page}
+  .avoid{break-inside:avoid}
+  h2{break-after:avoid;break-inside:avoid}
+  h3{break-after:avoid}
+  ul{margin:0;padding-left:17px}
+  li{margin-bottom:2px}
+  @media print{
+    body{background:#fff}
+    .sheet{box-shadow:none;margin:0;max-width:none;width:auto;padding:0}
+    .noprint{display:none!important}
+  }
+</style>
+</helmet>
+
+<div class="noprint" style="position:fixed;top:0;left:0;right:0;background:#25433f;color:#fff;padding:11px 20px;display:flex;justify-content:space-between;align-items:center;z-index:50;font-size:16px">
+  <a href="index.html" style="color:#fff;text-decoration:none;font-family:'IBM Plex Mono',monospace;letter-spacing:.06em;display:flex;align-items:center;gap:8px"><span style="font-size:18px">‹</span> กลับสู่คู่มือฉบับเว็บ</a>
+  <button onClick="{{ doPrint }}" style="background:#fff;color:#25433f;border:none;border-radius:7px;padding:8px 18px;font-family:'Sarabun',sans-serif;font-weight:600;font-size:16px;cursor:pointer">🖨 พิมพ์ / บันทึก PDF</button>
+</div>
+
+<div class="sheet" style="margin-top:64px">
+
+  <!-- COVER -->
+  <div style="border-bottom:3px solid #25433f;padding-bottom:22px;margin-bottom:26px">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:#b07a4f">คู่มือสำหรับครูและบุคลากรสาธารณสุข</div>
+    <h1 style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:34px;line-height:1.3;margin:10px 0 8px">คู่มือระบบดูแลสุขภาพจิตเด็กและวัยรุ่น จ.เชียงราย</h1>
+    <div style="font-size:17px;color:#6f665a">แนวทางช่วยเหลือนักเรียน เรียงตามบทบาท — ครูที่ปรึกษา · ครูแนะแนว · นักจิตวิทยา สพม. · โรงพยาบาล · เครือข่ายชุมชน</div>
+  </div>
+
+  <p style="font-size:16px;line-height:1.7;color:#4a4337;margin:0 0 16px">คู่มือนี้จัดเรียงบทบาทผู้ดูแลตั้งแต่ระดับห้องเรียนถึงโรงพยาบาล พร้อมบทบาทของเครือข่ายชุมชน (อสม. · ผู้นำชุมชน · รพ.สต. · ทีมเพื่อนสนิท) เพื่อดูแลเด็กไว้ในระบบไม่ให้หลุดหาย ครอบคลุม 7 กลุ่มปัญหาจิตเวชหลักที่พบในวัยเรียน ถอดบทเรียนจากการดำเนินงานในโรงเรียนสังกัด สพม.ชร. ทั้ง 41 แห่ง ตั้งแต่ปี 2564</p>
+
+  <div style="display:flex;gap:12px;margin-bottom:8px">
+    <div style="flex:1;background:#f3ede2;border-radius:8px;padding:14px"><div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:24px;color:#3f8079">20–25%</div><div style="font-size:14px;color:#6f665a">มีภาวะซึมเศร้าปานกลางขึ้นไป</div></div>
+    <div style="flex:1;background:#f3ede2;border-radius:8px;padding:14px"><div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:24px;color:#b04a3a">4–5%</div><div style="font-size:14px;color:#6f665a">เข้าสู่ระบบรักษา (~200–300/ปี)</div></div>
+    <div style="flex:1;background:#f3ede2;border-radius:8px;padding:14px"><div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:24px;color:#5a8f6a">47% · 40%</div><div style="font-size:14px;color:#6f665a">ซึมเศร้า · สมาธิสั้น (อื่นๆ 13%)</div></div>
+    <div style="flex:1;background:#f3ede2;border-radius:8px;padding:14px"><div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:24px;color:#45707e">17–25%</div><div style="font-size:14px;color:#6f665a">NSSI ในวัยรุ่น (เพิ่มขึ้น)</div></div>
+  </div>
+
+  <div style="margin-top:16px;font-size:15px;line-height:1.75;color:#4a4337">
+    <p style="margin:0 0 8px">ทุกเทอมที่ประเมินด้วย PHQ-A พบนักเรียนที่มีภาวะซึมเศร้าระดับปานกลางขึ้นไปเฉลี่ย <b>20–25%</b> ซึ่งได้รับการดูแลช่วยเหลือเบื้องต้นจากครูนักจิต (ครูแนะแนว) ในโรงเรียน</p>
+    <p style="margin:0 0 8px">เมื่อดูแลเบื้องต้นแล้วอาการยังไม่ดีขึ้น จะส่งต่อเข้าสู่ระบบการรักษาประมาณ <b>4–5%</b> ต่อปี โดยมีคำวินิจฉัยหลักคือ<b>โรคซึมเศร้า</b></p>
+    <p style="margin:0">ทั้งนี้พบว่าราว <b>40%</b> ของกลุ่มที่เข้าสู่การรักษาเคยได้รับการวินิจฉัยโรค<b>สมาธิสั้น</b>มาก่อน และที่น่าเป็นห่วงคือพฤติกรรม<b>ทำร้ายตัวเองโดยไม่มีเจตนาฆ่าตัวตาย (NSSI)</b> ในกลุ่มวัยรุ่นมีแนวโน้มเพิ่มขึ้น พบ <b>17–25%</b></p>
+  </div>
+
+  <div class="avoid" style="margin-top:16px;background:#eef3ef;border:1px solid #d6e2da;border-radius:9px;padding:13px 16px">
+    <div style="font-size:14px;font-weight:700;color:#2f6b62;margin-bottom:6px">อภิธานศัพท์ย่อ (อ่านง่าย)</div>
+    <div style="font-size:13.5px;line-height:1.8;color:#4a4337;column-count:2;column-gap:26px">
+      <div><b>ระดับ U / S / I</b> = ทุกคน / กลุ่มเสี่ยง / เข้ารักษา</div>
+      <div><b>ข้อ 9 เป็นบวก</b> = เด็กตอบว่ามีความคิดทำร้ายตัวเอง</div>
+      <div><b>โรคร่วม</b> = มีหลายโรคพร้อมกัน</div>
+      <div><b>MI</b> = พูดคุยสร้างแรงจูงใจให้อยากเปลี่ยน</div>
+      <div><b>ABA</b> = วิเคราะห์-ปรับพฤติกรรม (เหตุ–พฤติกรรม–ผล)</div>
+      <div><b>BA</b> = ชวนทำกิจกรรมเพื่อคลายซึมเศร้า</div>
+      <div><b>CBT</b> = ปรับความคิดและพฤติกรรม</div>
+      <div><b>PMT</b> = ฝึกผู้ปกครองจัดการพฤติกรรมลูก</div>
+      <div><b>IEP</b> = แผนการเรียนเฉพาะบุคคล</div>
+      <div><b>SI</b> = ความคิดอยากตาย / อยากทำร้ายตัวเอง</div>
+      <div><b>Triple-P</b> = โปรแกรมเลี้ยงดูเชิงบวก สอนผู้ปกครองจัดการพฤติกรรมลูก</div>
+    </div>
+  </div>
+
+  <!-- ROLES -->
+  <h2 style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:23px;margin:30px 0 6px;color:#25433f;border-left:5px solid #3f8079;padding-left:12px">1 · บทบาทตามระดับ</h2>
+  <table style="width:100%;border-collapse:collapse;font-size:14.5px;margin-top:10px">
+    <tbody>
+      <tr class="avoid"><td style="width:150px;vertical-align:top;padding:10px 12px;border:1px solid #e0d6c4;background:#f3ede2;font-weight:700">ครูที่ปรึกษา<div style="font-size:12.5px;color:#708a6b;font-weight:600">ระดับ U · ทุกคน</div></td><td style="padding:10px 12px;border:1px solid #e0d6c4">สังเกตพฤติกรรมประจำวัน (ขาด ลา มาสาย ไม่ส่งงาน ต่อต้าน) · สร้างสัมพันธภาพ รับฟังไม่ตัดสิน · พบผิดปกติ → แจ้งครูแนะแนว</td></tr>
+      <tr class="avoid"><td style="vertical-align:top;padding:10px 12px;border:1px solid #e0d6c4;background:#f3ede2;font-weight:700">ครูแนะแนว<div style="font-size:12.5px;color:#3f8079;font-weight:600">ระดับ S · กลุ่มเสี่ยง</div></td><td style="padding:10px 12px;border:1px solid #e0d6c4">ประเมินเบื้องต้น (PHQ-A/SNAP-IV/8Q) · ช่วยเหลือตาม flow (ABA/Triple-P/MI/BA) · ประสานผู้ปกครอง ติดตาม 2–4 สัปดาห์ · 5 มาตรการ: ให้คำปรึกษา · เยี่ยมบ้าน · Buddy · ปรับการเรียนการสอน · Case Conference</td></tr>
+      <tr class="avoid"><td style="vertical-align:top;padding:10px 12px;border:1px solid #e0d6c4;background:#f3ede2;font-weight:700">นักจิตฯ สพม.<div style="font-size:12.5px;color:#43688f;font-weight:600">ระดับ S · เชิงลึก</div></td><td style="padding:10px 12px;border:1px solid #e0d6c4">ประเมินซ้ำ + คำแนะนำเชิงลึก · วางแผนร่วมกับครูดูแลต่อ/ส่งต่อ · เป็นพี่เลี้ยงจัดการเคสยาก · ถ้าข้อ 9 เป็นบวก (เด็กคิดทำร้ายตัวเอง) → ส่ง รพ. ทันที</td></tr>
+      <tr class="avoid"><td style="vertical-align:top;padding:10px 12px;border:1px solid #e0d6c4;background:#f3ede2;font-weight:700">โรงพยาบาล<div style="font-size:12.5px;color:#5b6aa0;font-weight:600">ระดับ I · เข้ารักษา</div></td><td style="padding:10px 12px;border:1px solid #e0d6c4">ประเมินครบถ้วน (8Q / สัมภาษณ์เพื่อวินิจฉัย / โรคร่วม) · รักษา: ยา + จิตบำบัด + ครอบครัว · ประสานกลับโรงเรียน · OPD/IPD/เยี่ยมบ้าน</td></tr>
+      <tr class="avoid"><td style="vertical-align:top;padding:10px 12px;border:1px solid #e0d6c4;background:#f3ede2;font-weight:700">เครือข่ายชุมชน<div style="font-size:12.5px;color:#b07a4f;font-weight:600">สนับสนุน</div></td><td style="padding:10px 12px;border:1px solid #e0d6c4">อสม. · ผู้นำชุมชน · รพ.สต. · ทีมเพื่อนสนิท — เฝ้าระวัง เยี่ยมบ้านแนบเนียน (กันตีตรา) สะพานเชื่อมบ้าน–โรงเรียน รับ-ส่ง รพ. รักษาความลับ</td></tr>
+    </tbody>
+  </table>
+
+  <!-- FLOW -->
+  <h2 style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:23px;margin:28px 0 6px;color:#25433f;border-left:5px solid #3f8079;padding-left:12px">2 · เส้นทางการส่งต่อ</h2>
+  <div style="display:flex;gap:10px;font-size:14px">
+    <div style="flex:1;border:1px solid #e0d6c4;border-top:4px solid #708a6b;border-radius:8px;padding:12px"><b>ระดับ 1 · โรงเรียน</b><br>พบปัญหา → ประเมิน+สร้างสัมพันธ์ → ช่วยตาม flow → ติดตาม 2–4 สัปดาห์</div>
+    <div style="flex:1;border:1px solid #e0d6c4;border-top:4px solid #43688f;border-radius:8px;padding:12px"><b>ระดับ 2 · สพม.</b><br>ประเมินซ้ำ → วางแผนดูแลต่อ/ส่งต่อ → SI ส่ง รพ. ทันที</div>
+    <div style="flex:1;border:1px solid #e0d6c4;border-top:4px solid #5b6aa0;border-radius:8px;padding:12px"><b>ระดับ 3 · โรงพยาบาล</b><br>ประเมินครบถ้วน → รักษา ยา+จิตบำบัด+ครอบครัว → ประสานกลับ</div>
+  </div>
+  <div style="background:#fbeee9;border:1px solid #ecc9bf;border-radius:8px;padding:11px 14px;margin-top:10px;font-size:14.5px;color:#7a4035">⚡ <b>ส่ง รพ. ทันที</b> (ไม่ต้องรอครบขั้นตอน): ข้อ 9 เป็นบวก (เด็กคิดทำร้ายตัวเอง) · พยายามทำร้ายตัวเอง · ทำร้ายตัวเองบาดแผลลึก · ติดยารุนแรง · มีอาการทางจิต · ครอบครัวใช้ความรุนแรง</div>
+
+  <!-- DISEASES -->
+  <h2 class="brk" style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:23px;margin:0 0 12px;color:#25433f;border-left:5px solid #3f8079;padding-left:12px">3 · 7 กลุ่มปัญหาจิตเวชหลัก</h2>
+  <sc-for list="{{ diseases }}" as="d" hint-placeholder-count="7">
+    <div class="avoid" style="border:1px solid #e0d6c4;border-radius:9px;overflow:hidden;margin-bottom:16px">
+      <div style="background:#f3ede2;padding:9px 14px;display:flex;gap:9px;align-items:center"><span style="font-size:21px">{{ d.emoji }}</span><div><div style="font-weight:700;font-size:17.5px;font-family:'Noto Serif Thai',serif">{{ d.name }}</div><div style="font-size:12px;color:#9b9079;font-family:'IBM Plex Mono',monospace">{{ d.en }}</div></div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr">
+        <div style="padding:11px 14px;border-right:1px solid #efe9dd;border-bottom:1px solid #efe9dd"><div style="font-size:13px;font-weight:700;color:#6f665a;margin-bottom:4px">🔍 สัญญาณที่ครูสังเกต</div><ul style="font-size:14px;line-height:1.5;color:#4a4337"><sc-for list="{{ d.signs }}" as="s" hint-placeholder-count="2"><li>{{ s }}</li></sc-for></ul></div>
+        <div style="padding:11px 14px;border-bottom:1px solid #efe9dd"><div style="font-size:13px;font-weight:700;color:#3f8079;margin-bottom:4px">🟢 ครูทำได้เลย</div><ul style="font-size:14px;line-height:1.5;color:#3f4d44"><sc-for list="{{ d.teacher }}" as="t" hint-placeholder-count="6"><li>{{ t }}</li></sc-for></ul></div>
+        <div style="padding:11px 14px;border-right:1px solid #efe9dd"><div style="font-size:13px;font-weight:700;color:#b04a3a;margin-bottom:4px">⚡ ส่งต่อ รพ. เมื่อ</div><ul style="font-size:14px;line-height:1.5;color:#7a4035"><sc-for list="{{ d.refer }}" as="r" hint-placeholder-count="5"><li>{{ r }}</li></sc-for></ul></div>
+        <div style="padding:11px 14px"><div style="font-size:13px;font-weight:700;color:#5b6aa0;margin-bottom:4px">🏥 รพ. ทำเพิ่ม</div><ul style="font-size:14px;line-height:1.5;color:#454368"><sc-for list="{{ d.hospital }}" as="h" hint-placeholder-count="5"><li>{{ h }}</li></sc-for></ul></div>
+      </div>
+    </div>
+  </sc-for>
+
+  <!-- TECHNIQUES -->
+  <h2 class="brk" style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:23px;margin:0 0 12px;color:#25433f;border-left:5px solid #3f8079;padding-left:12px">4 · 6 เทคนิคช่วยเหลือ (ครูทำได้ vs รพ.ทำเพิ่ม)</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:14px">
+    <div class="avoid" style="border:1px solid #e0d6c4;border-radius:8px;padding:13px"><div style="font-size:16px;font-family:'Noto Serif Thai',serif;font-weight:700">ABA — วิเคราะห์-ปรับพฤติกรรม <span style="font-size:12px;color:#5a7553;font-weight:400">ครู + รพ.</span></div><div style="margin-top:5px;line-height:1.55"><b>คืออะไร:</b> ดูว่าอะไรเกิดก่อน (เหตุ) → เด็กทำอะไร (พฤติกรรม) → แล้วเกิดอะไรตามมา (ผล) เช่น โวยวายแล้วได้ของ พฤติกรรมจะยิ่งทำซ้ำ<br><b>ครูทำอย่างไร:</b> เปลี่ยน “เหตุ” (เตือน/ตกลงล่วงหน้า) และ “ผล” (เมินพฤติกรรมเล็กน้อย ชมทันทีเมื่อทำดี). รพ.: ออกแบบแผนปรับพฤติกรรมเฉพาะราย + ฝึกผู้ปกครอง (PMT)</div></div>
+    <div class="avoid" style="border:1px solid #e0d6c4;border-radius:8px;padding:13px"><div style="font-size:16px;font-family:'Noto Serif Thai',serif;font-weight:700">Triple-P — เลี้ยงดูเชิงบวก <span style="font-size:12px;color:#5a7553;font-weight:400">ครู + รพ.</span></div><div style="margin-top:5px;line-height:1.55"><b>คืออะไร:</b> เทคนิคที่ครูสอนผู้ปกครองให้จัดการพฤติกรรมลูกอย่างได้ผล<br><b>ทำอย่างไร — Ask-Say-Do (ถาม-บอก-ทำ):</b> <b>ถาม</b> ให้เด็กบอกเองว่าต้องทำอะไร → <b>บอก</b> บอกขั้นตอนสั้นๆ ชัดๆ → <b>ทำ</b> ให้เด็กลงมือทำ ช่วยถ้ายังทำไม่ได้; ชมทันทีเมื่อทำดี และตั้งกฎชัดเจนทำสม่ำเสมอ. รพ.: ฝึกผู้ปกครองเชิงลึก 8–12 ครั้ง</div></div>
+    <div class="avoid" style="border:1px solid #e0d6c4;border-radius:8px;padding:13px"><div style="font-size:16px;font-family:'Noto Serif Thai',serif;font-weight:700">MI — พูดสร้างแรงจูงใจ <span style="font-size:12px;color:#5a7553;font-weight:400">ครู + รพ.</span></div><div style="margin-top:5px;line-height:1.55"><b>คืออะไร:</b> พูดคุยให้เด็กอยากเปลี่ยนด้วยตัวเอง ไม่บังคับ ไม่ตัดสิน<br><b>ทำอย่างไร (OARS):</b> ถามปลายเปิด · ชื่นชมความตั้งใจ · ทวนความรู้สึกที่เด็กพูด · สรุปให้เด็กฟัง. รพ.: ประเมินความพร้อมเปลี่ยนแปลง + ใช้เต็มรูปแบบ</div></div>
+    <div class="avoid" style="border:1px solid #e0d6c4;border-radius:8px;padding:13px"><div style="font-size:16px;font-family:'Noto Serif Thai',serif;font-weight:700">BA — เพิ่มกิจกรรมคลายซึมเศร้า <span style="font-size:12px;color:#5a7553;font-weight:400">ครู + รพ.</span></div><div style="margin-top:5px;line-height:1.55"><b>คืออะไร:</b> เมื่อซึมเศร้า เด็กยิ่งไม่อยากทำอะไรและยิ่งแย่ลง วิธีแก้คือค่อยๆ เพิ่มกิจกรรมที่ทำแล้วรู้สึกดี<br><b>ทำอย่างไร:</b> ให้เด็กจดกิจกรรมแต่ละวัน ให้คะแนนความสุข/ความภูมิใจ 0–10 แล้ววางแผนเพิ่มกิจกรรมคะแนนสูง เริ่มจากเล็กๆ ที่ทำได้จริง</div></div>
+    <div class="avoid" style="border:1px solid #e0d6c4;border-radius:8px;padding:13px"><div style="font-size:16px;font-family:'Noto Serif Thai',serif;font-weight:700">CBT — ปรับความคิดและพฤติกรรม <span style="font-size:12px;color:#b04a3a;font-weight:400">รพ. เป็นหลัก</span></div><div style="margin-top:5px;line-height:1.55"><b>คืออะไร:</b> ปรับ “ความคิด → อารมณ์ → พฤติกรรม” โดยช่วยเด็กจับความคิดด้านลบและหาความคิดทางเลือกที่สมจริง<br><b>ครูช่วยได้:</b> อธิบายความเชื่อมโยงนี้ให้เด็กเข้าใจ และชวนเด็กจดความคิด/อารมณ์ในสถานการณ์ต่างๆ</div></div>
+    <div class="avoid" style="border:1px solid #e0d6c4;border-radius:8px;padding:13px"><div style="font-size:16px;font-family:'Noto Serif Thai',serif;font-weight:700">แผนความปลอดภัย (Safety Plan) <span style="font-size:12px;color:#b04a3a;font-weight:400">รพ. เป็นหลัก</span></div><div style="margin-top:5px;line-height:1.55"><b>คืออะไร:</b> แผนรับมือเมื่อเด็กมีความคิดทำร้ายตัวเอง<br><b>ครูเมื่อพบ:</b> อยู่กับเด็กตลอด ไม่ทิ้งไว้คนเดียว · รับฟังอย่างสงบ (“ครูดีใจที่หนูบอก”) · แจ้ง รพ.ทันที · แจ้งผู้ปกครอง (ความปลอดภัยสำคัญกว่าความลับ)</div></div>
+  </div>
+
+  <!-- NSSI -->
+  <h2 class="brk" style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:23px;margin:0 0 6px;color:#25433f;border-left:5px solid #45707e;padding-left:12px">5 · NSSI เจาะลึก</h2>
+  <div style="font-size:14.5px;color:#6f665a;margin-bottom:12px">การทำร้ายตัวเองโดยไม่มีเจตนาฆ่าตัวตาย — เรียบเรียงจากสื่อสถาบันสุขภาพเด็กแห่งชาติมหาราชินี กรมการแพทย์</div>
+  <div class="avoid" style="background:#e7eff2;border-radius:9px;padding:14px 16px;margin-bottom:12px;font-size:15px;color:#2c3e44"><b>NSSI คืออะไร:</b> การทำร้ายร่างกายตนเองโดยตั้งใจ โดยไม่มีเจตนาฆ่าตัวตาย เพื่อจัดการความเจ็บปวดทางอารมณ์ที่ทนไม่ได้ · รูปแบบ: กรีด เผา กัด ตี ดึงผม · ซ่อนเร้น: แขน ต้นขา หน้าท้อง</div>
+  <div class="avoid" style="margin-bottom:12px">
+    <div style="font-size:15px;font-weight:700;margin-bottom:6px">ทำไมเด็กถึงทำ — ฟังก์ชันทางจิตใจ (ใต้ภูเขาน้ำแข็ง)</div>
+    <div style="font-size:14px;line-height:1.6;color:#4a4337"><b>Zone 1</b> ระบาย/หยุดความเจ็บปวด · <b>Zone 2</b> ลงโทษตัวเอง · <b>Zone 3</b> รู้สึกว่ายังมีตัวตน (Anti-dissociation) · <b>Zone 4</b> ขอความช่วยเหลือโดยไม่ต้องพูด — งานของเราคือช่วยหา “กลยุทธ์ที่ดีกว่า”</div>
+  </div>
+  <div class="avoid" style="background:#eef4ef;border-radius:9px;padding:13px 16px;margin-bottom:12px;font-size:14.5px"><b style="color:#2f6b5c">มุมมองใหม่:</b> ไม่ใช่ “เรียกร้องความสนใจ/ควบคุมคนอื่น/แค่หยุดทำ” แต่คือ <b>เด็กขาดทักษะสื่อสารความทุกข์และความต้องการ</b> — งานคือ การสื่อสาร · ตอบสนองความต้องการ · เปิดใช้ทรัพยากรช่วยเหลือ</div>
+  <div class="avoid">
+    <div style="font-size:15px;font-weight:700;margin-bottom:6px">บทสนทนา 5 ขั้น (เมื่อครูพบเด็กทำ NSSI)</div>
+    <ol style="font-size:14px;line-height:1.6;color:#4a4337;padding-left:18px">
+      <li><b>เปิดบทสนทนา</b> — “ครูสังเกตเห็นบางอย่าง และห่วงหนู อยากให้เราคุยกันได้ไหม?” (ไม่บังคับ ให้เลือก)</li>
+      <li><b>ถามตรงแต่เบาๆ</b> — “รอยที่แขนเป็นมาได้ยังไง? ครูอยากเข้าใจ” (รอคำตอบ ยอมรับความเงียบ)</li>
+      <li><b>ฟังและ Validate</b> — “ฟังดูเหมือนหนูแบกรับอะไรหนักมาก ขอบคุณที่เล่าให้ฟัง” (อย่าเพิ่งรีบแก้)</li>
+      <li><b>ตรวจสอบ Safety</b> — “หนูมีความคิดอยากทำร้ายตัวเองให้รุนแรงขึ้น หรืออยากตายไหม?” (การถามตรงไม่ทำให้เกิดความคิดฆ่าตัวตาย)</li>
+      <li><b>วางแผนร่วมกัน</b> — “ครูอยากให้เราไปคุยกับครูแนะแนว/คุณหมอด้วยกัน หนูโอเคไหม?”</li>
+    </ol>
+  </div>
+
+  <!-- COMMUNITY -->
+  <h2 class="brk" style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:23px;margin:0 0 12px;color:#25433f;border-left:5px solid #b07a4f;padding-left:12px">6 · เครือข่ายชุมชน (เชียงแสนวิทยาคมโมเดล)</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:14px;margin-bottom:12px">
+    <div class="avoid" style="border:1px solid #e0d6c4;border-left:4px solid #b07a4f;border-radius:8px;padding:12px"><b>อสม.</b> — เยี่ยมบ้านแนบเนียน (แบ่งปันเสื้อผ้า/อาหาร) · เฝ้าระวัง · รักษาความลับก่อนลงพื้นที่</div>
+    <div class="avoid" style="border:1px solid #e0d6c4;border-left:4px solid #b07a4f;border-radius:8px;padding:12px"><b>ผู้นำชุมชน/ผู้ใหญ่บ้าน</b> — สะพานเชื่อมบ้าน–โรงเรียน · ปรึกษาหารือ · จัดการอุปสรรคในพื้นที่</div>
+    <div class="avoid" style="border:1px solid #e0d6c4;border-left:4px solid #b07a4f;border-radius:8px;padding:12px"><b>รพ.สต.</b> — ดูแล/ติดตามปฐมภูมิใกล้บ้าน · ประสานส่งต่อ รพ.แม่ข่าย · เยี่ยมบ้านร่วม อสม.</div>
+    <div class="avoid" style="border:1px solid #e0d6c4;border-left:4px solid #b07a4f;border-radius:8px;padding:12px"><b>ทีมเพื่อนสนิท</b> — ดูแล 3 มิติ: ประคองการเรียน · ความปลอดภัยช่วงพัก · สังเกตอาการรายวัน</div>
+  </div>
+  <div class="avoid" style="background:#f6efe6;border-radius:8px;padding:12px 15px;font-size:14px;color:#4a4337"><b>มาตรการรักษาความลับ (Need-to-Know):</b> สื่อสารเฉพาะส่วนจำเป็น · ทำความเข้าใจเรื่องความลับกับ อสม./ผู้นำชุมชนก่อนลงพื้นที่ · ห้ามเปิดเผยในที่สาธารณะ · โรงเรียนรับ-ส่งเด็กไป รพ. เมื่อผู้ปกครองไม่พร้อม เพื่อให้การรักษาไม่ขาดตอน</div>
+
+  <!-- ===== CHIANGSAEN MODEL DEEP DIVE ===== -->
+  <h2 class="brk" style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:23px;margin:0 0 4px;color:#25433f;border-left:5px solid #b07a4f;padding-left:12px">6.1 · ถอดบทเรียนเชียงแสนวิทยาคมโมเดล</h2>
+  <div style="font-size:14px;color:#6f665a;margin-bottom:14px">ต้นแบบการบูรณาการเครือข่ายสุขภาพจิตและระบบการศึกษา เพื่อสร้างพื้นที่ปลอดภัยให้นักเรียนกลุ่มเปราะบาง</div>
+
+  <div class="avoid" style="border:1px solid #e0d6c4;border-radius:9px;padding:14px 16px;margin-bottom:14px;background:#fbfaf6">
+    <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:16px;margin-bottom:8px">① นโยบายแบบคู่ขนาน (Parallel Policies)</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:13.5px">
+      <div style="background:#eaf1f7;border-radius:7px;padding:10px 13px"><b>งานสอน</b> — ทำให้เด็กเป็น “คนเก่ง”</div>
+      <div style="background:#f7ece2;border-radius:7px;padding:10px 13px"><b>งานระบบดูแล</b> — ทำให้เด็กเป็น “คนดีและมีความสุข”</div>
+    </div>
+    <div style="font-size:13px;color:#6f665a;font-style:italic;margin-top:9px">“ถ้าครูไม่ทำ ใครจะทำ ถ้าครูทิ้งไป เราเสียเด็กแน่นอน” — อ.ปรเมศร์ หัวหน้าฝ่ายปกครอง · ผู้บริหารวางทั้งสองงานให้มีน้ำหนักเท่ากัน</div>
+  </div>
+
+  <div class="avoid" style="border:1px solid #e0d6c4;border-radius:9px;padding:14px 16px;margin-bottom:14px;background:#fbfaf6">
+    <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:16px;margin-bottom:8px">② ระบบนิเวศการดูแล 3 ระดับ</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;font-size:13px">
+      <div style="border:1px solid #e6ddcc;border-radius:7px;padding:10px 12px"><b style="color:#708a6b">ระดับบุคคล</b><br>ครูที่ปรึกษา · ครูแนะแนว(ครูนักจิต) · ทีมเพื่อนสนิท</div>
+      <div style="border:1px solid #e6ddcc;border-radius:7px;padding:10px 12px"><b style="color:#43688f">ระดับโรงเรียน</b><br>ผู้บริหาร · ฝ่ายวิชาการ · ระบบดูแลนักเรียน</div>
+      <div style="border:1px solid #e6ddcc;border-radius:7px;padding:10px 12px"><b style="color:#b07a4f">ระดับเครือข่าย</b><br>อสม. · ผู้นำชุมชน · รพ.เชียงรายฯ · รพ.เชียงแสน · สพม.ชร.</div>
+    </div>
+    <div style="font-size:13px;color:#6f665a;margin-top:8px">ทั้ง 3 ระดับทำงานประสานกันรอบ “นักเรียนกลุ่มเปราะบาง” เป็นศูนย์กลาง</div>
+  </div>
+
+  <div class="avoid" style="border:1px solid #e0d6c4;border-radius:9px;padding:14px 16px;margin-bottom:14px;background:#fbfaf6">
+    <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:16px;margin-bottom:8px">③ การคัดสรร “ครูที่ทำงานด้วยหัวใจ” (Targeted Recruitment)</div>
+    <div style="font-size:13.5px;line-height:1.7;color:#4a4337"><b>แนวทางการคัดเลือก:</b> <b>ครูทั่วไป → สังเกตครูที่เด็กไว้วางใจและเข้าหา → ทาบทามเฉพาะผู้มีใจรัก → ทีมแกนนำ</b></div>
+    <ul style="font-size:13.5px;line-height:1.65;margin-top:8px;color:#4a4337">
+      <li><b>สังเกต (Observe):</b> เลือกจากความไว้วางใจของเด็ก — ไม่ใช่ครูทุกคนจะทำได้หรือเข้าใจเด็ก</li>
+      <li><b>ทาบทาม (Recruit):</b> “ทาบทามไป 10 ได้มา 3 ก็ถือว่าสำเร็จและดีใจแล้ว”</li>
+      <li><b>ติดอาวุธ (Equip):</b> นักจิตวิทยา สพม.ชร. ลงพื้นที่ให้ความรู้เรื่องโรค เพื่อลดอคติของครู</li>
+    </ul>
+  </div>
+
+  <div class="avoid" style="border:1px solid #e0d6c4;border-radius:9px;padding:14px 16px;margin-bottom:14px;background:#fbfaf6">
+    <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:16px;margin-bottom:8px">④ ปรับมาตรฐานเพื่อมีพื้นที่ให้เด็กยืน (Flexible Academic Standards)</div>
+    <table style="width:100%;border-collapse:collapse;font-size:12.5px">
+      <thead><tr style="background:#f3ede2"><th style="text-align:left;padding:6px 9px;border:1px solid #e0d6c4"></th><th style="text-align:left;padding:6px 9px;border:1px solid #e0d6c4">ก่อนปรับ</th><th style="text-align:left;padding:6px 9px;border:1px solid #e0d6c4">ช่วงยืดหยุ่น</th><th style="text-align:left;padding:6px 9px;border:1px solid #e0d6c4">เมื่ออาการคงที่</th></tr></thead>
+      <tbody>
+        <tr><td style="padding:6px 9px;border:1px solid #e0d6c4;font-weight:600">ภาระงาน</td><td style="padding:6px 9px;border:1px solid #e0d6c4">งานเดี่ยว/กลุ่มใหญ่</td><td style="padding:6px 9px;border:1px solid #e0d6c4">งานคู่ (Pair) ลดความกดดัน</td><td style="padding:6px 9px;border:1px solid #e0d6c4">กลับสู่มาตรฐานเดิม</td></tr>
+        <tr><td style="padding:6px 9px;border:1px solid #e0d6c4;font-weight:600">สภาพแวดล้อม</td><td style="padding:6px 9px;border:1px solid #e0d6c4">นั่งปะปนกับเพื่อนที่อึดอัด</td><td style="padding:6px 9px;border:1px solid #e0d6c4">ปรับที่นั่งให้อยู่ในสายตาครู</td><td style="padding:6px 9px;border:1px solid #e0d6c4">กลับสู่ห้องเรียนปกติ</td></tr>
+        <tr><td style="padding:6px 9px;border:1px solid #e0d6c4;font-weight:600">การประเมิน</td><td style="padding:6px 9px;border:1px solid #e0d6c4">มาตรฐานเดียวทั้งโรงเรียน</td><td style="padding:6px 9px;border:1px solid #e0d6c4">ลดมาตรฐานลงชั่วคราว ไม่ตัดสินด้วยเกณฑ์ปกติ</td><td style="padding:6px 9px;border:1px solid #e0d6c4">ประเมินตามเกณฑ์</td></tr>
+      </tbody>
+    </table>
+    <div style="font-size:13px;color:#6f665a;margin-top:8px">หลักการ: ลดมาตรฐานลงเพื่อเหลือพื้นที่ให้เขายืนสักนิด เมื่ออาการดีขึ้น (Stable) จึงค่อยย้ายกลับสู่มาตรฐานเดิม</div>
+  </div>
+
+  <div class="avoid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+    <div style="border:1px solid #e0d6c4;border-radius:9px;padding:13px 15px;background:#fbfaf6">
+      <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:15px;margin-bottom:6px">⑤ กลไกทีมเพื่อนสนิท (Close Friends Shield)</div>
+      <div style="font-size:13px;color:#4a4337;line-height:1.6">ทีมเพื่อนที่ผ่านการอบรมความรู้และลดอคติ ดูแล 3 มิติ: <b>ประคับประคองการเรียน · ดูแลความปลอดภัยช่วงพัก · สังเกตอาการเปลี่ยนแปลงรายวัน</b></div>
+    </div>
+    <div style="border:1px solid #e0d6c4;border-radius:9px;padding:13px 15px;background:#fbfaf6">
+      <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:15px;margin-bottom:6px">⑥ อุดรอยรั่วเมื่อครอบครัวไม่พร้อม (Bridging the Gap)</div>
+      <div style="font-size:13px;color:#4a4337;line-height:1.6">โรงเรียนจัดระบบรับ-ส่งเด็กไป รพ. เอง · บันทึกอาการรายวันส่งต่อแพทย์ · สื่อสารสองทางกับ รพ. · จัดทีมเยี่ยมบ้าน/เยี่ยมไข้ ไม่ทิ้งครอบครัวเผชิญปัญหาลำพัง</div>
+    </div>
+    <div style="border:1px solid #e0d6c4;border-radius:9px;padding:13px 15px;background:#fbfaf6">
+      <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:15px;margin-bottom:6px">⑦ ปฏิบัติการชุมชนเชิงรุกแบบแนบเนียน</div>
+      <div style="font-size:13px;color:#4a4337;line-height:1.6">ป้องกันการตีตรา (Stigma): <b>เข้าหาแบบธรรมชาติ</b> ใช้กิจกรรมบังหน้า เช่น แบ่งปันเสื้อผ้า/อาหาร · <b>เฝ้าระวังไร้รอยต่อ</b> แวะเวียนพูดคุยทักทายตามวิถีชีวิตประจำวันร่วมกับ อสม.</div>
+    </div>
+    <div style="border:1px solid #e0d6c4;border-radius:9px;padding:13px 15px;background:#fbfaf6">
+      <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:15px;margin-bottom:6px">⑧ เสาหลักหนุนเสริมจาก สพม.ชร.</div>
+      <div style="font-size:13px;color:#4a4337;line-height:1.6"><b>องค์ความรู้:</b> นักจิตวิทยา สพม.ชร. ลงพื้นที่ให้ความรู้ ลดอคติ · <b>การบริหาร:</b> ผอ.สพม. ช่วยเชิงนโยบาย แก้ปัญหา · <b>การติดตาม:</b> ติดตามความคืบหน้าอย่างเป็นระบบเพื่อความยั่งยืน</div>
+    </div>
+  </div>
+
+  <div class="avoid" style="border:1px solid #e0d6c4;border-radius:9px;padding:14px 16px;margin-bottom:14px;background:#fbfaf6">
+    <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:16px;margin-bottom:8px">⑨ วงจรความยั่งยืนและการส่งต่อ (Improvement Cycle)</div>
+    <div style="font-size:13.5px;line-height:1.7;color:#4a4337"><b>คัดเลือก</b> (ขึ้นชั้นใหม่ คัดครูที่พร้อมและสมัครใจ) → <b>ถ่ายทอด</b> (คุยรายละเอียดเชิงลึกจนได้คนพร้อมรับช่วงต่อ) → <b>ปรับเปลี่ยน</b> (ติดตามประเมินผล ปรับวิธีให้สอดคล้องสถานการณ์) → <b>สนับสนุน</b> (ผู้บริหารกำกับดูแลและอำนวยความสะดวกต่อเนื่อง) → วนกลับ</div>
+  </div>
+
+  <div class="avoid" style="display:grid;grid-template-columns:1.3fr 1fr;gap:12px;margin-bottom:14px">
+    <div style="border:1px solid #cddee5;border-radius:9px;padding:14px 16px;background:#eef4f6">
+      <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:15px;color:#2f5662;margin-bottom:6px">⑩ ผลลัพธ์เชิงประจักษ์ (Measurable Outcomes)</div>
+      <div style="font-size:13px;color:#33505b;line-height:1.6"><b>ด้านนักเรียน:</b> อาการคงที่ขึ้น (Stable) — ยืดระยะเวลาการทำร้ายตัวเองจาก “เกือบทุกสัปดาห์” เป็น “3–4 สัปดาห์/ครั้ง” และดีขึ้นต่อเนื่อง<br><b>ด้านทีมงาน:</b> เกิดความภาคภูมิใจที่ได้ช่วยเด็ก และได้เพื่อนร่วมงานที่มีอุดมการณ์เดียวกัน</div>
+    </div>
+    <div style="border:1px solid #e0d6c4;border-radius:9px;padding:14px 16px;background:#fbfaf6">
+      <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:15px;margin-bottom:6px">⑪ บริหารปัจจัยเสี่ยง (Risk Management)</div>
+      <div style="font-size:12.5px;color:#4a4337;line-height:1.6">ภาระใจครู → สร้าง Safe space แบ่งปัน/ให้กำลังใจ · เหตุวิกฤตถึงชีวิต → จุดประสานงานสายตรงถึงผู้บริหารรร. · อคติต่อโรค → นักจิตวิทยาให้ความรู้</div>
+    </div>
+  </div>
+
+  <div class="avoid" style="border:1px solid #e0d6c4;border-radius:9px;padding:14px 16px;margin-bottom:14px;background:#fbfaf6">
+    <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:16px;margin-bottom:8px">⑫ พิมพ์เขียวฉบับย่อ (Best Practice Canvas)</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:12.5px;line-height:1.55">
+      <div style="background:#f7ece2;border-radius:7px;padding:9px 12px"><b>Mindset (ปรัชญา):</b> ไม่ใช้ครูทุกคน ใช้ครูที่เด็กเข้าหา · รักนักเรียนเหมือนลูก · งานดูแลสร้างคนดี</div>
+      <div style="background:#f7ece2;border-radius:7px;padding:9px 12px"><b>Operation (ลดความกดดัน):</b> ลดมาตรฐานชั่วคราว · ปรับงานเดี่ยวเป็นงานคู่ · ปรับที่นั่งให้อยู่ในสายตา</div>
+      <div style="background:#f7ece2;border-radius:7px;padding:9px 12px"><b>Network (เครือข่ายไร้รอยต่อ):</b> ทีมเพื่อนสนิท 3 มิติ · อสม. ดูแลแบบแนบเนียน · สพม. ให้ความรู้และนโยบาย</div>
+      <div style="background:#f7ece2;border-radius:7px;padding:9px 12px"><b>Continuity (ความต่อเนื่อง):</b> โรงเรียนรับ-ส่ง รพ. เอง · ส่งข้อมูลให้แพทย์ · คัดเลือกและคุยเชิงลึกกับครูใหม่</div>
+    </div>
+  </div>
+
+  <div class="avoid" style="background:#25433f;color:#f1ece1;border-radius:9px;padding:16px 20px;margin-bottom:6px">
+    <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:15px;margin-bottom:6px">⑬ กลับคืนสู่หัวใจความเป็นมนุษย์ (The Heart of a Teacher)</div>
+    <div style="font-size:13.5px;line-height:1.7;color:#e6ddcb;font-style:italic">“ได้รู้ความหมายของคำว่าครู ครูคือคนที่มีความรัก ยิ่งมีความรักมากเท่าไร ยิ่งใกล้คำว่าครู… งานของครูจะดีได้ ต้องรักนักเรียนเหมือนลูกหรือคนในครอบครัว แล้วมันจะสะท้อนออกมาเป็นผลงานเอง”</div>
+    <div style="font-size:12.5px;color:#9ac3b6;margin-top:8px">ระบบดูแลนักเรียนที่ดีที่สุด คือระบบที่ขับเคลื่อนด้วยความโอบอ้อมอารีอย่างเป็นรูปธรรม</div>
+  </div>
+
+  <!-- ===== MERGED FROM 2564 MANUAL ===== -->
+
+  <!-- PFA -->
+  <h2 class="brk" style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:23px;margin:0 0 4px;color:#25433f;border-left:5px solid #5a8f6a;padding-left:12px">7 · การปฐมพยาบาลทางจิตใจเบื้องต้น (PFA)</h2>
+  <div style="font-size:14px;color:#6f665a;margin-bottom:12px">Psychological First Aid — การช่วยเหลือเบื้องต้นแก่ผู้อยู่ในภาวะวิกฤต จนพ้นช่วงวิกฤต · หลัก “3 ส พลัส (3ส 2ข)”</div>
+  <div class="avoid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:13.5px;margin-bottom:12px">
+    <div style="border:1px solid #e0d6c4;border-radius:8px;padding:12px 14px;background:#eef4ef"><b style="color:#2f6b5c">ส1 · สอดส่องมองหา</b><br>มองหาผู้ต้องการความช่วยเหลือเร่งด่วน — เสียใจรุนแรง ร้องไห้ไม่หยุด เครียด กินไม่ได้ นอนไม่หลับ และกลุ่มเปราะบาง</div>
+    <div style="border:1px solid #e0d6c4;border-radius:8px;padding:12px 14px;background:#eef4ef"><b style="color:#2f6b5c">ส2 · ใส่ใจรับฟัง</b><br>ฟังอย่างมีสติ สบตา ไม่ตัดสิน ให้เขาได้ระบาย — แต่อย่ามีอารมณ์ร่วมจนร้องไห้ตาม</div>
+    <div style="border:1px solid #e0d6c4;border-radius:8px;padding:12px 14px;background:#eef4ef"><b style="color:#2f6b5c">ส3 · ส่งต่อเชื่อมโยง</b><br>ช่วยเท่าที่ทำได้ หากไม่ดีขึ้นให้ส่งต่อ/แนะนำพบแพทย์หรือผู้เชี่ยวชาญ</div>
+    <div style="border:1px solid #e0d6c4;border-radius:8px;padding:12px 14px;background:#f3ede2"><b style="color:#8a5a30">ข1 · (ให้) ข้อมูล</b> — ยืนยันว่ามีทางแก้ บอกแหล่งช่วยเหลือ<br><b style="color:#8a5a30">ข2 · (ช่วยให้) เข้าถึงบริการ</b> — พาเข้าถึงผู้เชี่ยวชาญใกล้บ้านเร็วที่สุด (ER/คลินิกสุขภาพจิต/รพ.)</div>
+  </div>
+  <div class="avoid" style="background:#fbeee9;border:1px solid #ecc9bf;border-radius:8px;padding:12px 15px;font-size:13.5px;color:#7a4035;margin-bottom:10px">
+    <b>เมื่อพบผู้เสี่ยงต่อการฆ่าตัวตาย:</b> การฆ่าตัวตายเป็นเรื่องฉุกเฉิน ช่วยทันที — <b>ไม่ทิ้งให้อยู่คนเดียว</b> หากเสี่ยงสูง · ถามตรงเรื่องความคิดฆ่าตัวตายด้วยความห่วงใย (<b>การถามไม่ได้ทำให้แย่ลงหรือชี้โพรงให้กระรอก</b>) · ไม่ใช้คำตีตรา · กันการเข้าถึงอุปกรณ์อันตราย · พาส่งแผนกฉุกเฉิน
+  </div>
+  <div class="avoid" style="border:1px solid #cddee5;border-radius:8px;padding:13px 16px;background:#eef4f6;font-size:13.5px;margin-bottom:6px">
+    <b style="color:#2f5662">แผนความปลอดภัย (Safety Plan)</b> — ช่วยลดการทำร้ายตนเองและเพิ่มการขอความช่วยเหลือ เขียนร่วมกับเด็ก ประกอบด้วย: ① สัญญาณเตือนของตนเอง ② สิ่งที่ทำได้เองเพื่อจัดการ ③ คน/สถานที่ที่ช่วยเบี่ยงเบน ④ คนที่ขอความช่วยเหลือได้ ⑤ ผู้เชี่ยวชาญ/สายด่วน ⑥ ทำให้สิ่งแวดล้อมปลอดภัย (เก็บอุปกรณ์เสี่ยง) — ใช้คู่กับใบงานในหัวข้อ NSSI
+  </div>
+
+  <!-- ABUSE / VIOLENCE -->
+  <h2 class="brk" style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:23px;margin:0 0 4px;color:#25433f;border-left:5px solid #b04a3a;padding-left:12px">8 · เด็กถูกล่วงละเมิดทางเพศ / ถูกกระทำรุนแรง</h2>
+  <div style="font-size:14px;color:#6f665a;margin-bottom:12px">เมื่อพบหรือสงสัย — ความปลอดภัยของเด็กมาก่อน ดำเนินการอย่างเป็นระบบ เก็บความลับ และส่งต่อหน่วยงานที่รับผิดชอบ</div>
+  <div class="avoid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:13.5px;margin-bottom:12px">
+    <div style="border:1px solid #e0d6c4;border-radius:8px;padding:13px 15px;background:#fbfaf6">
+      <b>สิ่งที่ครูควรทำทันที</b>
+      <ul style="margin:6px 0 0;padding-left:17px;line-height:1.6">
+        <li>ทำให้เด็กปลอดภัยและสงบ รับฟังโดยไม่ซักไซ้ไล่เลียง ไม่ตำหนิ</li>
+        <li>ปฐมพยาบาลทางจิตใจ (PFA) ดูแลจิตใจเบื้องต้น</li>
+        <li>กรณีเข้าข่ายทำร้ายร่างกาย/ทารุณกรรม แจ้งผู้บริหารและประสานหน่วยงาน</li>
+        <li>กรณีล่วงละเมิดทางเพศ — รีบถึงสถานพยาบาลโดยเร็ว (ยาป้องกันตั้งครรภ์ใน 72 ชม. / ยาต้านไวรัสภายใน 2 ชม.)</li>
+        <li>รักษาความลับเข้มงวด กำหนดผู้เข้าถึงข้อมูล</li>
+      </ul>
+    </div>
+    <div style="border:1px solid #e0d6c4;border-radius:8px;padding:13px 15px;background:#fbfaf6">
+      <b>ช่องทางแจ้งเหตุ & เส้นทางช่วยเหลือ (OSCC)</b>
+      <ul style="margin:6px 0 0;padding-left:17px;line-height:1.6">
+        <li><b>สายด่วน 1300</b> ศูนย์ช่วยเหลือสังคม (24 ชม.) · เว็บ osccthailand.go.th</li>
+        <li>แจ้งด้วยตนเองที่ รพ.สต./รพ. · สถานีตำรวจ · พมจ. · ศูนย์ดำรงธรรม · ศูนย์เฉพาะกิจคุ้มครองนักเรียน สพฐ.</li>
+        <li>เส้นทาง OSCC: รับแจ้ง → คัดกรองปัญหา → ทีมสหวิชาชีพดูแล/เยียวยา → คุ้มครองสิทธิ์ตามกฎหมาย → คืนสู่ครอบครัว/กลับเข้าเรียน → ติดตามผล</li>
+        <li>ตั้งครรภ์ไม่พร้อม: สธ. · ค้ามนุษย์: ตำรวจ · แรงงานเด็ก: ก.แรงงาน · ความรุนแรง: พม.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- CASE CONFERENCE -->
+  <h2 class="brk" style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:23px;margin:0 0 4px;color:#25433f;border-left:5px solid #43688f;padding-left:12px">9 · การประชุมปรึกษารายกรณี (Case Conference)</h2>
+  <div style="font-size:14px;color:#6f665a;margin-bottom:12px">วิเคราะห์ปัญหาแบบองค์รวม (Holistic) เพื่อวางแผนช่วยเหลือร่วมกันของทีม</div>
+  <div class="avoid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;font-size:13px;margin-bottom:12px">
+    <div style="border:1px solid #e0d6c4;border-radius:8px;padding:12px 14px"><b style="color:#43688f">① ปัจจัยจากตัวเด็ก</b><br>ความเจ็บป่วย/โรคเรื้อรัง · ระดับสติปัญญา · พื้นอารมณ์–การปรับตัว · โรคทางจิตเวช (สมาธิสั้น LD ซึมเศร้า วิตกกังวล)</div>
+    <div style="border:1px solid #e0d6c4;border-radius:8px;padding:12px 14px"><b style="color:#43688f">② ปัจจัยจากครอบครัว</b><br>ทัศนคติผู้เลี้ยงดู · รูปแบบเลี้ยงดู (ตามใจ/ปล่อยปละ/เผด็จการ) · ความเครียด · ความรุนแรงในครอบครัว (วาจา/กาย/ใจ)</div>
+    <div style="border:1px solid #e0d6c4;border-radius:8px;padding:12px 14px"><b style="color:#43688f">③ ปัจจัยสิ่งแวดล้อม</b><br>กลุ่มเพื่อน · ทัศนคติครู · แหล่งสนับสนุนการเรียน · ชุมชน/อบายมุข/ยาเสพติด · สื่อที่เด็กเข้าถึง</div>
+  </div>
+  <div class="avoid" style="background:#f6f1e7;border:1px solid #e0d6c4;border-radius:8px;padding:12px 15px;font-size:13.5px;color:#4a4337;margin-bottom:12px">
+    <b>การรักษาความลับ:</b> ไม่เปิดเผยข้อมูลกับผู้ไม่เกี่ยวข้อง ต้องได้รับความยินยอมจากเด็ก/ผู้ปกครองก่อน · เก็บแฟ้มในตู้ล็อก เข้าถึงเฉพาะผู้รับผิดชอบ &nbsp;|&nbsp; <b>สื่อสารกับผู้ปกครองด้วย I-Message:</b> “ครูสังเกตเห็นว่าช่วงนี้หนูดูไม่ร่าเริง… ครูเป็นห่วง” — สร้างสัมพันธ์ก่อน ไม่เน้นตำหนิ
+  </div>
+
+  <div class="avoid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:13.5px;margin-bottom:12px">
+    <div style="border:1px solid #e0d6c4;border-radius:8px;padding:13px 15px;background:#fbfaf6">
+      <b style="color:#43688f">รูปแบบการประชุม (2 แบบ)</b>
+      <ul style="margin:6px 0 0;padding-left:17px;line-height:1.6">
+        <li><b>เฉพาะในโรงเรียน</b> — ครูแนะแนวที่รับส่งต่อเคสจากครูประจำชั้น จัดประชุมเฉพาะคณะครูที่เกี่ยวข้อง เพื่อช่วยเหลือร่วมกัน</li>
+        <li><b>ร่วมกับสหวิชาชีพ</b> — เมื่อต้องการความเห็นเชิงลึก เชิญทีมสาธารณสุขร่วมด้วย</li>
+      </ul>
+    </div>
+    <div style="border:1px solid #e0d6c4;border-radius:8px;padding:13px 15px;background:#fbfaf6">
+      <b style="color:#43688f">ผู้เข้าร่วม</b>
+      <ul style="margin:6px 0 0;padding-left:17px;line-height:1.6">
+        <li>ครูที่ปรึกษา/ครูประจำชั้น · ครูแนะแนว (ครูนักจิต) · ฝ่ายปกครอง/ผู้บริหาร</li>
+        <li>ทีมสหวิชาชีพ (เมื่อจำเป็น): จิตแพทย์เด็กและวัยรุ่น · พยาบาลจิตเวช · นักสังคมสงเคราะห์ · นักจิตวิทยาคลินิก/นักจิตวิทยาโรงเรียน</li>
+        <li>ผู้ปกครอง (ตามความเหมาะสมของกรณี)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="avoid" style="border:1px solid #e0d6c4;border-radius:8px;padding:13px 16px;background:#fbfaf6;margin-bottom:12px">
+    <b style="color:#43688f">ขั้นตอนการจัดประชุม (3 ระยะ)</b>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:8px;font-size:13px">
+      <div style="background:#fff;border:1px solid #e6ddcc;border-radius:7px;padding:10px 12px"><b>① ก่อนประชุม (เตรียมการ)</b><br>กำหนดแผน/นัดหมาย · คัดเลือกกรณีศึกษา · เตรียมข้อมูล: พฤติกรรมที่เป็นปัญหา ผลการเรียน ผลแบบคัดกรอง ประวัติการช่วยเหลือที่ผ่านมา</div>
+      <div style="background:#fff;border:1px solid #e6ddcc;border-radius:7px;padding:10px 12px"><b>② ระหว่างประชุม</b><br>นำเสนอกรณี · วิเคราะห์ปัจจัยองค์รวม (เด็ก/ครอบครัว/สิ่งแวดล้อม) · ระบุจุดแข็ง-ความเสี่ยง · ร่วมกันวางแผนช่วยเหลือและผู้รับผิดชอบ</div>
+      <div style="background:#fff;border:1px solid #e6ddcc;border-radius:7px;padding:10px 12px"><b>③ หลังประชุม</b><br>ดำเนินการตามแผน · ติดตาม/บันทึก/รายงานผล · ดีขึ้น → ส่งกลับครูที่ปรึกษา · ไม่ดีขึ้น → ส่งต่อผู้เชี่ยวชาญภายนอก</div>
+    </div>
+  </div>
+
+  <div class="avoid" style="border:1px solid #e0d6c4;border-radius:8px;padding:13px 16px;background:#fbfaf6;margin-bottom:6px">
+    <b style="color:#43688f">หัวข้อที่ต้องเตรียม/บันทึก (แบบบันทึกการวางแผนช่วยเหลือเด็ก)</b>
+    <div style="font-size:13px;line-height:1.65;color:#4a4337;margin-top:6px">สำหรับแต่ละปัจจัย (เด็ก/ครอบครัว/สิ่งแวดล้อม) ให้ระบุ: <b>ลักษณะปัญหา · จุดแข็ง/ข้อดีที่พบ · ความเสี่ยงที่อาจเกิด</b> แล้วสรุปเป็น <b>แผนการช่วยเหลือ</b> และช่อง <b>ผลการช่วยเหลือ</b> ไว้ติดตาม</div>
+    <div style="font-size:13px;line-height:1.65;color:#4a4337;margin-top:8px"><b>การสื่อสารกับผู้ปกครองให้พาเด็กไปพบผู้เชี่ยวชาญ:</b> สร้างสัมพันธภาพและความไว้วางใจก่อน (ฟังอย่างใส่ใจ ไม่เน้นตำหนิ) · บอกจุดดี-จุดด้อยและสิ่งที่โรงเรียนช่วยมาแล้ว · ช่วยแก้ความกังวล (ค่าเดินทาง สิทธิการรักษา ประสาน รพ.) · ใช้หลัก “ถามก่อนบอก” · สรุปเป็นแผนพัฒนาเฉพาะบุคคล และนัดติดตามอย่างน้อยภาคเรียนละครั้ง</div>
+  </div>
+
+  <!-- SELF-CARE -->
+  <h2 class="brk" style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:23px;margin:0 0 4px;color:#25433f;border-left:5px solid #6d5a86;padding-left:12px">10 · การดูแลใจครูผู้ดูแล (Self-care)</h2>
+  <div style="font-size:14px;color:#6f665a;margin-bottom:12px">“หัวใจของครู” ต้องได้รับการดูแลด้วย — ถ้าครูมีสุขภาพใจดี บรรยากาศการเรียนรู้และนักเรียนก็ดีตาม</div>
+  <div class="avoid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:13.5px;margin-bottom:12px">
+    <div style="border:1px solid #e0d6c4;border-radius:8px;padding:12px 14px"><b>ดูแล 4 ด้าน</b><br><b>กาย</b> ออกกำลังกาย พักผ่อนพอ เลี่ยงเหล้าบุหรี่ · <b>อารมณ์</b> รู้เท่าทันและจัดการอารมณ์ตน · <b>สังคม</b> มีคนไว้ใจพูดคุย · <b>จิตวิญญาณ</b> ทำกิจกรรมที่สงบใจ</div>
+    <div style="border:1px solid #e0d6c4;border-radius:8px;padding:12px 14px"><b>ดูแลใจด้วย 3A</b><br><b>Awareness</b> รับรู้พฤติกรรม/อารมณ์/ความคิดของตน · <b>Acceptance</b> ยอมรับตามจริงโดยไม่ตัดสิน · <b>Action</b> เลือกตอบสนองอย่างเหมาะสม</div>
+  </div>
+  <div class="avoid" style="background:#f0edf5;border-radius:8px;padding:12px 15px;font-size:13px;color:#4a4337;margin-bottom:6px">
+    <b>สัญญาณว่าดูแลใจตนเองน้อยไป:</b> หงุดหงิดโมโหง่าย · ไม่รับรู้อารมณ์ตนเอง · ชอบควบคุมผู้อื่น · เก็บกด · ทำอะไรไม่ต่อเนื่อง · ชอบแก้ตัวหนีความจริง — เมื่อมีสัญญาณเหล่านี้ ควรหยุดพักและกลับมาดูแลใจตนเอง · จัด Safe space ในทีมเพื่อแบ่งปันและให้กำลังใจกัน
+  </div>
+
+  <!-- TOOLS + HOTLINE -->
+  <h2 class="brk" style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:23px;margin:0 0 12px;color:#25433f;border-left:5px solid #3f8079;padding-left:12px">11 · เครื่องมือประเมิน & สายด่วน</h2>
+  <table style="width:100%;border-collapse:collapse;font-size:14px;margin-bottom:16px">
+    <thead><tr style="background:#f3ede2"><th style="text-align:left;padding:8px 11px;border:1px solid #e0d6c4">เครื่องมือ</th><th style="text-align:left;padding:8px 11px;border:1px solid #e0d6c4">ใช้คัดกรอง</th><th style="text-align:left;padding:8px 11px;border:1px solid #e0d6c4">เกณฑ์/ผู้ใช้</th></tr></thead>
+    <tbody>
+      <tr><td style="padding:7px 11px;border:1px solid #e0d6c4;font-weight:600">PHQ-A</td><td style="padding:7px 11px;border:1px solid #e0d6c4">ภาวะซึมเศร้าวัยรุ่น (9 ข้อ)</td><td style="padding:7px 11px;border:1px solid #e0d6c4">≥10 ส่งต่อ · ข้อ 9 = ทำร้ายตัวเอง · ครูแนะแนว</td></tr>
+      <tr><td style="padding:7px 11px;border:1px solid #e0d6c4;font-weight:600">8Q</td><td style="padding:7px 11px;border:1px solid #e0d6c4">แนวโน้มการฆ่าตัวตาย</td><td style="padding:7px 11px;border:1px solid #e0d6c4">1 คะแนนขึ้นไป ปรึกษา รพ.</td></tr>
+      <tr><td style="padding:7px 11px;border:1px solid #e0d6c4;font-weight:600">SNAP-IV</td><td style="padding:7px 11px;border:1px solid #e0d6c4">สมาธิสั้น (ADHD)</td><td style="padding:7px 11px;border:1px solid #e0d6c4">ครูแนะแนว</td></tr>
+      <tr><td style="padding:7px 11px;border:1px solid #e0d6c4;font-weight:600">GAST</td><td style="padding:7px 11px;border:1px solid #e0d6c4">การติดเกม</td><td style="padding:7px 11px;border:1px solid #e0d6c4">ครูแนะแนว / รพ.</td></tr>
+      <tr><td style="padding:7px 11px;border:1px solid #e0d6c4;font-weight:600">บคก.กสธ. V.2</td><td style="padding:7px 11px;border:1px solid #e0d6c4">ยาเสพติด (ผู้ใช้/เสพ/ติด)</td><td style="padding:7px 11px;border:1px solid #e0d6c4">ครูแนะแนว / ฝ่ายปกครอง</td></tr>
+      <tr><td style="padding:7px 11px;border:1px solid #e0d6c4;font-weight:600">นิโคติน · ST-5 · PSQI</td><td style="padding:7px 11px;border:1px solid #e0d6c4">ติดนิโคติน · ความเครียด · คุณภาพการนอน</td><td style="padding:7px 11px;border:1px solid #e0d6c4">ครูที่ปรึกษา / ครูแนะแนว</td></tr>
+    </tbody>
+  </table>
+
+  <div class="avoid" style="background:#fbeae6;border:1px solid #ecc4ba;border-radius:9px;padding:14px 16px;font-size:15px;color:#7a4035">
+    <b style="color:#a8412f">สายด่วน:</b> สุขภาพจิต <b>1323</b> · การแพทย์ฉุกเฉิน <b>1669</b> · เหตุด่วนเหตุร้าย <b>191</b> · ศูนย์ช่วยเหลือสังคม <b>1300</b> · สายด่วนยาเสพติด <b>1165</b><br>
+    <span style="font-size:14px">เมื่อพบเด็กมี SI: ไม่ทิ้งเด็กไว้คนเดียว · รับฟังอย่างสงบ · แจ้ง รพ.ทันที · แจ้งผู้ปกครอง (ความปลอดภัยสำคัญกว่าความลับ)</span>
+  </div>
+
+  <!-- ===== HOSPITAL DIRECTORY ===== -->
+  <h2 class="brk" style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:23px;margin:0 0 4px;color:#25433f;border-left:5px solid #45707e;padding-left:12px">12 · เบอร์ติดต่อกลุ่มงานจิตเวชและยาเสพติด · รพ. ในเชียงราย</h2>
+  <div style="font-size:13.5px;color:#6f665a;margin-bottom:12px">ติดต่อ <b>ในวันและเวลาราชการ (จ.–ศ. 08.00–16.00 น.)</b> เนื่องจากคลินิกจิตเวชของ รพ.ชุมชนส่วนใหญ่มีเจ้าหน้าที่เฉพาะทางในช่วงเวลานี้ · กรณีฉุกเฉิน/วิกฤตนอกเวลา โทรสายด่วน <b>1669</b> หรือ <b>1323</b></div>
+
+  <div class="avoid" style="border:1px solid #b9d2da;border-radius:9px;padding:14px 16px;margin-bottom:14px;background:#eef4f6">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.04em;color:#45707e;margin-bottom:3px">โรงพยาบาลศูนย์ (ประจำจังหวัด)</div>
+    <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:17px;color:#25433f">รพ.เชียงรายประชานุเคราะห์ · อ.เมือง</div>
+    <div style="font-size:14px;line-height:1.7;margin-top:3px">
+      โทร <b>053-910600</b> หรือ <b>053-711300</b><br>
+      • ในเวลาราชการ: ต่อ <b>1277</b> (OPD จิตเวช)<br>
+      • นอกเวลาราชการ: ต่อ <b>ศูนย์ Refer</b> เพื่อประสานจิตแพทย์เวร
+    </div>
+  </div>
+
+  <table class="avoid" style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:14px">
+    <thead><tr style="background:#f3ede2"><th style="text-align:left;padding:7px 10px;border:1px solid #e0d6c4;width:128px">อำเภอ</th><th style="text-align:left;padding:7px 10px;border:1px solid #e0d6c4">โรงพยาบาล · เบอร์ติดต่อ (กลุ่มงานจิตเวช/ยาเสพติด)</th></tr></thead>
+    <tbody>
+      <tr><td style="padding:6px 10px;border:1px solid #e0d6c4;font-weight:600">แม่จัน</td><td style="padding:6px 10px;border:1px solid #e0d6c4">รพ.แม่จัน · <b>053-771056</b> ต่อ 194 · สายตรงจิตเวชฯ <b>096-523-3180</b></td></tr>
+      <tr><td style="padding:6px 10px;border:1px solid #e0d6c4;font-weight:600">พาน</td><td style="padding:6px 10px;border:1px solid #e0d6c4">รพ.พาน · <b>053-721345</b> ต่อ 155 (คลินิกใจใส/จิตเวช)</td></tr>
+      <tr><td style="padding:6px 10px;border:1px solid #e0d6c4;font-weight:600">เวียงเชียงรุ้ง</td><td style="padding:6px 10px;border:1px solid #e0d6c4">รพ.เวียงเชียงรุ้ง · <b>053-953137</b> ต่อ 129 (ศูนย์ให้คำปรึกษาสุขภาพจิต)</td></tr>
+      <tr><td style="padding:6px 10px;border:1px solid #e0d6c4;font-weight:600">เชียงแสน</td><td style="padding:6px 10px;border:1px solid #e0d6c4">รพ.เชียงแสน · <b>053-777035</b> ต่อ 121</td></tr>
+      <tr><td style="padding:6px 10px;border:1px solid #e0d6c4;font-weight:600">เวียงชัย</td><td style="padding:6px 10px;border:1px solid #e0d6c4">รพ.สมเด็จพระญาณสังวร · <b>053-603131</b> / <b>053-603123</b> (ขอต่อคลินิกจิตเวช/บำบัดยาเสพติด)</td></tr>
+      <tr><td style="padding:6px 10px;border:1px solid #e0d6c4;font-weight:600">เชียงของ</td><td style="padding:6px 10px;border:1px solid #e0d6c4">รพ.สมเด็จพระยุพราชเชียงของ · <b>053-791206</b> (ขอต่อคลินิกจิตเวชและยาเสพติด)</td></tr>
+      <tr><td style="padding:6px 10px;border:1px solid #e0d6c4;font-weight:600">แม่สาย</td><td style="padding:6px 10px;border:1px solid #e0d6c4">รพ.แม่สาย · <b>053-731300</b> (ขอต่อกลุ่มงานจิตเวชและยาเสพติด)</td></tr>
+      <tr><td style="padding:6px 10px;border:1px solid #e0d6c4;font-weight:600">เทิง</td><td style="padding:6px 10px;border:1px solid #e0d6c4">รพ.เทิง · <b>053-795259</b> ต่อ 0 (ขอต่อคลินิกสุขภาพจิต/จิตเวช)</td></tr>
+      <tr><td style="padding:6px 10px;border:1px solid #e0d6c4;font-weight:600">แม่ลาว</td><td style="padding:6px 10px;border:1px solid #e0d6c4">รพ.แม่ลาว · <b>053-603100</b> (ขอต่อกลุ่มงานสุขภาพจิตและยาเสพติด)</td></tr>
+      <tr><td style="padding:6px 10px;border:1px solid #e0d6c4;font-weight:600">แม่สรวย</td><td style="padding:6px 10px;border:1px solid #e0d6c4">รพ.แม่สรวย · <b>053-786017</b> (ขอต่อคลินิกสุขภาพจิต)</td></tr>
+      <tr><td style="padding:6px 10px;border:1px solid #e0d6c4;font-weight:600">เวียงป่าเป้า</td><td style="padding:6px 10px;border:1px solid #e0d6c4">รพ.เวียงป่าเป้า · <b>053-781342</b> (ขอต่อแผนกจิตเวช/ยาเสพติด)</td></tr>
+      <tr><td style="padding:6px 10px;border:1px solid #e0d6c4;font-weight:600">ป่าแดด</td><td style="padding:6px 10px;border:1px solid #e0d6c4">รพ.ป่าแดด · <b>053-654479</b> (ขอต่อคลินิกจิตเวช)</td></tr>
+      <tr><td style="padding:6px 10px;border:1px solid #e0d6c4;font-weight:600">พญาเม็งราย</td><td style="padding:6px 10px;border:1px solid #e0d6c4">รพ.พญาเม็งราย · <b>053-799033</b> (ขอต่อคลินิกจิตเวช)</td></tr>
+      <tr><td style="padding:6px 10px;border:1px solid #e0d6c4;font-weight:600">เวียงแก่น</td><td style="padding:6px 10px;border:1px solid #e0d6c4">รพ.เวียงแก่น · <b>053-608146</b> (ขอต่องานจิตเวช)</td></tr>
+      <tr><td style="padding:6px 10px;border:1px solid #e0d6c4;font-weight:600">ขุนตาล</td><td style="padding:6px 10px;border:1px solid #e0d6c4">รพ.ขุนตาล · <b>053-606221</b> (ขอต่องานสุขภาพจิต/จิตเวช)</td></tr>
+      <tr><td style="padding:6px 10px;border:1px solid #e0d6c4;font-weight:600">แม่ฟ้าหลวง</td><td style="padding:6px 10px;border:1px solid #e0d6c4">รพ.แม่ฟ้าหลวง · <b>053-730357</b> (ขอต่อคลินิกจิตเวชและยาเสพติด)</td></tr>
+      <tr><td style="padding:6px 10px;border:1px solid #e0d6c4;font-weight:600">ดอยหลวง</td><td style="padding:6px 10px;border:1px solid #e0d6c4">รพ.ดอยหลวง · <b>053-790056</b> (ขอต่องานสุขภาพจิต)</td></tr>
+    </tbody>
+  </table>
+
+  <div class="avoid" style="font-size:12px;color:#9b9079;margin-bottom:6px;line-height:1.6">เบอร์ต่อภายในและสายตรงรวบรวมจากข้อมูลที่เปิดเผยต่อสาธารณะของแต่ละโรงพยาบาล อาจมีการเปลี่ยนแปลง · แนะนำให้แจ้งโอเปอเรเตอร์ขอต่อ “กลุ่มงานจิตเวชและยาเสพติด/คลินิกสุขภาพจิต” หากเบอร์ต่อไม่ถูกต้อง</div>
+
+  <!-- ===== APPENDIX: PRINTABLE TESTS ===== -->
+  <h2 class="brk" style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:23px;margin:0 0 4px;color:#25433f;border-left:5px solid #b04a3a;padding-left:12px">ภาคผนวก · แบบประเมินสำหรับถ่ายเอกสาร</h2>
+  <div style="font-size:14px;color:#6f665a;margin-bottom:14px">ครูสามารถถ่ายเอกสาร (Xerox) แบบประเมินต่อไปนี้ไปใช้ได้ · ทำเครื่องหมาย ✓ ในช่องที่ตรงกับเด็กมากที่สุด แล้วรวมคะแนนตามคำแนะนำท้ายแบบ</div>
+
+  <!-- PHQ-A -->
+  <div class="avoid" style="border:1px solid #cdbfa6;border-radius:9px;padding:16px 18px;margin-bottom:18px">
+    <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:18px;color:#5a8f6a">แบบประเมินภาวะซึมเศร้าในวัยรุ่น (PHQ-A)</div>
+    <div style="font-size:13.5px;color:#6f665a;margin:3px 0 8px">ในช่วง <b>2 สัปดาห์ที่ผ่านมา</b> หนูมีอาการเหล่านี้บ่อยแค่ไหน · 0=ไม่มีเลย · 1=มีบางวัน · 2=มีค่อนข้างบ่อย · 3=มีเกือบทุกวัน</div>
+    <div style="font-size:13px;color:#9b9079;margin-bottom:8px">ชื่อ-สกุล ____________________ ชั้น ______ วันที่ ________ ผู้ประเมิน ____________</div>
+    <table style="width:100%;border-collapse:collapse;font-size:13.5px">
+      <thead><tr style="background:#f3ede2"><th style="text-align:left;padding:5px 8px;border:1px solid #e0d6c4">ข้อ</th><th style="text-align:center;padding:5px;border:1px solid #e0d6c4;width:34px">0</th><th style="text-align:center;padding:5px;border:1px solid #e0d6c4;width:34px">1</th><th style="text-align:center;padding:5px;border:1px solid #e0d6c4;width:34px">2</th><th style="text-align:center;padding:5px;border:1px solid #e0d6c4;width:34px">3</th></tr></thead>
+      <tbody>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">1. รู้สึกเบื่อ ทำอะไรก็ไม่เพลิดเพลิน</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">2. รู้สึกเศร้า หดหู่ ท้อแท้ หรือสิ้นหวัง</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">3. หลับยาก หลับๆ ตื่นๆ หรือหลับมากเกินไป</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">4. รู้สึกเหนื่อย ไม่ค่อยมีแรง</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">5. เบื่ออาหาร หรือกินมากเกินไป</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">6. รู้สึกไม่ดีกับตัวเอง รู้สึกว่าตัวเองล้มเหลว หรือทำให้ตนเอง/ครอบครัวผิดหวัง</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">7. ไม่มีสมาธิ เช่น เวลาเรียน อ่านหนังสือ หรือดูทีวี</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">8. พูด/เคลื่อนไหวช้าจนคนอื่นสังเกตเห็น หรือกระสับกระส่ายอยู่ไม่นิ่งมากกว่าปกติ</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr style="background:#fbeee9"><td style="padding:5px 8px;border:1px solid #e0d6c4"><b>9. คิดทำร้ายตนเอง หรือคิดว่าถ้าตายไปคงจะดีกว่า</b></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+      </tbody>
+    </table>
+    <div style="font-size:13.5px;margin-top:6px">รวมคะแนน (0–27): __________</div>
+    <div style="background:#eef4ef;border-radius:7px;padding:9px 12px;margin-top:8px;font-size:13.5px;line-height:1.65">
+      <b style="color:#2f6b5c">แปลผล & คำแนะนำ</b><br>
+      <b>0–4</b> ไม่มี/น้อยมาก — ดูแลตามปกติ ส่งเสริมสุขภาพใจ &nbsp;|&nbsp; <b>5–9</b> เล็กน้อย — ครูรับฟัง ให้กำลังใจ ชวนทำกิจกรรม (BA) ติดตามทุก 2 สัปดาห์<br>
+      <b>10–14</b> ปานกลาง — แจ้งผู้ปกครอง ดูแลใกล้ชิด ปรึกษานักจิตฯ สพม. พิจารณาส่ง รพ. &nbsp;|&nbsp; <b>15–27</b> ค่อนข้างรุนแรง–รุนแรง — <b>ส่งต่อ รพ.</b> (รพ.: รักษาด้วยยา + จิตบำบัด)<br>
+      <b style="color:#b04a3a">ข้อ 9 ได้ 1 คะแนนขึ้นไป</b> (ไม่ว่าคะแนนรวมเท่าใด) — ประเมิน 8Q ทันที <b>ไม่ทิ้งเด็กไว้คนเดียว</b> แจ้ง รพ. และผู้ปกครอง
+    </div>
+  </div>
+
+  <!-- 8Q -->
+  <div class="avoid" style="border:1px solid #cdbfa6;border-radius:9px;padding:16px 18px;margin-bottom:18px">
+    <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:18px;color:#b04a3a">แบบประเมินความเสี่ยงต่อการฆ่าตัวตาย (8Q)</div>
+    <div style="font-size:13.5px;color:#6f665a;margin:3px 0 8px">ข้อ 1–7 ถามถึงช่วง <b>1 เดือนที่ผ่านมา</b> · ข้อ 8 ถามถึง <b>ตลอดชีวิต</b> · ทำเครื่องหมายในช่อง “มี/ใช่” แล้วบวกคะแนนในวงเล็บ</div>
+    <table style="width:100%;border-collapse:collapse;font-size:13.5px">
+      <thead><tr style="background:#f3ede2"><th style="text-align:left;padding:5px 8px;border:1px solid #e0d6c4">ข้อ</th><th style="text-align:center;padding:5px;border:1px solid #e0d6c4;width:70px">มี/ใช่</th><th style="text-align:center;padding:5px;border:1px solid #e0d6c4;width:62px">ไม่มี</th></tr></thead>
+      <tbody>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">1. คิดอยากตาย หรือคิดว่าอยู่ไปก็ไม่มีประโยชน์ (1)</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">2. อยากทำร้ายตัวเอง หรือทำให้ตัวเองบาดเจ็บ (2)</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">3. คิดเกี่ยวกับการฆ่าตัวตาย (6)</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">4. รู้สึกว่าควบคุมความคิดอยากฆ่าตัวตายไม่ได้ (8)</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">5. มีแผนการที่จะฆ่าตัวตาย (8)</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">6. เตรียมการที่จะฆ่าตัวตาย เช่น เตรียมอุปกรณ์ สะสมยา (9)</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">7. ทำให้ตัวเองบาดเจ็บโดยตั้งใจ แต่ไม่ได้ตั้งใจให้ถึงตาย (4)</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">8. ตลอดชีวิตที่ผ่านมา เคยพยายามฆ่าตัวตาย (4)</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+      </tbody>
+    </table>
+    <div style="font-size:13.5px;margin-top:6px">รวมคะแนน: __________</div>
+    <div style="background:#fbeee9;border-radius:7px;padding:9px 12px;margin-top:8px;font-size:13.5px;line-height:1.65">
+      <b style="color:#a8412f">แปลผล & คำแนะนำ</b><br>
+      <b>0</b> ไม่มีความเสี่ยง &nbsp;|&nbsp; <b>1–8</b> เสี่ยงน้อย &nbsp;|&nbsp; <b>9–16</b> เสี่ยงปานกลาง &nbsp;|&nbsp; <b>17 ขึ้นไป</b> เสี่ยงสูง<br>
+      <b style="color:#b04a3a">ได้ 1 คะแนนขึ้นไป = ปรึกษา/ส่งต่อ รพ.</b> · วางแผนความปลอดภัยร่วมกับเด็กและครอบครัว · ระดับปานกลาง–สูง <b>ไม่ทิ้งเด็กไว้คนเดียว</b> ประสาน รพ. ทันที (โทร 1323 / 1669)
+    </div>
+  </div>
+
+  <!-- ST-5 -->
+  <div class="avoid" style="border:1px solid #cdbfa6;border-radius:9px;padding:16px 18px;margin-bottom:14px">
+    <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:18px;color:#6d5a86">แบบประเมินความเครียด (ST-5)</div>
+    <div style="font-size:13.5px;color:#6f665a;margin:3px 0 8px">ในช่วง <b>2–4 สัปดาห์ที่ผ่านมา</b> มีอาการเหล่านี้บ่อยแค่ไหน · 0=แทบไม่มี · 1=เป็นบางครั้ง · 2=บ่อยครั้ง · 3=เป็นประจำ</div>
+    <table style="width:100%;border-collapse:collapse;font-size:13.5px">
+      <thead><tr style="background:#f3ede2"><th style="text-align:left;padding:5px 8px;border:1px solid #e0d6c4">ข้อ</th><th style="text-align:center;padding:5px;border:1px solid #e0d6c4;width:34px">0</th><th style="text-align:center;padding:5px;border:1px solid #e0d6c4;width:34px">1</th><th style="text-align:center;padding:5px;border:1px solid #e0d6c4;width:34px">2</th><th style="text-align:center;padding:5px;border:1px solid #e0d6c4;width:34px">3</th></tr></thead>
+      <tbody>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">1. มีปัญหาการนอน นอนไม่หลับ หรือนอนมาก</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">2. มีสมาธิน้อยลง</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">3. หงุดหงิด กระวนกระวาย ว้าวุ่นใจ</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">4. รู้สึกเบื่อ เซ็ง</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">5. ไม่อยากพบปะผู้คน</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+      </tbody>
+    </table>
+    <div style="font-size:13.5px;margin-top:6px">รวมคะแนน (0–15): __________</div>
+    <div style="background:#f0edf5;border-radius:7px;padding:9px 12px;margin-top:8px;font-size:13.5px;line-height:1.65">
+      <b style="color:#5b4b73">แปลผล & คำแนะนำ</b><br>
+      <b>0–4</b> เครียดน้อย — ดูแลตามปกติ &nbsp;|&nbsp; <b>5–7</b> ปานกลาง — ชวนพูดคุย ผ่อนคลาย ติดตาม &nbsp;|&nbsp; <b>8–9</b> มาก — ปรึกษาครูแนะแนว/นักจิตฯ ฝึกผ่อนคลาย &nbsp;|&nbsp; <b>10–15</b> มากที่สุด — ส่งต่อประเมินเพิ่มเติม
+    </div>
+  </div>
+
+  <!-- SNAP-IV -->
+  <div class="avoid" style="border:1px solid #cdbfa6;border-radius:9px;padding:16px 18px;margin-bottom:18px">
+    <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:18px;color:#43688f">แบบคัดกรองโรคสมาธิสั้น (SNAP-IV ฉบับสั้น)</div>
+    <div style="font-size:13.5px;color:#6f665a;margin:3px 0 8px">ครู/ผู้ปกครองประเมินพฤติกรรมเด็กในช่วง 6 เดือนที่ผ่านมา · 0=ไม่เลย · 1=เล็กน้อย · 2=ค่อนข้างมาก · 3=มากที่สุด</div>
+    <div style="font-size:13px;color:#9b9079;margin-bottom:8px">ชื่อ-สกุล ____________________ ชั้น ______ วันที่ ________ ผู้ประเมิน ____________</div>
+    <div style="font-size:13px;font-weight:700;color:#43688f;margin:4px 0 4px">ด้าน ก · ขาดสมาธิ (Inattention) ข้อ 1–9</div>
+    <table style="width:100%;border-collapse:collapse;font-size:13px">
+      <thead><tr style="background:#f3ede2"><th style="text-align:left;padding:5px 8px;border:1px solid #e0d6c4">ข้อ</th><th style="padding:5px;border:1px solid #e0d6c4;width:30px">0</th><th style="padding:5px;border:1px solid #e0d6c4;width:30px">1</th><th style="padding:5px;border:1px solid #e0d6c4;width:30px">2</th><th style="padding:5px;border:1px solid #e0d6c4;width:30px">3</th></tr></thead>
+      <tbody>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">1. ไม่ใส่ใจรายละเอียด หรือทำผิดด้วยความเลินเล่อ</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">2. ตั้งสมาธิกับงานหรือการเล่นได้ยาก</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">3. ดูเหมือนไม่ฟังเวลาพูดด้วยโดยตรง</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">4. ทำตามคำสั่งไม่สำเร็จ ทำงาน/การบ้านไม่เสร็จ</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">5. จัดระเบียบงานหรือกิจกรรมได้ยาก</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">6. หลีกเลี่ยงงานที่ต้องใช้ความคิดต่อเนื่อง</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">7. ทำของใช้ที่จำเป็นหายบ่อย</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">8. วอกแวกตามสิ่งเร้าภายนอกง่าย</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">9. ลืมกิจวัตรประจำวันบ่อย</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+      </tbody>
+    </table>
+    <div style="font-size:13px;font-weight:700;color:#43688f;margin:10px 0 4px">ด้าน ข · ซน/หุนหันพลันแล่น (Hyperactivity/Impulsivity) ข้อ 10–18</div>
+    <table style="width:100%;border-collapse:collapse;font-size:13px">
+      <thead><tr style="background:#f3ede2"><th style="text-align:left;padding:5px 8px;border:1px solid #e0d6c4">ข้อ</th><th style="padding:5px;border:1px solid #e0d6c4;width:30px">0</th><th style="padding:5px;border:1px solid #e0d6c4;width:30px">1</th><th style="padding:5px;border:1px solid #e0d6c4;width:30px">2</th><th style="padding:5px;border:1px solid #e0d6c4;width:30px">3</th></tr></thead>
+      <tbody>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">10. อยู่ไม่สุข ขยับมือเท้า หรือบิดตัวบนเก้าอี้</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">11. ลุกจากที่นั่งในเวลาที่ควรนั่ง</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">12. วิ่งหรือปีนป่ายในที่ไม่เหมาะสม</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">13. เล่นหรือทำกิจกรรมเงียบๆ ได้ยาก</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">14. เคลื่อนไหวตลอดเวลา เหมือนมีเครื่องยนต์ติดตัว</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">15. พูดมากเกินไป</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">16. โพล่งคำตอบก่อนถามจบ</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">17. รอคอยตามลำดับได้ยาก</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">18. ขัดจังหวะหรือสอดแทรกผู้อื่น</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+      </tbody>
+    </table>
+    <div style="font-size:13px;margin-top:6px">คะแนนเฉลี่ยด้าน ก (ข้อ 1–9 ÷ 9): ______ · คะแนนเฉลี่ยด้าน ข (ข้อ 10–18 ÷ 9): ______</div>
+    <div style="background:#eef2f6;border-radius:7px;padding:9px 12px;margin-top:8px;font-size:13px;line-height:1.65">
+      <b style="color:#3a567a">แปลผล & คำแนะนำ</b><br>
+      เกณฑ์อ้างอิง (ค่าเฉลี่ย ประเมินโดยครู): ด้านขาดสมาธิ <b>≥ 2.56</b> · ด้านซน/หุนหัน <b>≥ 1.78</b> ถือว่าเข้าเกณฑ์เฝ้าระวัง<br>
+      <b>เข้าเกณฑ์อย่างน้อย 1 ด้าน</b> — ช่วยเหลือในชั้นเรียน (ปรับที่นั่ง แบ่งงาน checklist ชมทันที) และ<b>ส่งต่อแพทย์เพื่อวินิจฉัย</b> · <b>ไม่เข้าเกณฑ์</b> — สังเกตและติดตามต่อเนื่อง (เกณฑ์ค่าเฉลี่ยปรับได้ตามฉบับ/ผู้ประเมิน)
+    </div>
+  </div>
+
+  <!-- GAST -->
+  <div class="avoid" style="border:1px solid #cdbfa6;border-radius:9px;padding:16px 18px;margin-bottom:18px">
+    <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:18px;color:#3f8079">แบบทดสอบการติดเกม (GAST)</div>
+    <div style="font-size:13.5px;color:#6f665a;margin:3px 0 8px">ในช่วง 3 เดือนที่ผ่านมา · 0=ไม่ใช่เลย · 1=ไม่น่าใช่ · 2=น่าจะใช่ · 3=ใช่เลย</div>
+    <div style="font-size:13px;color:#9b9079;margin-bottom:8px">ชื่อ-สกุล ____________________ ชั้น ______ เพศ ☐ ชาย ☐ หญิง วันที่ ________</div>
+    <table style="width:100%;border-collapse:collapse;font-size:13px">
+      <thead><tr style="background:#f3ede2"><th style="text-align:left;padding:5px 8px;border:1px solid #e0d6c4">ข้อ</th><th style="padding:5px;border:1px solid #e0d6c4;width:30px">0</th><th style="padding:5px;border:1px solid #e0d6c4;width:30px">1</th><th style="padding:5px;border:1px solid #e0d6c4;width:30px">2</th><th style="padding:5px;border:1px solid #e0d6c4;width:30px">3</th></tr></thead>
+      <tbody>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">1. สนใจหรือทำกิจกรรมอย่างอื่นน้อยลงมาก</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">2. มักเล่นเกมจนลืมเวลา</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">3. ความสัมพันธ์กับคนในครอบครัวแย่ลง</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">4. เคยเล่นเกมดึกจนตื่นไปเรียนไม่ไหว</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">5. มักเล่นเกินเวลาที่ได้รับอนุญาต</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">6. มักอารมณ์เสียเมื่อถูกบอกให้เลิกเล่น</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">7. เคยโดดเรียนเพื่อไปเล่นเกม</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">8. เรื่องที่คุยกับเพื่อนมักเป็นเรื่องเกม</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">9. ใช้เวลาว่างส่วนใหญ่ไปกับการเล่นเกม</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">10. การเรียนแย่ลงกว่าเดิมมาก</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">11. กลุ่มเพื่อนที่คบชอบเล่นเกมเหมือนกัน</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">12. พยายามหักห้ามใจไม่ให้เล่นมาก แต่ไม่สำเร็จ</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">13. เงินส่วนใหญ่หมดไปกับเกม (บัตร/ไอเท็ม)</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">14. หลายคนบอกว่าอารมณ์เปลี่ยนไป (หงุดหงิดง่าย)</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">15. หลายคนบอกว่าพฤติกรรมเปลี่ยนไป (เถียงเก่ง)</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">16. หลายคนบอกว่าฉันติดเกม</td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td><td style="border:1px solid #e0d6c4"></td></tr>
+      </tbody>
+    </table>
+    <div style="font-size:13px;margin-top:6px">รวมคะแนน (0–48): __________</div>
+    <div style="background:#eef4ef;border-radius:7px;padding:9px 12px;margin-top:8px;font-size:13px;line-height:1.65">
+      <b style="color:#2f6b5c">แปลผล & คำแนะนำ (จุดตัดตามเพศ)</b><br>
+      <b>เพศชาย:</b> &lt;24 ปกติ · 24–32 คลั่งไคล้ (เริ่มมีปัญหา) · ≥33 น่าจะติดเกม &nbsp;|&nbsp; <b>เพศหญิง:</b> &lt;16 ปกติ · 16–22 คลั่งไคล้ · ≥23 น่าจะติดเกม<br>
+      <b>คลั่งไคล้</b> — คุยกับคนที่ไว้ใจ ตั้งกติกาเวลาเล่นให้ชัด ติดตาม · <b>น่าจะติดเกม</b> — ปรึกษาครูแนะแนว/นักจิตวิทยา และพิจารณาส่งต่อจิตแพทย์เด็กและวัยรุ่น
+    </div>
+  </div>
+
+  <!-- DRUG บคก. -->
+  <div class="avoid" style="border:1px solid #cdbfa6;border-radius:9px;padding:16px 18px;margin-bottom:18px">
+    <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:18px;color:#b04a3a">แบบคัดกรองยาเสพติด (บคก.กสธ. V.2)</div>
+    <div style="font-size:13.5px;color:#6f665a;margin:3px 0 8px">เลือกสารหลักที่ใช้บ่อยที่สุด แล้วตอบตามการใช้ในช่วง 3 เดือนที่ผ่านมา · วงกลมคะแนนในวงเล็บที่ตรงกับคำตอบ แล้วรวม</div>
+    <div style="font-size:13px;color:#9b9079;margin-bottom:8px">สารหลัก: ☐ ยาบ้า/ไอซ์ ☐ กัญชา ☐ กระท่อม ☐ บุหรี่ไฟฟ้า/บุหรี่ ☐ สารระเหย ☐ อื่นๆ ________</div>
+    <table style="width:100%;border-collapse:collapse;font-size:12.5px">
+      <thead><tr style="background:#f3ede2"><th style="text-align:left;padding:5px 8px;border:1px solid #e0d6c4">ข้อ (ความถี่ → คะแนน)</th><th style="padding:5px;border:1px solid #e0d6c4">ไม่เคย</th><th style="padding:5px;border:1px solid #e0d6c4">1–2 ครั้ง</th><th style="padding:5px;border:1px solid #e0d6c4">เดือนละ 1–3</th><th style="padding:5px;border:1px solid #e0d6c4">สัปดาห์ละ 1–4</th><th style="padding:5px;border:1px solid #e0d6c4">เกือบทุกวัน</th></tr></thead>
+      <tbody>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">1. ใช้สารนี้บ่อยเพียงใด</td><td style="border:1px solid #e0d6c4;text-align:center">0</td><td style="border:1px solid #e0d6c4;text-align:center">2</td><td style="border:1px solid #e0d6c4;text-align:center">3</td><td style="border:1px solid #e0d6c4;text-align:center">4</td><td style="border:1px solid #e0d6c4;text-align:center">6</td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">2. อยากใช้สารนี้อย่างรุนแรงบ่อยเพียงใด</td><td style="border:1px solid #e0d6c4;text-align:center">0</td><td style="border:1px solid #e0d6c4;text-align:center">3</td><td style="border:1px solid #e0d6c4;text-align:center">4</td><td style="border:1px solid #e0d6c4;text-align:center">5</td><td style="border:1px solid #e0d6c4;text-align:center">6</td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">3. ใช้แล้วเกิดปัญหาสุขภาพ/ครอบครัว/การเงิน/กฎหมาย/สังคม</td><td style="border:1px solid #e0d6c4;text-align:center">0</td><td style="border:1px solid #e0d6c4;text-align:center">4</td><td style="border:1px solid #e0d6c4;text-align:center">5</td><td style="border:1px solid #e0d6c4;text-align:center">6</td><td style="border:1px solid #e0d6c4;text-align:center">7</td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">4. ใช้แล้วทำสิ่งที่เคยทำตามปกติไม่ได้ (เรียน/งาน/ครอบครัว)</td><td style="border:1px solid #e0d6c4;text-align:center">0</td><td style="border:1px solid #e0d6c4;text-align:center">5</td><td style="border:1px solid #e0d6c4;text-align:center">6</td><td style="border:1px solid #e0d6c4;text-align:center">7</td><td style="border:1px solid #e0d6c4;text-align:center">8</td></tr>
+      </tbody>
+    </table>
+    <table style="width:100%;border-collapse:collapse;font-size:12.5px;margin-top:6px">
+      <thead><tr style="background:#f3ede2"><th style="text-align:left;padding:5px 8px;border:1px solid #e0d6c4">ข้อ</th><th style="padding:5px;border:1px solid #e0d6c4">ไม่เคย</th><th style="padding:5px;border:1px solid #e0d6c4">เคยก่อน 3 เดือน</th><th style="padding:5px;border:1px solid #e0d6c4">เคยใน 3 เดือน</th></tr></thead>
+      <tbody>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">5. มีคนกังวลและแนะนำให้คุณหยุดใช้</td><td style="border:1px solid #e0d6c4;text-align:center">0</td><td style="border:1px solid #e0d6c4;text-align:center">3</td><td style="border:1px solid #e0d6c4;text-align:center">6</td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">6. เคยพยายามลด/หยุดใช้ แต่ไม่สำเร็จ</td><td style="border:1px solid #e0d6c4;text-align:center">0</td><td style="border:1px solid #e0d6c4;text-align:center">3</td><td style="border:1px solid #e0d6c4;text-align:center">6</td></tr>
+      </tbody>
+    </table>
+    <div style="font-size:13px;margin-top:6px">รวมคะแนน: __________</div>
+    <div style="background:#fbeee9;border-radius:7px;padding:9px 12px;margin-top:8px;font-size:13px;line-height:1.65">
+      <b style="color:#a8412f">แปลผล & คำแนะนำ</b><br>
+      <b>≤1</b> ไม่พบการใช้ &nbsp;|&nbsp; <b>2–3 ผู้ใช้ (ผลกระทบต่ำ)</b> — ให้คำแนะนำสั้น (Brief Advice) โดยครูแนะแนว ไม่ต้องบันทึก บสต. &nbsp;|&nbsp; <b>4–26 ผู้เสพ (ปานกลาง)</b> — Brief Intervention 1–2 ครั้งกับนักจิตวิทยา/นักสังคมฯ และประสานส่งต่อ &nbsp;|&nbsp; <b>≥27 ผู้ติด (สูง)</b> — ส่งต่อสถานพยาบาลบำบัดเข้มข้น (ยาลดความอยากยา/บสต.) ติดตามต่อเนื่อง
+    </div>
+  </div>
+
+  <!-- PSQI -->
+  <div class="avoid" style="border:1px solid #cdbfa6;border-radius:9px;padding:16px 18px;margin-bottom:18px">
+    <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:18px;color:#45707e">แบบประเมินคุณภาพการนอน (PSQI · ฉบับคัดกรอง)</div>
+    <div style="font-size:13.5px;color:#6f665a;margin:3px 0 8px">ประเมินการนอนในช่วง 1 เดือนที่ผ่านมา · แต่ละข้อแทน 1 องค์ประกอบ (0–3 คะแนน) วงกลมคะแนนที่ตรงแล้วรวม</div>
+    <table style="width:100%;border-collapse:collapse;font-size:13px">
+      <thead><tr style="background:#f3ede2"><th style="text-align:left;padding:5px 8px;border:1px solid #e0d6c4">องค์ประกอบ</th><th style="padding:5px;border:1px solid #e0d6c4">0</th><th style="padding:5px;border:1px solid #e0d6c4">1</th><th style="padding:5px;border:1px solid #e0d6c4">2</th><th style="padding:5px;border:1px solid #e0d6c4">3</th></tr></thead>
+      <tbody>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">1. คุณภาพการนอนโดยรวม</td><td style="border:1px solid #e0d6c4;text-align:center;font-size:11px">ดีมาก</td><td style="border:1px solid #e0d6c4;text-align:center;font-size:11px">ค่อนข้างดี</td><td style="border:1px solid #e0d6c4;text-align:center;font-size:11px">ค่อนข้างแย่</td><td style="border:1px solid #e0d6c4;text-align:center;font-size:11px">แย่มาก</td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">2. ระยะเวลากว่าจะหลับ</td><td style="border:1px solid #e0d6c4;text-align:center;font-size:11px">≤15 น.</td><td style="border:1px solid #e0d6c4;text-align:center;font-size:11px">16–30 น.</td><td style="border:1px solid #e0d6c4;text-align:center;font-size:11px">31–60 น.</td><td style="border:1px solid #e0d6c4;text-align:center;font-size:11px">&gt;60 น.</td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">3. ชั่วโมงที่หลับจริง/คืน</td><td style="border:1px solid #e0d6c4;text-align:center;font-size:11px">&gt;7 ชม.</td><td style="border:1px solid #e0d6c4;text-align:center;font-size:11px">6–7 ชม.</td><td style="border:1px solid #e0d6c4;text-align:center;font-size:11px">5–6 ชม.</td><td style="border:1px solid #e0d6c4;text-align:center;font-size:11px">&lt;5 ชม.</td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">4. ประสิทธิภาพการนอน (หลับจริง/อยู่บนเตียง)</td><td style="border:1px solid #e0d6c4;text-align:center;font-size:11px">&gt;85%</td><td style="border:1px solid #e0d6c4;text-align:center;font-size:11px">75–84%</td><td style="border:1px solid #e0d6c4;text-align:center;font-size:11px">65–74%</td><td style="border:1px solid #e0d6c4;text-align:center;font-size:11px">&lt;65%</td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">5. ถูกรบกวนการนอน (ตื่นกลางดึก/ไอ/ปวด ฯลฯ)</td><td style="border:1px solid #e0d6c4;text-align:center;font-size:11px">ไม่มี</td><td style="border:1px solid #e0d6c4;text-align:center;font-size:11px">&lt;1/สัปดาห์</td><td style="border:1px solid #e0d6c4;text-align:center;font-size:11px">1–2/สัปดาห์</td><td style="border:1px solid #e0d6c4;text-align:center;font-size:11px">≥3/สัปดาห์</td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">6. ใช้ยาช่วยให้นอนหลับ</td><td style="border:1px solid #e0d6c4;text-align:center;font-size:11px">ไม่เลย</td><td style="border:1px solid #e0d6c4;text-align:center;font-size:11px">&lt;1/สัปดาห์</td><td style="border:1px solid #e0d6c4;text-align:center;font-size:11px">1–2/สัปดาห์</td><td style="border:1px solid #e0d6c4;text-align:center;font-size:11px">≥3/สัปดาห์</td></tr>
+        <tr><td style="padding:5px 8px;border:1px solid #e0d6c4">7. ง่วง/ไม่มีแรงทำกิจกรรมกลางวัน</td><td style="border:1px solid #e0d6c4;text-align:center;font-size:11px">ไม่มี</td><td style="border:1px solid #e0d6c4;text-align:center;font-size:11px">เล็กน้อย</td><td style="border:1px solid #e0d6c4;text-align:center;font-size:11px">ปานกลาง</td><td style="border:1px solid #e0d6c4;text-align:center;font-size:11px">มาก</td></tr>
+      </tbody>
+    </table>
+    <div style="font-size:13px;margin-top:6px">รวมคะแนน (0–21): __________</div>
+    <div style="background:#e7eff2;border-radius:7px;padding:9px 12px;margin-top:8px;font-size:13px;line-height:1.65">
+      <b style="color:#2f5662">แปลผล & คำแนะนำ</b><br>
+      <b>≤5</b> คุณภาพการนอนดี — รักษาสุขอนามัยการนอนที่ดีต่อไป &nbsp;|&nbsp; <b>&gt;5</b> คุณภาพการนอนไม่ดี — ปัญหาการนอนเป็นสัญญาณร่วมของซึมเศร้า/วิตกกังวล ควรดูแลสุขอนามัยการนอน และพิจารณาประเมิน PHQ-A / ST-5 ร่วมด้วย
+    </div>
+  </div>
+
+  <div style="font-size:13px;color:#9b9079;margin-bottom:18px"><b>หมายเหตุ:</b> แบบประเมินทั้งหมดเป็นเครื่องมือ<b>คัดกรองเบื้องต้น ไม่ใช่การวินิจฉัย</b> · PSQI ฉบับนี้เป็นฉบับย่อ 7 องค์ประกอบเพื่อการคัดกรอง · เวอร์ชันออนไลน์คิดคะแนนอัตโนมัติใช้ได้ที่ชุดแบบประเมิน https://nonghug.com/</div>
+
+  <div class="avoid" style="background:#f6f1e7;border:1px solid #e0d6c4;border-radius:9px;padding:14px 16px;margin-bottom:8px">
+    <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:15px;margin-bottom:8px">ที่มาของแบบประเมิน</div>
+    <ul style="font-size:12.5px;line-height:1.7;color:#4a4337;margin:0;padding-left:18px">
+      <li><b>PHQ-A</b> (Patient Health Questionnaire for Adolescents) — ฉบับภาษาไทยปรับใช้คัดกรองภาวะซึมเศร้าในวัยรุ่น กรมสุขภาพจิต กระทรวงสาธารณสุข</li>
+      <li><b>2Q / 8Q / 9Q</b> — แบบประเมินการฆ่าตัวตาย กรมสุขภาพจิต กระทรวงสาธารณสุข</li>
+      <li><b>ST-5 (อ8)</b> — แบบประเมินความเครียด กรมสุขภาพจิต กระทรวงสาธารณสุข</li>
+      <li><b>SNAP-IV</b> (Swanson, Nolan and Pelham — IV) — แบบคัดกรองโรคสมาธิสั้น ฉบับภาษาไทย (ราชวิทยาลัยกุมารแพทย์ฯ / สถาบันสุขภาพจิตเด็กและวัยรุ่นราชนครินทร์)</li>
+      <li><b>GAST</b> (Game Addiction Screening Test) — พัฒนาโดย นพ.ชาญวิทย์ พรนภดล ร่วมกับสถาบันสุขภาพจิตเด็กและวัยรุ่นราชนครินทร์ กรมสุขภาพจิต</li>
+      <li><b>บคก.กสธ. V.2</b> — แบบคัดกรองและส่งต่อผู้ใช้ยาและสารเสพติด กระทรวงสาธารณสุข (จำแนกผู้ใช้/ผู้เสพ/ผู้ติด)</li>
+      <li><b>PSQI</b> (Pittsburgh Sleep Quality Index) — Buysse et al., 1989 · ดัดแปลงจากแบบประเมินคุณภาพการนอนหลับพิตส์เบิร์ก ฉบับภาษาไทย แปลโดย ตะวันชัย จิรประมุขพิทักษ์ และวรัญ ตันชัยสวัสดิ์ · อ้างอิงโครงสร้างการให้คะแนนมาตรฐาน Pittsburgh Sleep Quality Index (Buysse et al., 1989)</li>
+      <li><b>นิโคติน — Fagerström Test for Nicotine Dependence</b> (Heatherton et al., 1991)</li>
+    </ul>
+  </div>
+
+  <div class="brk" style="margin-top:22px;padding-top:14px;border-top:1px solid #e2d9c8;font-size:13px;color:#9b9079;line-height:1.6">
+    เรียบเรียงจาก: คู่มือแนวทางช่วยเหลือนักเรียน (วิมลรัตน์ ชัยปราการ, รพ.เชียงรายประชานุเคราะห์) · <b>คู่มือการดูแลช่วยเหลือนักเรียนทางสุขภาพจิตในสถานศึกษา สพม.เชียงราย (สิงหาคม 2564)</b> · เชียงแสนวิทยาคมโมเดล · สื่อ NSSI สถาบันสุขภาพเด็กแห่งชาติมหาราชินี กรมการแพทย์ · รายงาน PHQ-A เชียงราย 2564–2568 · USI Model สพม.เชียงราย
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      doPrint: () => window.print(),
+      diseases: [
+        { emoji:"🧠", name:"สมาธิสั้น (ADHD)", en:"Inattention / Hyperactivity / Impulsivity",
+          signs:["วอกแวก ไม่มีสมาธิ อยู่ไม่นิ่ง ทำงานไม่เสร็จ หลงลืมบ่อย","ลืมของบ่อย ผลการเรียนตกต่ำ"],
+          teacher:["สังเกต+จดบันทึก","ใช้ SNAP-IV","ปรับที่นั่ง ลดสิ่งรบกวน","แบ่งงานเป็นชิ้นเล็ก + checklist","ชมเชยทันที","แจ้งผู้ปกครอง"],
+          refer:["ผล SNAP-IV ชัดเจน","กระทบการเรียนรุนแรง","ช่วยเหลือ 4 สัปดาห์ไม่ดีขึ้น","ผู้ปกครองต้องการวินิจฉัย"],
+          hospital:["วินิจฉัย + โรคร่วม (ดื้อต่อต้าน/บกพร่องการเรียนรู้)","พิจารณายา (Methylphenidate)","PMT","ติดตามผลยา","ประสานแผน IEP"] },
+        { emoji:"⚡", name:"ดื้อต่อต้าน (ODD/CD)", en:"Oppositional Defiant / Conduct Disorder",
+          signs:["โวยวาย ดื้อ ทะเลาะบ่อย ไม่ทำตามกฎ ทำลายข้าวของ","ไม่ยอมรับผิด โทษคนอื่น ยั่วยุครู"],
+          teacher:["ABA วิเคราะห์ A-B-C","วางกฎชัดเจน ผลตามมาคงเส้นคงวา","เพิกเฉยพฤติกรรมเล็กน้อย","Triple-P กำหนดกฎร่วมกับเด็ก","พูดสั้น ชัด สงบ","ให้เด็กมีส่วนร่วมแก้ปัญหา"],
+          refer:["พฤติกรรมรุนแรง/ทำร้ายผู้อื่น","ผู้ปกครองรับมือไม่ได้","สงสัย Conduct Disorder","ไม่ดีขึ้นใน 4–6 สัปดาห์"],
+          hospital:["ประเมิน โรคร่วม","PMT เชิงลึก","พิจารณายา (Risperidone)","Family therapy + CBT","วางแผนการกลับเข้าเรียน"] },
+        { emoji:"🎮", name:"ติดเกม", en:"Internet Gaming Disorder",
+          signs:["เล่นเกม >6 ชม./วัน โกรธเมื่อถูกหยุด ผลการเรียนตก นอนไม่หลับ","โกหกเรื่องเวลาเล่น หนีเรียน"],
+          teacher:["คุยเปิดใจ ไม่ตัดสิน (MI)","ให้ความรู้ AAP ≤2 ชม./วัน","ตั้งเป้าร่วมกับเด็ก","ส่งเสริมกิจกรรมทางเลือก","ติดตามด้วยตารางรายสัปดาห์","ประสานผู้ปกครองวางกติกา"],
+          refer:["ควบคุมเวลาไม่ได้","กระทบการเรียน/สุขภาพชัดเจน","สงสัยโรคร่วม","ครอบครัวขัดแย้งรุนแรง"],
+          hospital:["ประเมิน GAST + โรคร่วม","CBT + MI เชิงลึก","รักษาโรคร่วม","ให้คำปรึกษาครอบครัว","วางแผนงดใช้จอชั่วคราว"] },
+        { emoji:"🚨", name:"ติดยาเสพติด", en:"บุหรี่ไฟฟ้า / กัญชา / ยาบ้า / กระท่อม",
+          signs:["กลิ่นผิดปกติ ตาแดง พฤติกรรมเปลี่ยนกะทันหัน หนีเรียนบ่อย","เงินหาย ของหาย ก้าวร้าวขึ้น"],
+          teacher:["คุยส่วนตัว ไม่ตัดสิน (MI)","ใช้ 8Q / บคก.กสธ. V.2","ลดอันตราย/ลดความเสี่ยง","ให้เด็กรู้สึกมีคุณค่า","ส่งเสริมกิจกรรมทางเลือก","แจ้งผู้ปกครอง/ฝ่ายปกครอง"],
+          refer:["ผล บคก. ระดับผู้เสพ/ผู้ติด","อาการถอนยาชัดเจน","ใช้ยาประเภท 1","เสี่ยงต่อตนเอง/ผู้อื่น"],
+          hospital:["ประเมิน severity + โรคร่วม","ยาลดความอยากยา","MI เชิงลึก + ครอบครัว","ประสานบำบัด (บสต.)","ติดตามหลังบำบัด"] },
+        { emoji:"🛡", name:"การกลั่นแกล้ง (Bullying)", en:"Physical / Verbal / Relational / Cyber",
+          signs:["กลัวมาโรงเรียน บาดเจ็บไม่ทราบสาเหตุ เงียบผิดปกติ","ถอนตัวจากเพื่อน ผลการเรียนตก นอนไม่หลับ"],
+          teacher:["รับฟังตั้งใจ ไม่ตัดสิน","สืบข้อเท็จจริงทั้งสองฝ่าย","ฝึก Assertiveness","สร้างระบบ Buddy","แจ้งผู้ปกครองทั้งสองฝ่าย","ติดตามใกล้ชิด"],
+          refer:["บาดเจ็บทางร่างกาย","มีความคิดทำร้ายตัวเอง (ข้อ 9 เป็นบวก)","Cyber bullying รุนแรง","ไม่ดีขึ้นแม้จัดการแล้ว"],
+          hospital:["ประเมินภาวะเครียดหลังเหตุการณ์ (PTSD)/ซึมเศร้า","จิตบำบัดเด็กที่ถูกแกล้ง","ดูแลเด็กที่แกล้งด้วย","ให้คำปรึกษาทั้งสองฝ่าย","ประสานหน่วยงานภายนอก"] },
+        { emoji:"💚", name:"ภาวะซึมเศร้า", en:"Depression — PHQ-A ≥10 หรือข้อ 9 เป็นบวก",
+          signs:["เศร้า/เบื่อ >2 สัปดาห์ นอนไม่หลับ เบื่ออาหาร ขาดเรียน","แยกตัว ไม่สนใจสิ่งที่เคยชอบ พูดถึงการตาย"],
+          teacher:["ทำ PHQ-A ทุกเทอม","ถ้า 5–9 รับฟัง ให้กำลังใจ ติดตาม","Behavioral Activation ชวนทำกิจกรรม","บันทึกกิจกรรม P/M","รับฟังโดยไม่แนะนำมากเกินไป","แจ้งผู้ปกครอง"],
+          refer:["PHQ-A ≥10","ข้อ 9 เป็นบวก — ส่งทันที","อาการกระทบชีวิตชัดเจน","ไม่ตอบสนองใน 2 สัปดาห์"],
+          hospital:["8Q + สัมภาษณ์เพื่อวินิจฉัย","CBT / Behavioral Activation","พิจารณายา (Fluoxetine)","วางแผนความปลอดภัยถ้ามีความคิดทำร้ายตัวเอง","refer จิตแพทย์เด็กถ้ารุนแรง"] },
+        { emoji:"🩹", name:"NSSI", en:"ทำร้ายตัวเองโดยไม่มีเจตนาฆ่าตัวตาย",
+          signs:["รอยแผล/รอยช้ำซ่อนเร้น (แขน ต้นขา) ใส่แขนยาวในอากาศร้อน","แยกตัว ปฏิเสธวิชาพละ พูดถึงการลงโทษตัวเอง"],
+          teacher:["รับฟังด้วยใจ ไม่ตัดสิน ไม่ตกใจ","ประเมิน Safety เบื้องต้น","บันทึกสิ่งที่เห็น/ได้ยิน","ใช้บทสนทนา 5 ขั้น","ติดต่อผู้ปกครองอย่างระวัง ไม่ดุ","ให้ความรัก+พื้นที่ปลอดภัย"],
+          refer:["บาดแผลลึก/ต้องรักษาทางกาย","มีความคิดฆ่าตัวตายร่วม (ข้อ 9 เป็นบวก)","ความถี่/ความรุนแรงเพิ่มขึ้น","มีโรคจิตเวชร่วม"],
+          hospital:["ประเมินสาเหตุและโรคร่วม","จิตบำบัด (CBT/DBT-informed)","ฝึกทักษะจัดการอารมณ์ทดแทน","Safety Planning + ลดการเข้าถึงอุปกรณ์","สายด่วน 1323"] }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>
