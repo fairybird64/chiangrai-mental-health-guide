@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@600;700&family=Sarabun:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  @page{size:A4;margin:0}
+  *{box-sizing:border-box}
+  body{margin:0;background:#cfcabd;font-family:'Sarabun',sans-serif}
+  .noprint{}
+  @media print{.noprint{display:none!important} body{background:#fff}}
+</style>
+</helmet>
+
+<div class="noprint" style="position:fixed;top:0;left:0;right:0;background:#25433f;color:#fff;padding:11px 20px;display:flex;justify-content:space-between;align-items:center;z-index:50">
+  <span style="font-family:'IBM Plex Mono',monospace;letter-spacing:.1em;font-size:15px">โปสเตอร์ QR · พิมพ์ A4 แนวตั้ง</span>
+  <button onClick="{{ doPrint }}" style="background:#fff;color:#25433f;border:none;border-radius:7px;padding:8px 18px;font-family:'Sarabun',sans-serif;font-weight:600;font-size:15px;cursor:pointer">🖨 พิมพ์ / บันทึก PDF</button>
+</div>
+
+<div style="display:flex;justify-content:center;padding:40px 20px 60px">
+<div style="width:794px;min-height:1123px;background:#fff;box-shadow:0 4px 24px rgba(0,0,0,.16);padding:72px 64px;display:flex;flex-direction:column;align-items:center;text-align:center">
+
+  <div style="width:60px;height:60px;border-radius:15px;background:#2f6b62;color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Noto Serif Thai',serif;font-weight:700;font-size:34px;margin-bottom:22px">ฮ</div>
+
+  <div style="font-family:'IBM Plex Mono',monospace;font-size:15px;letter-spacing:.22em;text-transform:uppercase;color:#b07a4f;margin-bottom:14px">Student Mental Health · Chiang Rai</div>
+
+  <h1 style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:46px;line-height:1.25;margin:0 0 14px;color:#25433f">คู่มือระบบดูแล<br>สุขภาพจิตนักเรียน</h1>
+
+  <p style="font-size:20px;color:#5e564a;line-height:1.6;margin:0 0 6px;max-width:560px">แนวทางช่วยเหลือนักเรียน · แบบประเมินคัดกรอง 8 ชุด<br>เบอร์ติดต่อ รพ. ในเชียงราย · เอกสารพร้อมพิมพ์</p>
+
+  <div style="margin:38px 0 30px;padding:30px;background:#fff;border:3px solid #25433f;border-radius:24px">
+    <img src="qr-chiangrai.png" alt="QR คู่มือสุขภาพจิตนักเรียน" style="display:block;width:420px;height:420px;image-rendering:pixelated">
+  </div>
+
+  <div style="font-family:'Noto Serif Thai',serif;font-weight:700;font-size:28px;color:#25433f;margin-bottom:10px">สแกนเพื่อเปิดคู่มือ</div>
+  <div style="font-size:18px;color:#7a7060;margin-bottom:4px">เปิดบนมือถือ แท็บเล็ต หรือคอมพิวเตอร์ — ใช้งานได้ทันที</div>
+  <div style="font-family:'IBM Plex Mono',monospace;font-size:16px;color:#2f6b62;word-break:break-all;background:#eef3ef;border-radius:8px;padding:10px 18px;margin-top:14px">fairybird64.github.io/chiangrai-mental-health-guide</div>
+
+  <div style="flex:1"></div>
+
+  <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:44px">
+    <span style="background:#eef3ef;color:#3f6b5e;border-radius:999px;padding:8px 18px;font-size:15px;font-weight:600">PHQ-A · 8Q</span>
+    <span style="background:#eef3ef;color:#3f6b5e;border-radius:999px;padding:8px 18px;font-size:15px;font-weight:600">SNAP-IV · GAST</span>
+    <span style="background:#eef3ef;color:#3f6b5e;border-radius:999px;padding:8px 18px;font-size:15px;font-weight:600">ST-5 · PSQI</span>
+    <span style="background:#eef3ef;color:#3f6b5e;border-radius:999px;padding:8px 18px;font-size:15px;font-weight:600">นิโคติน · บคก.</span>
+  </div>
+
+  <div style="margin-top:30px;padding-top:20px;border-top:1px solid #e2d9c8;font-size:13.5px;color:#9b9079;line-height:1.6;max-width:600px">
+    สำหรับครูที่ปรึกษา · ครูแนะแนว · นักจิตวิทยา สพม. · บุคลากรสาธารณสุข · เครือข่ายชุมชน<br>เชียงแสนวิทยาคมโมเดล · สพม.เชียงราย
+  </div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    return { doPrint: () => window.print() };
+  }
+}
+</script>
+</body>
+</html>
