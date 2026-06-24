@@ -205,6 +205,36 @@ const TESTS = {
     }
   },
 
+  gad: {
+    name:"GAD-7", color:"#9C5F73",
+    title:"แบบประเมินโรควิตกกังวลในวัยรุ่น (GAD-7)",
+    sub:"คัดกรองภาวะวิตกกังวล · 7 ข้อ",
+    inst:"ในช่วง 2 สัปดาห์ที่ผ่านมา หนูมีอาการเหล่านี้บ่อยแค่ไหน",
+    type:"likert", scale:LIK_PHQA,
+    items:[
+      "รู้สึกประหม่า วิตกกังวล หรือหงุดหงิดกระวนกระวาย",
+      "ไม่สามารถหยุด หรือควบคุมความกังวลได้",
+      "กังวลมากเกินไปกับเรื่องต่างๆ หลายเรื่อง",
+      "รู้สึกยากที่จะผ่อนคลาย",
+      "กระสับกระส่ายจนนั่งอยู่นิ่งๆ ได้ยาก",
+      "หงุดหงิดง่าย หรือรำคาญใจง่าย",
+      "รู้สึกกลัว เหมือนกับว่าจะมีเรื่องเลวร้ายเกิดขึ้น"
+    ],
+    score(a){
+      const total=a.reduce((s,x)=>s+x,0);
+      let band;
+      if(total<=4) band={label:"วิตกกังวลน้อยมาก",key:"green"};
+      else if(total<=9) band={label:"วิตกกังวลระดับน้อย",key:"green"};
+      else if(total<=14) band={label:"วิตกกังวลระดับปานกลาง",key:"amber"};
+      else band={label:"วิตกกังวลระดับรุนแรง",key:"red"};
+      const advice = total>=10
+        ? "คะแนน <b>ตั้งแต่ 10 ขึ้นไป</b> — มีแนวโน้มเป็นโรควิตกกังวล ควรปรึกษาครูแนะแนว/นักจิตวิทยา และพิจารณาส่งต่อโรงพยาบาลเพื่อประเมินเพิ่มเติม"
+        : (total>=5 ? "วิตกกังวลระดับน้อย — ครูรับฟัง สอนเทคนิคผ่อนคลาย (หายใจ 4-7-8 / grounding 5-4-3-2-1) และติดตามอาการต่อเนื่อง"
+                    : "อยู่ในเกณฑ์ปกติ — ดูแลสุขภาพใจต่อเนื่อง ทำซ้ำเมื่อมีสัญญาณเปลี่ยนแปลง");
+      return {display:total, max:21, band, advice, note:"จุดตัด ≥10 บ่งชี้ระดับปานกลางขึ้นไป ควรประเมินเพิ่มเติม · มักใช้คู่กับ PHQ-A", crisis:null};
+    }
+  },
+
   snap: {
     name:"SNAP-IV", color:"#185FA5",
     title:"แบบคัดกรองสมาธิสั้น (SNAP-IV ฉบับสั้น)",
@@ -420,7 +450,7 @@ function openTest(id){
 function renderTest(id,t){
   let qs='';
   t.items.forEach((it,i)=>{
-    const text = t.type==='custom'? it.t : it;
+    const text = (typeof it==='object' && it!==null) ? it.t : it;
     let opts='';
     if(t.type==='likert'){
       opts=t.scale.map((lab,v)=>`<label class="opt"><input type="radio" name="${id}_${i}" value="${v}"><span>${lab}</span></label>`).join('');
